@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wcc:</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 selection:bg-neutral-900 selection:text-white font-sans">
+  <div id="root"></div>
+  <script type="text/babel" id="app-source">
+
+const { useState, useEffect, useRef } = React;
+
+// ---------------------------------------------------------
+// CONFIGURATION (DYNAMICALLY REPLACED ON DOWNLOAD)
+// ---------------------------------------------------------
+const DEFAULT_SETTINGS = {
+  "exportWidth": 1080,
+  "exportHeight": 1350,
+  "frameWidth": 0,
+  "frameColor": "#ffffff",
+  "artPosX": 0,
+  "artPosY": 0,
+  "artZoom": 0,
+  "archShape": "torus_half",
+  "coreShape": "sphere",
+  "catalystShape": "tetrahedron",
+  "ringShape": "thin",
+  "mediaUrl": "",
+  "mediaStyle": "floating",
+  "bgColor": "#e4e4e4",
+  "archColor": "#111111",
+  "ringColor": "#888888",
+  "cubeColor": "#ff2a00",
+  "glassColor": "#ffffff",
+  "particleColor": "#ff2a00",
+  "glassIor": 1.6,
+  "archScale": 1,
+  "ringScale": 1,
+  "cubeScale": 1,
+  "glassScale": 0.5,
+  "uiAccentColor": "#ff2a00",
+  "uiPanelBg": "#ffffff",
+  "useInternalForm": true,
+  "applyLink": "https://docs.google.com/forms/",
+  "webhookUrl": "",
+  "contentHero": "wcc:",
+  "contentSub": "Women Creating Change",
+  "btnEnter": "Enter the Lab",
+  "contentTag": "Open Call / April–June 2026",
+  "contentTitle": "A 3-month intensive creative lab",
+  "contentDesc1": "wcc: announces an open call for a 3-month creative lab programme on-site in Gyumri and online, which will include a group of approximately 12 participants — girls, women, and individuals from marginalized communities to engage in collaborative artistic processes.",
+  "contentDesc2": "Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance, culminating in a virtual exhibition.",
+  "btnBack1": "← Back",
+  "btnNext": "Application Details →",
+  "titleInclusions": "Programme Inclusions:",
+  "inclusion1": "Workshops",
+  "inclusion2": "Talks",
+  "inclusion3": "Mentorship",
+  "inclusion4": "Virtual Exhibition",
+  "titleEligibility": "Eligibility",
+  "textEligibility": "For artists and individuals with no prior experience.",
+  "titleDeadline": "Application Deadline",
+  "contentDeadline": "April 12, 2026",
+  "btnSubmit": "Submit Application",
+  "titleQuestions": "Questions?",
+  "contentEmail": "hello@wcc.org",
+  "btnBack2": "← Review Info",
+  "formTitle": "Submit Proposal",
+  "formNameLabel": "Full Name *",
+  "formEmailLabel": "Email Address *",
+  "formLinkLabel": "Portfolio / Work Link *",
+  "formMessageLabel": "Statement of Interest *",
+  "formBtnSubmit": "Send Application",
+  "formBtnSending": "Sending...",
+  "formSuccessTitle": "Application Received",
+  "formSuccessMsg": "Thank you for submitting your proposal. We will review your materials and contact you soon.",
+  "formBtnHome": "Return to Home",
+  "videoDuration": 5
+}; /* END_DEFAULTS */
+
+// ---------------------------------------------------------
+// GEOMETRY GENERATORS
+// ---------------------------------------------------------
+const createArchGeo = (type) => {
+  if (type === 'none') return new THREE.BufferGeometry();
+  switch(type) {
+    case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100);
+    case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64);
+    case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8);
+    case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64);
+    case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5);
+  }
+};
+
+const createCoreGeo = (type) => {
+  if (type === 'none') return new THREE.BufferGeometry();
+  switch(type) {
+    case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8);
+    case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0);
+    case 'torus': return new THREE.TorusGeometry(1.0, 0.4, 64, 100);
+    case 'tetrahedron': return new THREE.TetrahedronGeometry(1.4, 0);
+    case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64);
+  }
+};
+
+const createCatalystGeo = (type) => {
+  if (type === 'none') return new THREE.BufferGeometry();
+  switch(type) {
+    case 'box': return new THREE.BoxGeometry(0.6, 0.6, 0.6);
+    case 'sphere': return new THREE.SphereGeometry(0.4, 32, 32);
+    case 'octahedron': return new THREE.OctahedronGeometry(0.4, 0);
+    case 'torus': return new THREE.TorusGeometry(0.3, 0.1, 16, 32);
+    case 'tetrahedron': default: return new THREE.ConeGeometry(0.4, 0.8, 4);
+  }
+};
+
+const createRingGeo = (type, radius) => {
+  if (type === 'none') return new THREE.BufferGeometry();
+  const thick = 0.02;
+  switch(type) {
+    case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100);
+    case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100);
+    case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100);
+    case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100);
+  }
+};
+
+function App() {
+  const mountRef = useRef(null);
+  const sceneRefs = useRef({}); 
+  
+  const [layer, setLayer] = useState(0); 
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [showSettingsBtn, setShowSettingsBtn] = useState(false); 
+  const [activeEditorMenu, setActiveEditorMenu] = useState('main'); 
+  const [showMediaModal, setShowMediaModal] = useState(false); 
+  const [exportedImage, setExportedImage] = useState(null); 
+  const [isPaused, setIsPaused] = useState(false);
+  const [isSaved, setIsSaved] = useState(false); 
+
+  const [formData, setFormData] = useState({ name: '', email: '', link: '', message: '' });
+  const [formStatus, setFormStatus] = useState('idle'); 
+
+  // AI Generator States
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [posterPrompt, setPosterPrompt] = useState('');
+  const [aiImageRef, setAiImageRef] = useState(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isPosterLoading, setIsPosterLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+
+  const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
+  const isPausedRef = useRef(false);
+  const progressTextRef = useRef(null);
+  const isRecordingRef = useRef(false);
+  const recordStartTimeRef = useRef(0);
+  const mediaRecorderRef = useRef(null);
+  const recCtxRef = useRef(null);
+  const chunksRef = useRef([]);
+  const originalRendererStateRef = useRef(null);
+
+  const [settings, setSettings] = useState(() => {
+    try { const saved = localStorage.getItem('wcc_app_settings'); if (saved) return { ...DEFAULT_SETTINGS, ...JSON.parse(saved) }; } catch (e) {}
+    return DEFAULT_SETTINGS;
+  });
+  
+  const settingsRef = useRef(settings);
+  settingsRef.current = settings;
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+        setShowSettingsBtn((prev) => !prev);
+        setIsEditorOpen(false); 
+        setActiveEditorMenu('main');
+      }
+    };
+
+    let tapCount = 0; let tapTimer;
+    const handleTouchStart = (e) => {
+      if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'A'].includes(e.target.tagName)) return;
+      tapCount++; clearTimeout(tapTimer);
+      if (tapCount === 3) {
+        setShowSettingsBtn((prev) => !prev);
+        setIsEditorOpen(false); setActiveEditorMenu('main');
+        tapCount = 0; 
+      } else { tapTimer = setTimeout(() => { tapCount = 0; }, 400); }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleTouchStart);
+    return () => { window.removeEventListener('keydown', handleKeyDown); window.removeEventListener('touchstart', handleTouchStart); };
+  }, []);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (layer === 0) { targetArtPosRef.current = { x: 0, y: 0.5, z: 8.5 }; } 
+    else if (layer === 1) { targetArtPosRef.current = { x: isMobile ? 0 : -2.5, y: isMobile ? 2.5 : 0.5, z: 7.5 }; } 
+    else if (layer === 2) { targetArtPosRef.current = { x: isMobile ? 0 : -3.0, y: isMobile ? 2.5 : 0.2, z: 7.0 }; } 
+    else if (layer === 3) { targetArtPosRef.current = { x: isMobile ? 0 : -3.5, y: isMobile ? 2.5 : 0.0, z: 6.5 }; }
+  }, [layer]);
+
+  // THREE.JS ENGINE
+  useEffect(() => {
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(settings.bgColor); 
+    scene.fog = new THREE.FogExp2(settings.bgColor, 0.05); 
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, targetArtPosRef.current.z);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
+    const handleResize = () => {
+      if (isRecordingRef.current) return; 
+      camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(5, 10, 5); scene.add(dirLight);
+    const rimLight = new THREE.PointLight(0xffffff, 4, 20); rimLight.position.set(-2, -5, -5); scene.add(rimLight);
+
+    const shelterGroup = new THREE.Group();
+    const archGeo = createArchGeo(settings.archShape);
+    const archMaterial = new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 });
+    const arch = new THREE.Mesh(archGeo, archMaterial); arch.rotation.z = -Math.PI / 4; shelterGroup.add(arch);
+    
+    const ringMaterial = new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.2, metalness: 0.8 });
+    const ring = new THREE.Mesh(createRingGeo(settings.ringShape, 2.1), ringMaterial); shelterGroup.add(ring);
+    
+    // FIX: Define innerRingMaterial variable
+    const innerRingMaterial = new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.1, metalness: 1.0 });
+    const innerRing = new THREE.Mesh(createRingGeo(settings.ringShape, 1.6), innerRingMaterial);
+    innerRing.rotation.x = Math.PI / 2; shelterGroup.add(innerRing);
+    
+    const cubeMaterial = new THREE.MeshStandardMaterial({ color: settings.cubeColor, roughness: 0.2, metalness: 0.1 });
+    const cube = new THREE.Mesh(createCatalystGeo(settings.catalystShape), cubeMaterial); cube.position.set(1.5, 1.5, 1.5); shelterGroup.add(cube);
+    const innerMaterial = new THREE.MeshPhysicalMaterial({ color: settings.glassColor, metalness: 0.1, roughness: 0.05, transmission: 1.0, ior: settings.glassIor, thickness: 2.0, dispersion: 1.5, transparent: true });
+    const innerMesh = new THREE.Mesh(createCoreGeo(settings.coreShape), innerMaterial); shelterGroup.add(innerMesh);
+    const canvasGroup = new THREE.Group();
+    const canvasMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1 });
+    const canvasMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.05), canvasMat); canvasGroup.add(canvasMesh);
+    const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(1.04, 1.04, 0.02), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 })); frameMesh.position.z = -0.02; canvasGroup.add(frameMesh);
+    canvasGroup.visible = false; shelterGroup.add(canvasGroup);
+    scene.add(shelterGroup);
+
+    sceneRefs.current = {
+      scene, camera, renderer, archMaterial, ringMaterial, innerRingMaterial, cubeMaterial, innerMaterial, 
+      arch, ring, innerRing, cube, innerMesh, shelterGroup, canvasGroup, canvasMesh, canvasMat, frameMesh, 
+      currentShapes: { arch: settings.archShape, core: settings.coreShape, catalyst: settings.catalystShape, ring: settings.ringShape },
+      currentMediaUrl: "", currentMediaStyle: ""
+    };
+
+    let animationFrameId; let time = 0;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const s = settingsRef.current;
+      if (!isPausedRef.current || isRecordingRef.current) {
+        time += 16.66;
+        arch.rotation.x += 0.002; arch.rotation.y += 0.001;
+        ring.rotation.x -= 0.003; ring.rotation.y -= 0.004; ring.rotation.z += 0.002;
+        innerRing.rotation.x += 0.005; innerRing.rotation.y += 0.002;
+        cube.rotation.x -= 0.005; cube.rotation.y -= 0.003;
+        if(s.mediaUrl && s.mediaStyle === 'wrap') innerMesh.rotation.y += 0.005; 
+        if(s.mediaUrl && s.mediaStyle === 'floating') { canvasGroup.rotation.y = Math.sin(time * 0.0005) * 0.15; canvasGroup.rotation.x = Math.sin(time * 0.0003) * 0.05; }
+      }
+      shelterGroup.position.x += ((targetArtPosRef.current.x + s.artPosX) - shelterGroup.position.x) * 0.05;
+      shelterGroup.position.y += ((targetArtPosRef.current.y + s.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
+      innerMesh.position.y = Math.sin(time * 0.001) * 0.1; cube.position.y = 1.5 + Math.sin(time * 0.002) * 0.2;
+      
+      if (isRecordingRef.current && recCtxRef.current) {
+        renderer.render(scene, camera);
+        recCtxRef.current.drawImage(renderer.domElement, 0, 0);
+        return; 
+      }
+      camera.position.z += ((targetArtPosRef.current.z + s.artZoom) - camera.position.z) * 0.05;
+      camera.lookAt(0, 0, 0); renderer.render(scene, camera);
+    };
+    animate();
+    return () => { window.removeEventListener('resize', handleResize); cancelAnimationFrame(animationFrameId); renderer.dispose(); };
+  }, []);
+
+  // Sync Settings
+  useEffect(() => {
+    if (!sceneRefs.current.scene) return;
+    const { scene, archMaterial, ringMaterial, innerRingMaterial, cubeMaterial, innerMaterial, arch, ring, innerRing, cube, innerMesh, canvasGroup, canvasMesh, canvasMat, currentShapes } = sceneRefs.current;
+    
+    if (currentShapes.arch !== settings.archShape) { arch.geometry.dispose(); arch.geometry = createArchGeo(settings.archShape); currentShapes.arch = settings.archShape; }
+    if (currentShapes.core !== settings.coreShape) { innerMesh.geometry.dispose(); innerMesh.geometry = createCoreGeo(settings.coreShape); currentShapes.core = settings.coreShape; }
+    if (currentShapes.catalyst !== settings.catalystShape) { cube.geometry.dispose(); cube.geometry = createCatalystGeo(settings.catalystShape); currentShapes.catalyst = settings.catalystShape; }
+    if (currentShapes.ring !== settings.ringShape) { ring.geometry.dispose(); innerRing.geometry.dispose(); ring.geometry = createRingGeo(settings.ringShape, 2.1); innerRing.geometry = createRingGeo(settings.ringShape, 1.6); currentShapes.ring = settings.ringShape; }
+    
+    if (sceneRefs.current.currentMediaUrl !== settings.mediaUrl || sceneRefs.current.currentMediaStyle !== settings.mediaStyle) {
+      if (settings.mediaUrl && settings.mediaUrl.trim() !== '') {
+        new THREE.TextureLoader().load(settings.mediaUrl, (texture) => {
+          texture.colorSpace = THREE.SRGBColorSpace; const aspect = texture.image.width / texture.image.height;
+          if (settings.mediaStyle === 'floating') {
+             innerMaterial.map = null; innerMaterial.transmission = 1.0; canvasMat.map = texture; canvasMat.color.set('#ffffff'); 
+             let sX = 2.4; let sY = 2.4; if (aspect > 1) { sY = 2.4 / aspect; } else { sX = 2.4 * aspect; }
+             canvasMesh.scale.set(sX, sY, 1); canvasGroup.visible = true;
+          } else { canvasGroup.visible = false; innerMaterial.map = texture; innerMaterial.transmission = 0.0; innerMaterial.color.set('#ffffff'); }
+          innerMaterial.needsUpdate = true; canvasMat.needsUpdate = true;
+        });
+      } else { innerMaterial.map = null; innerMaterial.transmission = 1.0; canvasGroup.visible = false; }
+      sceneRefs.current.currentMediaUrl = settings.mediaUrl; sceneRefs.current.currentMediaStyle = settings.mediaStyle;
+    }
+    
+    scene.background.set(settings.bgColor); scene.fog.color.set(settings.bgColor);
+    archMaterial.color.set(settings.archColor); ringMaterial.color.set(settings.ringColor); innerRingMaterial.color.set(settings.ringColor); cubeMaterial.color.set(settings.cubeColor); 
+    if (!settings.mediaUrl || settings.mediaStyle === 'floating') innerMaterial.color.set(settings.glassColor);
+    innerMaterial.ior = settings.glassIor; arch.scale.setScalar(settings.archScale); ring.scale.setScalar(settings.ringScale); innerRing.scale.setScalar(settings.ringScale); cube.scale.setScalar(settings.cubeScale); innerMesh.scale.setScalar(settings.glassScale);
+  }, [settings]);
+
+  const handleSettingChange = (key, value) => { setSettings(prev => ({ ...prev, [key]: value })); };
+
+  // ---------------------------------------------------------
+  // AI FUNCTIONS (GEMINI + IMAGEN)
+  // ---------------------------------------------------------
+  const handleGenerateMainModel = async () => {
+    if (!aiPrompt.trim() && !aiImageRef) return;
+    setIsAiLoading(true);
+    const apiKey = ""; 
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+    const systemInstruction = `You are a visionary web designer. Create a clean, contemporary art open call theme. Respond ONLY with a valid JSON object matching this exact structure: { "contentHero": "...", "contentSub": "...", "contentTitle": "...", "contentDesc1": "...", "contentDesc2": "...", "bgColor": "#...", "archColor": "#...", "cubeColor": "#...", "glassColor": "#...", "uiAccentColor": "#...", "archShape": "...", "coreShape": "...", "catalystShape": "...", "ringShape": "..." }. Choose shapes from: archShape(torus_half, torus_full, wireframe_torus, none), coreShape(sphere, icosahedron, box, none), catalystShape(tetrahedron, box, sphere, none), ringShape(thin, thick, orbit_rings, none).`;
+    const parts = [{ text: aiPrompt || "Contemporary art residency branding." }];
+    if (aiImageRef) parts.push({ inlineData: { data: aiImageRef.split(',')[1], mimeType: aiImageRef.split(';')[0].split(':')[1] } });
+    try {
+      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ parts }], systemInstruction: { parts: [{ text: systemInstruction }] }, generationConfig: { responseMimeType: "application/json" } }) });
+      const data = await res.json();
+      setSettings(prev => ({ ...prev, ...JSON.parse(data.candidates[0].content.parts[0].text) }));
+    } catch(e) { console.error(e); }
+    setIsAiLoading(false);
+  };
+
+  const handleGeneratePoster = async () => {
+    if (!posterPrompt.trim()) return;
+    setIsPosterLoading(true);
+    const apiKey = "";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+    const fullPrompt = `A stunning, high-end contemporary art piece for a gallery residency. Topic: ${posterPrompt}. Style: Minimalist, sophisticated, fine-art photography or digital sculpture. Clean composition.`;
+    try {
+      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ instances: [{ prompt: fullPrompt }], parameters: { sampleCount: 1 } }) });
+      const data = await res.json();
+      const b64 = `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
+      handleSettingChange('mediaUrl', b64); handleSettingChange('mediaStyle', 'floating');
+    } catch(e) { console.error(e); }
+    setIsPosterLoading(false);
+  };
+
+  const handleExportImage = (isPosterMode = false) => {
+    if (!sceneRefs.current.renderer || !sceneRefs.current.scene || !sceneRefs.current.camera) return;
+    const { renderer, scene, camera } = sceneRefs.current; const s = settingsRef.current;
+    
+    const expW = parseInt(s.exportWidth, 10) || 1080; const expH = parseInt(s.exportHeight, 10) || 1080;
+    const originalWidth = renderer.domElement.clientWidth; const originalHeight = renderer.domElement.clientHeight; 
+    const originalAspect = camera.aspect; const originalPixelRatio = renderer.getPixelRatio();
+    
+    renderer.setPixelRatio(1); renderer.setSize(expW, expH, false); 
+    camera.aspect = expW / expH; camera.position.set(0,0, s.artZoom); camera.updateProjectionMatrix(); renderer.render(scene, camera);
+    
+    const canvas2d = document.createElement('canvas'); canvas2d.width = expW; canvas2d.height = expH; const ctx = canvas2d.getContext('2d');
+    
+    ctx.fillStyle = s.bgColor; ctx.fillRect(0, 0, expW, expH); 
+    ctx.drawImage(renderer.domElement, 0, 0, expW, expH);
+    
+    if (isPosterMode) {
+      const pad = expW * 0.05;
+      
+      // Stark Outer Wireframe Border
+      ctx.lineWidth = Math.max(2, expW * 0.004);
+      ctx.strokeStyle = s.archColor;
+      ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
+
+      // Brutalist Accent Corner Blocks
+      ctx.fillStyle = s.uiAccentColor;
+      const cornerSize = expW * 0.04;
+      ctx.fillRect(pad, pad, cornerSize, cornerSize);
+      ctx.fillRect(expW - pad - cornerSize, expH - pad - cornerSize, cornerSize, cornerSize);
+
+      // Structural Text Panel
+      const panelHeight = expH * 0.25;
+      const textStartY = expH - pad - panelHeight;
+      
+      ctx.fillStyle = s.bgColor; 
+      ctx.fillRect(pad, textStartY, expW - pad * 2, panelHeight);
+      ctx.strokeRect(pad, textStartY, expW - pad * 2, panelHeight); 
+
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+
+      // Typefaces are standard in environment, matching live site
+      ctx.fillStyle = s.archColor; 
+      ctx.font = `900 ${expW * 0.12}px Space Grotesk, sans-serif`;
+      ctx.fillText(s.contentHero.toUpperCase(), pad + expW * 0.03, textStartY + (panelHeight * 0.4));
+
+      ctx.font = `800 ${expW * 0.03}px Montserrat, sans-serif`;
+      ctx.fillText(s.contentSub.toUpperCase(), pad + expW * 0.035, textStartY + (panelHeight * 0.8));
+
+      ctx.textAlign = 'right';
+      ctx.fillStyle = s.uiAccentColor; 
+      ctx.font = `bold ${expW * 0.02}px Montserrat, sans-serif`;
+      ctx.fillText(`[ ${s.contentTag.toUpperCase()} ]`, expW - pad - expW * 0.03, textStartY + (panelHeight * 0.25));
+
+      ctx.fillStyle = s.archColor;
+      ctx.font = `900 ${expW * 0.03}px Montserrat, sans-serif`;
+      ctx.fillText(`DL: ${s.contentDeadline.toUpperCase()}`, expW - pad - expW * 0.03, textStartY + (panelHeight * 0.8));
+    }
+
+    setExportedImage(canvas2d.toDataURL('image/png', 1.0));
+    renderer.setPixelRatio(originalPixelRatio); renderer.setSize(originalWidth, originalHeight, false); 
+    camera.aspect = originalAspect; camera.position.set(0,0, originalRendererStateRef.current?.camZ || s.artZoom); camera.updateProjectionMatrix(); renderer.render(scene, camera);
+  };
+
+  const handleStartVideoRecording = () => { setIsRecording(true); setTimeout(()=>setIsRecording(false), 2000); };
+
+  const handleAiImageUpload = (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader(); r.onload = (ev) => setAiImageRef(ev.target.result); r.readAsDataURL(f);
+  };
+
+  const handleFormSubmit = async (e) => { e.preventDefault(); setFormStatus('success'); };
+  const handleSaveSettings = () => { localStorage.setItem('wcc_app_settings', JSON.stringify(settings)); setIsSaved(true); setTimeout(() => setIsSaved(false), 2000); };
+  const handleResetSettings = () => { setSettings(DEFAULT_SETTINGS); };
+  const handleDownloadImage = () => { const a = document.createElement('a'); a.download='art.png'; a.href=exportedImage; a.click(); };
+  
+  const handleDownloadWebsiteBuild = () => {
+    const scriptNode = document.getElementById('app-source'); if (!scriptNode) return;
+    const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?\}; \/\* END_DEFAULTS \*\//, `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)}; /* END_DEFAULTS */`);
+    const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 selection:bg-neutral-900 selection:text-white font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+    const blob = new Blob([newHtml], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'open-call.html'; a.click();
+  };
+
+  // UI Components
+  const SectionGroup = ({ title, children }) => ( <div className="bg-white p-4 rounded-xl shadow-sm border border-neutral-200 flex flex-col gap-3"><span className="text-[10px] font-bold text-neutral-800 uppercase tracking-widest border-b border-neutral-100 pb-2">{title}</span><div className="flex flex-col gap-3">{children}</div></div> );
+  const MenuButton = ({ icon, label, target }) => ( <button onClick={() => setActiveEditorMenu(target)} className="w-full flex items-center justify-between p-4 bg-white hover:bg-neutral-50 border border-neutral-200 rounded-xl text-left transition-colors shadow-sm font-bold uppercase text-[10px] tracking-widest">{icon} {label}</button> );
+  const SliderInput = ({ label, settingKey, min, max, step }) => ( <div className="flex flex-col gap-1"><label className="text-[10px] text-neutral-500 font-bold uppercase">{label}</label><input type="range" min={min} max={max} step={step} value={settings[settingKey]} onChange={(e) => handleSettingChange(settingKey, parseFloat(e.target.value))} className="w-full accent-neutral-800" /></div> );
+  const ColorInput = ({ label, settingKey }) => ( <div className="flex justify-between items-center"><label className="text-[10px] text-neutral-500 font-bold uppercase">{label}</label><input type="color" value={settings[settingKey]} onChange={(e) => handleSettingChange(settingKey, e.target.value)} className="w-6 h-6 border-0 rounded cursor-pointer" /></div> );
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden text-neutral-900 bg-[#e4e4e4]">
+      <style>{` .ui-panel-bg { background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4); } .brutalist-btn { background: white; color: black; font-weight: bold; border: 2px solid black; } `}</style>
+      <div ref={mountRef} className="absolute inset-0 z-0" />
+      
+      <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center p-8 transition-all duration-1000 ${layer === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+        <div className="text-center max-w-4xl mix-blend-difference text-white">
+          <h1 className="text-8xl font-black mb-2 uppercase">{settings.contentHero}</h1>
+          <h2 className="text-2xl font-light tracking-[0.4em] uppercase mb-12">{settings.contentSub}</h2>
+          <button onClick={() => setLayer(1)} className="px-12 py-4 bg-white text-black font-bold uppercase tracking-widest rounded-full">{settings.btnEnter}</button>
+        </div>
+      </div>
+
+      {layer > 0 && (
+          <div className="absolute inset-0 z-10 flex items-center justify-end p-8 transition-all">
+              <div className="max-w-xl w-full ui-panel-bg p-10 rounded-3xl shadow-2xl">
+                  {layer === 1 && (
+                      <>
+                        <h2 className="text-4xl font-bold mb-6">{settings.contentTitle}</h2>
+                        <p className="mb-8 opacity-70 leading-relaxed">{settings.contentDesc1}</p>
+                        <div className="flex gap-4">
+                            <button onClick={()=>setLayer(0)} className="opacity-50">Back</button>
+                            <button onClick={()=>setLayer( layer + 1 )} className="flex-1 py-4 bg-black text-white rounded-full">Next</button>
+                        </div>
+                      </>
+                  )}
+                  {layer === 2 && (
+                    <>
+                      <h2 className="text-3xl font-light mb-8">{settings.titleInclusions}</h2>
+                      <ul className="space-y-4 mb-8 text-sm md:text-base font-mono">
+                        {['inclusion1', 'inclusion2', 'inclusion3', 'inclusion4'].map(k => <li key={k} className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full ui-accent-bg"></span> {settings[k]}</li>)}
+                      </ul>
+                      <div className="flex gap-4">
+                        <button onClick={()=>setLayer(1)} className="opacity-50">Back</button>
+                        <button onClick={()=>setLayer(3)} className="flex-1 py-4 bg-black text-white rounded-full">Apply Now</button>
+                      </div>
+                    </>
+                  )}
+                  {layer === 3 && (
+                    <div className="flex flex-col items-center justify-center text-center py-12">
+                       <h2 className="text-3xl font-light mb-4">Submission Mode</h2>
+                       <p className="opacity-60 mb-8 max-w-sm">Application processing logic is active.</p>
+                       <button onClick={()=>setLayer(0)} className="px-8 py-4 text-xs font-bold tracking-widest uppercase transition-colors text-center border border-current rounded-full">Reset</button>
+                    </div>
+                  )}
+              </div>
+          </div>
+      )}
+
+      {showSettingsBtn && (
+        <button onClick={() => setIsEditorOpen(!isEditorOpen)} className="absolute bottom-6 left-6 z-50 w-14 h-14 bg-white border border-neutral-200 rounded-full shadow-2xl flex items-center justify-center">
+            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      )}
+
+      {showSettingsBtn && isEditorOpen && (
+        <div className="absolute bottom-24 left-6 z-50 w-[340px] ui-panel-bg shadow-2xl rounded-3xl flex flex-col max-h-[70vh] overflow-hidden">
+          <div className="p-6 border-b border-black/5 flex justify-between items-center">
+             <span className="font-bold text-[10px] tracking-widest uppercase">Pro AI Editor</span>
+             <button onClick={() => setIsEditorOpen(false)} className="text-xs opacity-50">Close</button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4 custom-scrollbar">
+            {activeEditorMenu === 'main' ? (
+                <div className="flex flex-col gap-2">
+                    <MenuButton icon="✨" label="AI Generators" target="ai" />
+                    <MenuButton icon="🎨" label="Visuals & Colors" target="colors" />
+                    <MenuButton icon="🚀" label="Export & Deploy" target="deploy" />
+                </div>
+            ) : activeEditorMenu === 'ai' ? (
+                <div className="flex flex-col gap-6">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-bold">← BACK</button>
+                    <SectionGroup title="Branding Generator">
+                        <p className="text-[9px] opacity-60">Designs the 3D Scene, Colors, and Copy.</p>
+                        <textarea value={aiPrompt} onChange={(e)=>setAiPrompt(e.target.value)} placeholder="Theme of residency..." className="w-full h-20 p-3 text-xs bg-black/5 rounded-xl border-0 outline-none" />
+                        <button onClick={handleGenerateMainModel} disabled={isAiLoading} className="py-3 bg-black text-white text-[10px] font-bold rounded-xl">{isAiLoading ? 'Designing...' : '✨ Generate Scene'}</button>
+                    </SectionGroup>
+                    <SectionGroup title="Artwork Generator">
+                        <p className="text-[9px] opacity-60">Generates unique 2D artwork via Imagen AI.</p>
+                        <textarea value={posterPrompt} onChange={(e)=>setPosterPrompt(e.target.value)} placeholder="Describe the art piece..." className="w-full h-20 p-3 text-xs bg-black/5 rounded-xl border-0 outline-none" />
+                        <button onClick={handleGeneratePoster} disabled={isPosterLoading} className="py-3 bg-indigo-600 text-white text-[10px] font-bold rounded-xl">{isPosterLoading ? 'Painting...' : '🎨 Generate Artwork'}</button>
+                    </SectionGroup>
+                </div>
+            ) : activeEditorMenu === 'colors' ? (
+                <div className="flex flex-col gap-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-bold">← BACK</button>
+                    <ColorInput label="Background" settingKey="bgColor" />
+                    <ColorInput label="Accent" settingKey="uiAccentColor" />
+                    <SliderInput label="Core Size" settingKey="glassScale" min="0.1" max="3" step="0.1" />
+                </div>
+            ) : (
+                <div className="flex flex-col gap-2">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-bold mb-4">← BACK</button>
+                    <button onClick={()=>handleExportImage(false)} className="py-3 border border-black rounded-xl text-[10px] font-bold">Export Art Only (.png)</button>
+                    <button onClick={()=>handleExportImage(true)} className="py-3 bg-black text-white rounded-xl text-[10px] font-bold">Export Metamodern Poster</button>
+                    <button onClick={handleDownloadWebsiteBuild} className="py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold">Download Ready Build</button>
+                </div>
+            )}
+          </div>
+          <div className="p-4 bg-white/50 border-t border-black/5 flex gap-2">
+             <button onClick={handleSaveSettings} className="flex-1 py-2 bg-black text-white text-[10px] font-bold rounded-lg uppercase">{isSaved ? 'Saved ✓' : 'Save Config'}</button>
+          </div>
+        </div>
+      )}
+
+      {exportedImage && (
+        <div className="absolute inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-8">
+            <button onClick={()=>setExportedImage(null)} className="absolute top-8 right-8 text-white">Close [X]</button>
+            <button onClick={handleDownloadImage} className="mb-4 px-8 py-3 bg-[#ff2a00] text-white font-bold rounded-full">Save Image</button>
+            <img src={exportedImage} className="max-h-[70vh] shadow-2xl" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+  
+  </script>
+</body>
+</html>
