@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WCC - Classic Pro Template</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 selection:bg-neutral-900 selection:text-white font-sans">
+
+  <div id="root"></div>
+
+  <script type="text/babel" id="app-source">
+/**
+ * ============================================================================
+ * FULL SYSTEM MANIFEST (FINAL OPTIMIZED PRODUCTION BUILD)
+ * ============================================================================
+ * * 1. ACCESS ADMIN: Press 'H', Triple-Tap background, or Click Bottom-Left.
+ * * 2. DEBUG TERMINAL: Press 'D' to toggle the Developer Console & Copy App.
+ * * 3. MEDIA & VISUALS: Upload local images or paste external URLs.
+ * * 4. DUAL ROUTING: Custom UI (iFrame bypass) or External Google Forms URL.
+ * * 5. FORM MAPPER: Native JS Google Form Auto-Mapper.
+ * * 6. EXPORT: Metamodern Poster PNGs and WEBM Video Capture.
+ * * 7. DATA: Local Submissions backup with CSV download.
+ * ============================================================================
+ */
+
+const { useState, useEffect, useRef } = React;
+
+const DEFAULT_SETTINGS = {
+  exportWidth: 1080, exportHeight: 1350, videoDuration: 5.0,
+  artPosX: 0.0, artPosY: 0.0, artZoom: 0.0,
+  archShape: 'torus_half', coreShape: 'sphere', catalystShape: 'tetrahedron', ringShape: 'thin',
+  mediaGallery: [], mediaStyle: 'floating',
+  bgColor: '#e4e4e4', archColor: '#111111', ringColor: '#888888', cubeColor: '#ff2a00', glassColor: '#ffffff',
+  glassIor: 1.6, archScale: 1.0, ringScale: 1.0, cubeScale: 1.0, glassScale: 1.0, uiAccentColor: '#ff2a00', uiFont: "'Space Grotesk', sans-serif",
+  useInternalForm: true, applyLink: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform', webhookUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/formResponse',
+  contentHero: 'WCC:', contentSub: 'Women Creating Change', btnEnter: 'Enter the Lab',
+  contentTag: 'Բաց կանչ/Open call',
+  contentTitle: 'WCC: Women Creating Change',
+  contentIntro1: '3-ամսյա ինտենսիվ ստեղծագործական լաբորատորիա\nԱշխատարաններ / Բաց քննարկումներ / Մենթորինգ / Առցանց ցուցահանդես\nԱրվեստագետների և առանց նախնական փորձի անհատների համար',
+  contentIntro2: 'A 3-month intensive creative lab\nWorkshops / Talks / Mentorship / Virtual Exhibition\nFor artists and individuals with no prior experience',
+  contentDesc1: 'WCC-ն հայտարարում է բաց կանչ՝ 3-ամսյա ստեղծագործական լաբորատոր ծրագրի համար, որը տեղի կունենա Գյումրիում և առցանց (ապրիլ–հունիս 2026)։\nԲաց կանչի արդյունքում կընտրվեն 12 մասնակից — աղջիկներ, կանայք և մարգինալացված համայնքների ներկայացուցիչներ։\nՄասնակիցները ներգրավված կլինեն համատեղ ստեղծագործական գործընթացներին՝ մասնակցելով աշխատարաններին, փորձագետների հետ քննարկումներին և մենթորության ծրագրին։\nԾրագրի ընթացքում մասնակիցները կմշակեն նախագծեր, որոնք կանդրադառնան ինքնությանը, փորձառությանը և դիմադրությանը, և որոնք կներկայացվեն առցանց ցուցահանդեսի շրջանակում։\n\nԺամանակացույց՝\nԱպրիլ — 2 հանդիպում հրավիրված մասնագետների հետ (առցանց/օֆլայն)\nՄայիս — 4 մենթորական հանդիպում՝ նախագծերի զարգացման համար\nՀունիս — ավարտական հանդիպում, գնահատում և ցուցահանդեսի բացում\n\n',
+  contentDesc2: 'WCC: announces an open call for a 3-month creative lab program on-site in Gyumri and online, which will include a group of 12 participants — girls, women, and individuals from marginalized communities to engage in collaborative artistic processes. Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance, culminating in a virtual exhibition.\n\nTimeline:\nApril — 2 sessions with invited experts (online/offline)\nMay — 4 mentorship sessions focused on project development\nJune — final meetings, evaluation, and exhibition launch',
+  titleInclusions: 'Programme / Ծրագիր:', inclusion1: 'Աշխատարաններ / Workshops', inclusion2: 'Բաց քննարկումներ / Talks', inclusion3: 'Մենթորինգ / Mentorship', inclusion4: 'Առցանց ցուցահանդես / Virtual Exhibition',
+  titleDeadline: 'Application Deadline', contentDeadline: 'Ապրիլի 12, 2026 / April 12, 2026',
+  formTitle: 'Apply', formSuccessTitle: 'Application Received', formSuccessMsg: 'Thank you.',
+  
+  // NOTE: If you already mapped your real form, replace these entry.1 placeholders with your real mapped array!
+  questions: [
+    { id: 'q1', label: 'Անուն, ազգանուն / Name, Surname', type: 'text', required: true, googleId: 'entry.1' },
+    { id: 'q2', label: 'Տարիք / Age', type: 'text', required: true, googleId: 'entry.2' },
+    { id: 'q3', label: 'Քաղաք, մարզ / City, Region', type: 'text', required: true, googleId: 'entry.3' },
+    { id: 'q4', label: 'Հեռախոսահամար / Phone Number', type: 'text', required: true, googleId: 'entry.4' },
+    { id: 'q5', label: 'Էլ․ հասցե / Email', type: 'email', required: true, googleId: 'entry.5' },
+    { id: 'q6', label: 'Մի փոքր պատմեք Ձեր մասին (մինչև 150 բառ) / Short bio', type: 'textarea', required: true, googleId: 'entry.6' },
+    { id: 'q7', label: 'Ինչու՞ եք ցանկանում մասնակցել WCC ծրագրին / Why do you want to participate?', type: 'textarea', required: true, googleId: 'entry.7' },
+    { id: 'q8', label: 'Ունե՞ք արդյոք գաղափար նախագծի համար / Do you have a project idea?', type: 'textarea', required: false, googleId: 'entry.8' },
+    { id: 'q9', label: 'Ինչպե՞ս կցանկանաք մասնակցել / How would you like to participate?', type: 'radio', options: ['Գյումրիում ֆիզիկապես / Physically in Gyumri', 'Առցանց / Online', 'Երկուսը / Both'], required: true, googleId: 'entry.9' },
+    { id: 'q10', label: 'Հասանելի՞ եք ապրիլ–հունիսին / Available April–June?', type: 'radio', options: ['Այո / Yes', 'Ոչ / No'], required: true, googleId: 'entry.10' },
+    { id: 'q11', label: 'Արդյո՞ք ունեք որևէ կարիք աջակցություն ստանալու / Support needs?', type: 'textarea', required: false, googleId: 'entry.11' },
+    { id: 'q12', label: 'CV կամ պորտֆոլիո / CV or Portfolio (Link)', type: 'url', required: false, googleId: 'entry.12' },
+    { id: 'q13', label: 'Սոցիալական կայքերի հղում / Social Media Links', type: 'url', required: false, googleId: 'entry.13' }
+  ]
+};
+
+// --- GEOMETRY FACTORIES ---
+const createArchGeo = (type) => {
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100);
+    case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64);
+    case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8);
+    case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64);
+    case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5);
+  }
+};
+const createCoreGeo = (type) => {
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8);
+    case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0);
+    case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64);
+  }
+};
+const createRingGeo = (type, radius) => {
+  const thick = 0.02;
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100);
+    case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100);
+    case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100);
+    case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100);
+  }
+};
+
+// --- GLOBAL UI ATOMS ---
+const SectionGroup = ({ title, children }) => (
+  <div className="bg-white p-5 rounded-none shadow-sm border-2 border-black/10 flex flex-col gap-4 w-full">
+    <span className="text-xs font-black text-neutral-800 uppercase tracking-[0.15em] border-b-2 border-black/5 pb-3">{title}</span>
+    <div className="flex flex-col gap-3">{children}</div>
+  </div>
+);
+
+const MenuButton = ({ icon, label, onClick }) => (
+  <button onClick={onClick} className="w-full flex items-center justify-between p-4 bg-white hover:bg-black hover:text-white border-2 border-black/10 rounded-none text-left shadow-sm font-bold uppercase text-xs tracking-widest group transition-all">
+    <div className="flex items-center gap-4">
+      <span className="text-xl group-hover:scale-110 transition-transform">{icon}</span>
+      <span className="text-xs font-black tracking-[0.1em] uppercase">{label}</span>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 group-hover:opacity-100"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </button>
+);
+
+const TextInput = ({ label, value, onChange, placeholder = "" }) => (
+  <div className="flex flex-col gap-2 w-full">
+    <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">{label}</label>
+    <input className="bg-neutral-50 border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black w-full text-neutral-900 transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
+  </div>
+);
+
+const TextAreaInput = ({ label, value, onChange }) => (
+  <div className="flex flex-col gap-2 w-full">
+    <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">{label}</label>
+    <textarea className="bg-neutral-50 border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black min-h-[100px] resize-none w-full text-neutral-900 custom-scrollbar transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} />
+  </div>
+);
+
+const ColorInput = ({ label, value, onChange }) => (
+  <div className="flex justify-between items-center w-full bg-neutral-50 border-2 border-black/5 p-3">
+    <label className="text-[10px] font-black text-neutral-600 uppercase tracking-widest font-mono">{label}</label>
+    <div className="flex items-center gap-3">
+      <span className="text-[10px] font-black font-mono opacity-60 uppercase">{value}</span>
+      <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="w-8 h-8 border-2 border-black/10 rounded-none cursor-pointer p-0 overflow-hidden" />
+    </div>
+  </div>
+);
+
+function App() {
+  const mountRef = useRef(null);
+  const sceneRefs = useRef({});
+
+  // UX State
+  const [layer, setLayer] = useState(0);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [showSettingsBtn, setShowSettingsBtn] = useState(false);
+  const [activeEditorMenu, setActiveEditorMenu] = useState('main');
+  const [exportedImage, setExportedImage] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Form State
+  const [formAnswers, setFormAnswers] = useState({});
+  const [formStatus, setFormStatus] = useState('idle');
+  const [submissions, setSubmissions] = useState(() => {
+    try {
+        const saved = localStorage.getItem('wcc_app_submissions');
+        return saved ? JSON.parse(saved) : [];
+    } catch(e) { return []; }
+  });
+
+  // Media & Recording States
+  const [isRecording, setIsRecording] = useState(false);
+  const [tempMediaUrl, setTempMediaUrl] = useState('');
+
+  // Mapper State
+  const [prefillUrl, setPrefillUrl] = useState('https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform');
+  const [isMappingLoading, setIsMappingLoading] = useState(false);
+
+  // Debug States
+  const [showDebug, setShowDebug] = useState(false);
+  const [debugLogs, setDebugLogs] = useState([]);
+  const [debugCopyText, setDebugCopyText] = useState('Copy Logs');
+  const [sourceCopyText, setSourceCopyText] = useState('Copy App');
+
+  // REFS
+  const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
+  const isRecordingRef = useRef(false);
+  const originalRendererStateRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
+  const recCanvasRef = useRef(null);
+  const recCtxRef = useRef(null);
+  const debugScrollRef = useRef(null);
+
+  const [settings, setSettings] = useState(() => {
+    try {
+        const saved = localStorage.getItem('wcc_app_settings_v4');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed.mediaUrl && !parsed.mediaGallery) parsed.mediaGallery = [parsed.mediaUrl];
+            if (!parsed.mediaGallery) parsed.mediaGallery = [];
+            return { ...DEFAULT_SETTINGS, ...parsed };
+        }
+    } catch (e) {}
+    return DEFAULT_SETTINGS;
+  });
+
+  const settingsRef = useRef(settings);
+  settingsRef.current = settings;
+
+  // --- DEBUG LOGGER ---
+  const logDebug = (type, message, details = '') => {
+      console.log(`[${type}] ${message}`, details);
+      setDebugLogs(prev => [...prev, {
+          time: new Date().toISOString().split('T')[1].slice(0, -1),
+          type,
+          message,
+          details: typeof details === 'object' ? JSON.stringify(details, null, 2) : details
+      }]);
+  };
+
+  const handleCopyDebug = () => {
+      const logString = debugLogs.map(log => `[${log.time}] [${log.type}] ${log.message}${log.details ? '\n' + log.details : ''}`).join('\n\n');
+      const textArea = document.createElement("textarea");
+      textArea.value = logString;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+          document.execCommand('copy');
+          setDebugCopyText('COPIED!');
+          setTimeout(() => setDebugCopyText('Copy Logs'), 2000);
+      } catch (err) {
+          console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+  };
+
+  const handleCopySource = () => {
+      const scriptNode = document.getElementById('app-source');
+      if (!scriptNode) return;
+      const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
+      const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?\};/, replacementStr);
+      const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = newHtml;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+          document.execCommand('copy');
+          setSourceCopyText('COPIED!');
+          setTimeout(() => setSourceCopyText('Copy App'), 2000);
+      } catch (err) {
+          console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+  };
+
+  useEffect(() => {
+      if (debugScrollRef.current) debugScrollRef.current.scrollTop = debugScrollRef.current.scrollHeight;
+  }, [debugLogs]);
+
+  // ---------------------------------------------------------
+  // CORE HANDLERS
+  // ---------------------------------------------------------
+  const handleSettingChange = (key, value) => setSettings(prev => ({ ...prev, [key]: value }));
+  
+  const handleSaveSettings = () => {
+    try {
+        localStorage.setItem('wcc_app_settings_v4', JSON.stringify(settings));
+        setIsSaved(true);
+        setTimeout(() => setIsSaved(false), 2000);
+    } catch (e) {
+        alert("Cannot save to localStorage. The uploaded images are likely too large (browser 5MB limit). Please use external Image URLs.");
+    }
+  };
+
+  const handleDownloadImage = () => { if (!exportedImage) return; const a = document.createElement('a'); a.download = 'art_capture.png'; a.href = exportedImage; a.click(); };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    const readPromises = files.map(file => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => resolve(ev.target.result);
+            reader.readAsDataURL(file);
+        });
+    });
+
+    const results = await Promise.all(readPromises);
+    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), ...results] }));
+    e.target.value = null;
+  };
+
+  const handleAddExternalUrl = () => {
+    if(!tempMediaUrl.trim()) return;
+    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), tempMediaUrl.trim()] }));
+    setTempMediaUrl('');
+  };
+
+  const handleRemoveMedia = (index) => {
+    const newGallery = [...settings.mediaGallery];
+    newGallery.splice(index, 1);
+    handleSettingChange('mediaGallery', newGallery);
+  };
+
+  const handleDownloadWebsiteBuild = () => {
+    const scriptNode = document.getElementById('app-source'); if (!scriptNode) return;
+    const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
+    const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?\};/, replacementStr);
+    const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+    const blob = new Blob([newHtml], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'index.html'; a.click();
+  };
+
+  const handleFormSubmit = () => {
+    // Custom Validation: Ensure all required fields are actually filled out
+    for (const q of settings.questions) {
+        if (q.required) {
+            const val = formAnswers[q.id];
+            if (!val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && val.trim() === '')) {
+                alert(`Please answer the required question: [ ${q.label} ]`);
+                return;
+            }
+        }
+    }
+
+    setFormStatus('submitting');
+
+    // 1. Save locally for CSV download
+    const newSubmission = { date: new Date().toISOString(), ...formAnswers };
+    const updatedSubmissions = [...submissions, newSubmission];
+    setSubmissions(updatedSubmissions);
+    try { localStorage.setItem('wcc_app_submissions', JSON.stringify(updatedSubmissions)); } catch(e) {}
+
+    // 2. Transmit to Google Forms via Hidden IFrame (Bypasses 403 / CORS)
+    if (settings.webhookUrl) {
+        const iframeName = 'hidden_iframe_' + Date.now();
+        const iframe = document.createElement('iframe');
+        iframe.name = iframeName;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = settings.webhookUrl;
+        form.target = iframeName;
+
+        settings.questions.forEach(q => {
+            const val = formAnswers[q.id];
+            if (Array.isArray(val)) {
+                val.forEach(v => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = q.googleId;
+                    input.value = v;
+                    form.appendChild(input);
+                });
+            } else {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = q.googleId;
+                input.value = val || "";
+                form.appendChild(input);
+            }
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+
+        // Cleanup DOM after submission
+        setTimeout(() => {
+            document.body.removeChild(form);
+            setTimeout(() => document.body.removeChild(iframe), 2000);
+        }, 100);
+    }
+    
+    setTimeout(() => setFormStatus('success'), 1200);
+  };
+
+  const handleDownloadSubmissions = () => {
+     if (submissions.length === 0) return alert("No submissions to download yet.");
+     const headers = ['Date', ...settings.questions.map(q => q.label)];
+     const csvRows = [headers.join(',')];
+     submissions.forEach(sub => {
+         const row = [sub.date];
+         settings.questions.forEach(q => {
+             let val = sub[q.id] || "";
+             if (Array.isArray(val)) val = val.join('; ');
+             val = `"${String(val).replace(/"/g, '""')}"`;
+             row.push(val);
+         });
+         csvRows.push(row.join(','));
+     });
+     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+     const url = URL.createObjectURL(blob);
+     const a = document.createElement('a');
+     a.href = url; a.download = 'wcc_submissions.csv'; a.click();
+  };
+
+  const handleClearSubmissions = () => {
+      if(confirm("Are you sure you want to clear all saved submissions? This cannot be undone.")) {
+          setSubmissions([]);
+          localStorage.removeItem('wcc_app_submissions');
+      }
+  };
+
+  // --- NATIVE JS FORM MAPPER ---
+  const handleAutoMapForm = async (silentMode = false) => {
+      const isSilent = silentMode === true; // Prevent click events from evaluating to true
+      
+      if (!isSilent) {
+          logDebug('INFO', 'Starting Native Form Auto-Map Process');
+          setShowDebug(true);
+      }
+      
+      let inputRaw = prefillUrl.trim();
+      if (!inputRaw) return;
+
+      setIsMappingLoading(true);
+      try {
+          let extractedData = "";
+          let base = "";
+
+          if (inputRaw.startsWith('http')) {
+              if (!inputRaw.includes('docs.google.com/forms')) {
+                  throw new Error("Must be a docs.google.com/forms URL.");
+              }
+              let urlObj = new URL(inputRaw);
+              base = urlObj.origin + urlObj.pathname;
+              base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
+              if (!isSilent) logDebug('INFO', 'Webhook Target Base URL', base);
+
+              let html = "";
+              let fetchSuccess = false;
+              
+              // Robust proxy list for bypassing Google blocks on localhost
+              const proxyList = [
+                  { name: 'AllOrigins', url: `https://api.allorigins.win/raw?url=${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'CodeTabs', url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'ThingProxy', url: `https://thingproxy.freeboard.io/fetch/${urlObj.href}`, type: 'text' }
+              ];
+
+              for (const proxy of proxyList) {
+                  if (!isSilent) logDebug('FETCH', `Trying Proxy: ${proxy.name}`, proxy.url);
+                  try {
+                      const corsRes = await fetch(proxy.url);
+                      if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`);
+                      html = proxy.type === 'json' ? (await corsRes.json()).contents : await corsRes.text();
+                      if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) {
+                          fetchSuccess = true;
+                          break;
+                      }
+                  } catch (err) { if (!isSilent) logDebug('WARN', `${proxy.name} failed`, err.message); }
+              }
+
+              if (!fetchSuccess) {
+                  if (!isSilent) alert("Google's security blocked the automatic fetch. \n\nFALLBACK MODE: Please open your Google Form in a new browser tab, right-click and select 'View Page Source', copy all the code, and paste it into this box instead of the URL!");
+                  setIsMappingLoading(false);
+                  return;
+              }
+
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
+              const startIndex = html.indexOf(searchStr);
+              if (startIndex !== -1) {
+                  const dataStart = startIndex + searchStr.length;
+                  let scriptEndIndex = html.indexOf("</" + "script>", dataStart);
+                  let dataEnd = scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000;
+                  if (dataEnd - dataStart > 100000) dataEnd = dataStart + 100000;
+                  extractedData = html.substring(dataStart, dataEnd);
+              } else { throw new Error("Could not find schema pattern in fetched HTML."); }
+
+          } else if (inputRaw.includes('FB_PUBLIC_LOAD_DATA_')) {
+              if (!isSilent) logDebug('INFO', 'Raw HTML detected. Bypassing fetch.');
+              const actionMatch = inputRaw.match(/action="(https:\/\/docs\.google\.com\/forms\/[^"]+\/formResponse)"/);
+              if (actionMatch) {
+                  base = actionMatch[1];
+                  if (!isSilent) logDebug('INFO', 'Extracted Webhook Target', base);
+              } else {
+                  throw new Error("Could not find the form action URL. Make sure you copied the entire page source.");
+              }
+
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
+              const startIndex = inputRaw.indexOf(searchStr);
+              if (startIndex !== -1) {
+                  const dataStart = startIndex + searchStr.length;
+                  let scriptEndIndex = inputRaw.indexOf("</" + "script>", dataStart);
+                  let dataEnd = scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000;
+                  if (dataEnd - dataStart > 100000) dataEnd = dataStart + 100000;
+                  extractedData = inputRaw.substring(dataStart, dataEnd);
+              } else { throw new Error("Could not find schema pattern in pasted HTML."); }
+          } else {
+              throw new Error("Invalid input. Paste a Google Forms URL or the raw Page Source HTML.");
+          }
+
+          // Pure JS JSON Parser (No AI API Keys Needed)
+          if (!isSilent) logDebug('INFO', 'Parsing JSON data natively...');
+          
+          let cleanJsonStr = extractedData.trim();
+          let openBrackets = 0;
+          let endIndex = -1;
+          for (let i = 0; i < cleanJsonStr.length; i++) {
+              if (cleanJsonStr[i] === '[') openBrackets++;
+              else if (cleanJsonStr[i] === ']') {
+                  openBrackets--;
+                  if (openBrackets === 0) {
+                      endIndex = i;
+                      break;
+                  }
+              }
+          }
+          if (endIndex !== -1) {
+              cleanJsonStr = cleanJsonStr.substring(0, endIndex + 1);
+          }
+
+          const formData = JSON.parse(cleanJsonStr);
+          const formItems = formData[1][1];
+          if (!Array.isArray(formItems)) throw new Error("Invalid form data structure");
+
+          const parsedQuestions = [];
+          let qIndex = 1;
+
+          formItems.forEach(item => {
+              if (!item || !Array.isArray(item)) return;
+              const typeCode = item[3];
+              const typeMap = { 0: 'text', 1: 'textarea', 2: 'radio', 3: 'select', 4: 'checkbox', 9: 'text', 10: 'text' };
+              const qType = typeMap[typeCode];
+
+              if (qType && item[4] && Array.isArray(item[4]) && item[4][0]) {
+                  const entryIdStr = item[4][0][0];
+                  // item[4][0][2] explicitly maps Google's 'required' asterisk flag
+                  const isRequired = item[4][0][2] === 1 || item[4][0][2] === true;
+                  const label = item[1] || `Question ${qIndex}`;
+                  
+                  const qObj = {
+                      id: 'q' + qIndex,
+                      label: label,
+                      type: qType,
+                      required: isRequired,
+                      googleId: `entry.${entryIdStr}`
+                  };
+
+                  if ([2, 3, 4].includes(typeCode) && item[4][0][1] && Array.isArray(item[4][0][1])) {
+                      qObj.options = item[4][0][1].map(opt => opt[0]).filter(o => o !== null && o !== undefined && o !== "");
+                  }
+
+                  parsedQuestions.push(qObj);
+                  qIndex++;
+              }
+          });
+
+          if (parsedQuestions.length === 0) throw new Error("No questions could be parsed.");
+
+          const newConfig = { 
+              ...settingsRef.current, 
+              useInternalForm: true, 
+              applyLink: inputRaw.startsWith('http') ? inputRaw : base.replace('formResponse', 'viewform'), 
+              webhookUrl: base, 
+              questions: parsedQuestions 
+          };
+
+          setSettings(newConfig);
+          setFormAnswers({});
+          
+          if (!isSilent) {
+              setPrefillUrl('');
+              logDebug('SUCCESS', 'Native form mapping complete.');
+              alert("Form Map Complete! Click 'Save Configuration' at the bottom to apply it.");
+          } else {
+              try { localStorage.setItem('wcc_app_settings_v4', JSON.stringify(newConfig)); } catch(e) {}
+              console.log("Silently mapped Google Form defaults in the background.");
+          }
+
+      } catch (e) {
+          if (!isSilent) {
+              logDebug('ERROR', 'Auto-map failed', e.message);
+              alert("Failed to map form: " + e.message);
+          } else {
+              console.warn("Silent background mapping failed.", e.message);
+          }
+      }
+      setIsMappingLoading(false);
+  };
+
+  const drawPosterOverlay = (ctx, expW, expH, s) => {
+    const pad = expW * 0.05;
+    ctx.strokeStyle = s.archColor;
+    ctx.lineWidth = expW * 0.004;
+    ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.fillRect(pad, pad, expW * 0.03, expW * 0.03);
+    const panelH = expH * 0.32;
+    ctx.fillStyle = s.bgColor;
+    ctx.fillRect(pad, expH - pad - panelH, expW - pad * 2, panelH);
+    ctx.beginPath();
+    ctx.moveTo(pad, expH - pad - panelH);
+    ctx.lineTo(expW - pad, expH - pad - panelH);
+    ctx.stroke();
+    ctx.textAlign = 'left';
+    const leftMargin = pad + expW * 0.04;
+    let textY = expH - pad - panelH + expH * 0.06;
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.font = `800 ${expW * 0.02}px monospace`;
+    ctx.fillText(s.contentTag.toUpperCase(), leftMargin, textY);
+    textY += expH * 0.08;
+    ctx.fillStyle = s.archColor;
+    ctx.font = `900 ${expW * 0.09}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentHero.toUpperCase(), leftMargin, textY);
+    textY += expH * 0.045;
+    ctx.font = `800 ${expW * 0.035}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentTitle, leftMargin, textY);
+    textY += expH * 0.03;
+    ctx.globalAlpha = 0.7;
+    ctx.font = `600 ${expW * 0.022}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentSub, leftMargin, textY);
+    ctx.globalAlpha = 1.0;
+    textY += expH * 0.05;
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.font = `800 ${expW * 0.022}px monospace`;
+    ctx.fillText(`DEADLINE: ${s.contentDeadline.toUpperCase()}`, leftMargin, textY);
+  };
+
+  const handleExportImage = (isPosterMode = false) => {
+    if (!sceneRefs.current.renderer) return;
+    const { renderer, scene, camera } = sceneRefs.current; const s = settingsRef.current;
+    const expW = parseInt(s.exportWidth); const expH = parseInt(s.exportHeight);
+    const origPr = renderer.getPixelRatio(); renderer.setPixelRatio(1); renderer.setSize(expW, expH, false);
+    camera.aspect = expW / expH; camera.updateProjectionMatrix(); renderer.render(scene, camera);
+    const canvas2d = document.createElement('canvas'); canvas2d.width = expW; canvas2d.height = expH; const ctx = canvas2d.getContext('2d');
+    ctx.fillStyle = s.bgColor; ctx.fillRect(0, 0, expW, expH); ctx.drawImage(renderer.domElement, 0, 0);
+
+    if (isPosterMode) drawPosterOverlay(ctx, expW, expH, s);
+
+    setExportedImage(canvas2d.toDataURL());
+    renderer.setPixelRatio(origPr); renderer.setSize(window.innerWidth, window.innerHeight, false);
+    camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.render(scene, camera);
+  };
+
+  const handleStartVideoRecording = () => {
+    if (!sceneRefs.current.renderer) return;
+    const { renderer, camera } = sceneRefs.current;
+    const s = settingsRef.current;
+    setIsRecording(true);
+
+    const expW = parseInt(s.exportWidth);
+    const expH = parseInt(s.exportHeight);
+    
+    recCanvasRef.current = document.createElement('canvas');
+    recCanvasRef.current.width = expW;
+    recCanvasRef.current.height = expH;
+    recCtxRef.current = recCanvasRef.current.getContext('2d');
+
+    originalRendererStateRef.current = {
+        w: window.innerWidth, h: window.innerHeight, aspect: camera.aspect, pr: renderer.getPixelRatio()
+    };
+
+    renderer.setPixelRatio(1);
+    renderer.setSize(expW, expH, false);
+    camera.aspect = expW / expH;
+    camera.updateProjectionMatrix();
+
+    const stream = recCanvasRef.current.captureStream(30);
+    mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    chunksRef.current = [];
+
+    mediaRecorderRef.current.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
+    mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `wcc_poster_reel.webm`; a.click();
+        
+        setIsRecording(false);
+        isRecordingRef.current = false;
+        recCanvasRef.current = null;
+        recCtxRef.current = null;
+
+        const orig = originalRendererStateRef.current;
+        renderer.setPixelRatio(orig.pr);
+        renderer.setSize(orig.w, orig.h, false);
+        camera.aspect = orig.aspect;
+        camera.updateProjectionMatrix();
+    };
+
+    isRecordingRef.current = true;
+    mediaRecorderRef.current.start();
+
+    setTimeout(() => {
+        if(isRecordingRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            mediaRecorderRef.current.stop();
+        }
+    }, s.videoDuration * 1000);
+  };
+
+  const addQuestion = () => handleSettingChange('questions', [...settings.questions, { id: 'q' + Date.now(), label: 'New Question', type: 'text', required: false, googleId: 'entry.' }]);
+  const removeQuestion = (id) => handleSettingChange('questions', settings.questions.filter(q => q.id !== id));
+  const updateQuestion = (id, key, val) => handleSettingChange('questions', settings.questions.map(q => q.id === id ? { ...q, [key]: val } : q));
+
+  // --- THREE.JS EFFECT ---
+  useEffect(() => {
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(settings.bgColor);
+    scene.fog = new THREE.FogExp2(settings.bgColor, 0.05);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, targetArtPosRef.current.z);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(5, 10, 5); scene.add(dirLight);
+
+    const shelterGroup = new THREE.Group();
+    const arch = new THREE.Mesh(createArchGeo(settings.archShape), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 }));
+    arch.rotation.z = -Math.PI / 4; shelterGroup.add(arch);
+
+    const ring = new THREE.Mesh(createRingGeo(settings.ringShape, 2.1), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.2, metalness: 0.8 }));
+    shelterGroup.add(ring);
+
+    const innerRing = new THREE.Mesh(createRingGeo(settings.ringShape, 1.6), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.1, metalness: 1.0 }));
+    innerRing.rotation.x = Math.PI / 2; shelterGroup.add(innerRing);
+
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.6,0.6), new THREE.MeshStandardMaterial({ color: settings.cubeColor, roughness: 0.2, metalness: 0.1 }));
+    cube.position.set(1.5, 1.5, 1.5); shelterGroup.add(cube);
+
+    const innerMesh = new THREE.Mesh(createCoreGeo(settings.coreShape), new THREE.MeshPhysicalMaterial({ color: settings.glassColor, metalness: 0.1, roughness: 0.05, transmission: 1.0, ior: settings.glassIor, thickness: 2.0, transparent: true }));
+    shelterGroup.add(innerMesh);
+
+    const galleryGroup = new THREE.Group();
+    shelterGroup.add(galleryGroup);
+
+    scene.add(shelterGroup);
+
+    sceneRefs.current = {
+        scene, camera, renderer, arch, ring, innerRing, cube, innerMesh, shelterGroup, galleryGroup,
+        currentShapes: { arch: settings.archShape, core: settings.coreShape, ring: settings.ringShape },
+        currentGallery: [], currentMediaStyle: "", currentTextures: []
+    };
+
+    // Resize Handle
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    let animationFrameId; let time = 0;
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      const s = settingsRef.current;
+      
+      time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
+      if(s.mediaGallery?.length > 0 && s.mediaStyle === 'floating') {
+          galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15;
+          galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05;
+      }
+      
+      shelterGroup.position.x += ((targetArtPosRef.current.x + s.artPosX) - shelterGroup.position.x) * 0.05;
+      shelterGroup.position.y += ((targetArtPosRef.current.y + s.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
+      innerMesh.position.y = Math.sin(time * 0.001) * 0.1; cube.position.y = 1.5 + Math.sin(time * 0.002) * 0.2;
+      camera.position.z += ((targetArtPosRef.current.z + s.artZoom) - camera.position.z) * 0.05;
+      camera.lookAt(0, 0, 0); 
+      
+      renderer.render(scene, camera);
+
+      if (isRecordingRef.current && recCtxRef.current && recCanvasRef.current) {
+          const w = recCanvasRef.current.width;
+          const h = recCanvasRef.current.height;
+          recCtxRef.current.fillStyle = s.bgColor;
+          recCtxRef.current.fillRect(0, 0, w, h);
+          recCtxRef.current.drawImage(renderer.domElement, 0, 0, w, h);
+          drawPosterOverlay(recCtxRef.current, w, h, s);
+      }
+    };
+    animate();
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+        cancelAnimationFrame(animationFrameId);
+        renderer.dispose();
+    };
+  }, []);
+
+  // Sync effect
+  useEffect(() => {
+    if (!sceneRefs.current.scene) return;
+    const { scene, arch, ring, innerRing, cube, innerMesh, galleryGroup, currentShapes } = sceneRefs.current;
+
+    // Geometry sync updates
+    if (currentShapes.arch !== settings.archShape) { arch.geometry.dispose(); arch.geometry = createArchGeo(settings.archShape); currentShapes.arch = settings.archShape; }
+    if (currentShapes.core !== settings.coreShape) { innerMesh.geometry.dispose(); innerMesh.geometry = createCoreGeo(settings.coreShape); currentShapes.core = settings.coreShape; }
+    if (currentShapes.ring !== settings.ringShape) {
+        ring.geometry.dispose(); innerRing.geometry.dispose();
+        ring.geometry = createRingGeo(settings.ringShape, 2.1); innerRing.geometry = createRingGeo(settings.ringShape, 1.6);
+        currentShapes.ring = settings.ringShape;
+    }
+
+    // Media & Material sync updates (Gallery Mode)
+    if (JSON.stringify(sceneRefs.current.currentGallery) !== JSON.stringify(settings.mediaGallery) || sceneRefs.current.currentMediaStyle !== settings.mediaStyle) {
+      // 1. Dispose old resources thoroughly
+      sceneRefs.current.currentTextures.forEach(t => t.dispose());
+      while(galleryGroup.children.length > 0) {
+          const child = galleryGroup.children[0];
+          child.traverse((c) => {
+             if (c.geometry) c.geometry.dispose();
+             if (c.material) {
+                 if (c.material.map) c.material.map.dispose();
+                 c.material.dispose();
+             }
+          });
+          galleryGroup.remove(child);
+      }
+      sceneRefs.current.currentTextures = [];
+      sceneRefs.current.currentGallery = [...(settings.mediaGallery || [])];
+      sceneRefs.current.currentMediaStyle = settings.mediaStyle;
+
+      // 2. Load new resources
+      if (settings.mediaGallery && settings.mediaGallery.length > 0) {
+        const loader = new THREE.TextureLoader();
+        loader.setCrossOrigin('anonymous');
+
+        settings.mediaGallery.forEach((url, i) => {
+            loader.load(url, (texture) => {
+              texture.colorSpace = THREE.SRGBColorSpace;
+              sceneRefs.current.currentTextures.push(texture);
+
+              if (settings.mediaStyle === 'floating') {
+                 innerMesh.material.map = null;
+                 innerMesh.material.transmission = 1.0;
+
+                 const aspect = texture.image.width / texture.image.height;
+                 const w = aspect > 1 ? 2.4 : 2.4 * aspect;
+                 const h = aspect > 1 ? 2.4 / aspect : 2.4;
+
+                 const canvasGroup = new THREE.Group();
+                 const canvasMesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.05), new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.2, metalness: 0.1 }));
+                 const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(w + 0.04, h + 0.04, 0.02), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 }));
+                 frameMesh.position.z = -0.02;
+
+                 canvasGroup.add(canvasMesh);
+                 canvasGroup.add(frameMesh);
+
+                 // Arc Positioning Logic
+                 const count = settings.mediaGallery.length;
+                 const spacing = count > 1 ? 2.8 : 0;
+                 const offset = i - (count - 1) / 2;
+
+                 canvasGroup.position.x = offset * spacing;
+                 canvasGroup.position.z = Math.abs(offset) * 0.8; // Curve backwards
+                 canvasGroup.rotation.y = -offset * 0.2; // Angle inwards
+
+                 galleryGroup.add(canvasGroup);
+              } else {
+                 if (i === 0) { // Core Wrap only applies to the first image
+                     innerMesh.material.map = texture;
+                     innerMesh.material.transmission = 0.0;
+                 }
+              }
+              innerMesh.material.needsUpdate = true;
+            });
+        });
+      } else {
+        innerMesh.material.map = null;
+        innerMesh.material.transmission = 1.0;
+        innerMesh.material.needsUpdate = true;
+      }
+    }
+
+    // Color & Scale sync updates
+    scene.background.set(settings.bgColor);
+    scene.fog.color.set(settings.bgColor); // Syncs Fog to avoid visual box artifacts
+    arch.material.color.set(settings.archColor);
+    cube.material.color.set(settings.cubeColor);
+    ring.material.color.set(settings.ringColor);
+    innerRing.material.color.set(settings.ringColor);
+    innerMesh.material.color.set(settings.glassColor);
+
+    // Sync all scaling transforms
+    arch.scale.setScalar(settings.archScale);
+    ring.scale.setScalar(settings.ringScale);
+    innerRing.scale.setScalar(settings.ringScale);
+    cube.scale.setScalar(settings.cubeScale);
+    innerMesh.scale.setScalar(settings.glassScale);
+  }, [settings]);
+
+  // Global Sync Logic
+  useEffect(() => {
+    // 1. SILENT INITIALIZATION: Automatically map defaults if starting from scratch
+    const saved = localStorage.getItem('wcc_app_settings_v4');
+    if (!saved && settingsRef.current.questions[0]?.googleId === 'entry.1') {
+        handleAutoMapForm(true); // Trigger background patcher
+    }
+
+    // 2. Global Hotkeys & Taps
+    const handleKeyDown = (e) => {
+        if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+            setShowSettingsBtn(p => !p); setIsEditorOpen(false);
+        }
+        if (e.key.toLowerCase() === 'd' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+            setShowDebug(p => !p);
+        }
+    };
+    let tapCount = 0; let tapTimer;
+    const handleInteract = (e) => { 
+        if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'OPTION', 'A'].includes(e.target.tagName)) return; 
+        tapCount++; 
+        clearTimeout(tapTimer); 
+        if (tapCount >= 3) { 
+            setShowSettingsBtn(p => !p); setIsEditorOpen(false); tapCount = 0; 
+        } else { 
+            tapTimer = setTimeout(() => { tapCount = 0; }, 400); 
+        } 
+    };
+    window.addEventListener('keydown', handleKeyDown); 
+    window.addEventListener('touchstart', handleInteract);
+    window.addEventListener('mousedown', handleInteract);
+    return () => { 
+        window.removeEventListener('keydown', handleKeyDown); 
+        window.removeEventListener('touchstart', handleInteract);
+        window.removeEventListener('mousedown', handleInteract); 
+    };
+  }, []);
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden text-neutral-900 bg-[#e4e4e4]" style={{ fontFamily: settings.uiFont }}>
+      
+      {/* FOOLPROOF INVISIBLE ADMIN TOGGLE - Click extreme bottom-left corner */}
+      <div onClick={() => {setShowSettingsBtn(p => !p); setIsEditorOpen(false);}} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
+
+      <style>{`
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px); }
+        .ui-panel-bg { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border: 2px solid rgba(0,0,0,0.1); border-radius: 0; box-shadow: 16px 16px 0px rgba(0,0,0,0.05); }
+        .form-input { background: rgba(0,0,0,0.02); border: 2px solid rgba(0,0,0,0.1); border-radius: 0; padding: 14px; font-size: 14px; outline: none; transition: all 0.2s; color: black !important; font-family: 'JetBrains Mono', monospace; }
+        .form-input:focus { background: white; border-color: ${settings.uiAccentColor}; }
+        .ui-btn-solid { background: ${settings.uiAccentColor}; color: white; border-radius: 0; padding: 16px 32px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; border: 2px solid transparent; transition: all 0.2s; }
+        .ui-btn-solid:hover { background: white; color: ${settings.uiAccentColor}; border-color: ${settings.uiAccentColor}; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 0px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+      `}</style>
+
+      {/* Structural Brutalist Background Grid */}
+      <div className="absolute inset-0 z-0 bg-grid opacity-50 pointer-events-none" />
+      <div ref={mountRef} className="absolute inset-0 z-0" />
+
+      {/* L0 COVER */}
+      <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center p-8 transition-all duration-1000 ${layer === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="text-center mix-blend-difference text-white">
+          <h1 className="text-8xl md:text-[10rem] font-black mb-2 uppercase tracking-tighter leading-none" style={{ fontFamily: settings.uiFont }}>{settings.contentHero}</h1>
+          <h2 className="text-xl md:text-3xl font-bold tracking-[0.3em] uppercase opacity-90 mt-4 font-mono">{settings.contentSub}</h2>
+          <button onClick={() => setLayer(1)} className="mt-16 px-16 py-5 bg-white text-black font-black uppercase tracking-[0.2em] rounded-none hover:bg-neutral-200 transition-colors border-2 border-transparent hover:border-black">[{settings.btnEnter}]</button>
+        </div>
+      </div>
+
+      {layer > 0 && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center md:justify-end p-4 md:p-12 transition-all duration-1000">
+              <div className="max-w-xl w-full ui-panel-bg p-8 md:p-12 overflow-y-auto max-h-[90vh] custom-scrollbar text-inherit">
+                  {layer === 1 && (
+                      <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                        <div className="border-b-2 border-black/10 pb-4 mb-6">
+                            <p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono">{settings.contentTag}</p>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tighter uppercase">{settings.contentTitle}</h2>
+                        <div className="mb-8 space-y-4 text-sm font-bold opacity-90 border-l-4 border-[#ff2a00] pl-4 font-mono">
+                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro1}</p>
+                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro2}</p>
+                        </div>
+                        <div className="space-y-6 opacity-80 leading-relaxed mb-12 text-base font-medium font-serif border-l-2 border-black/20 pl-6">
+                            <p className="whitespace-pre-wrap">{settings.contentDesc1}</p>
+                            <p className="whitespace-pre-wrap">{settings.contentDesc2}</p>
+                        </div>
+                        <div className="flex gap-4 pt-6 border-t-2 border-black/10">
+                            <button onClick={()=>setLayer(0)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity">Abort</button>
+                            <button onClick={()=>setLayer(2)} className="flex-1 ui-btn-solid">Begin Process</button>
+                        </div>
+                      </div>
+                  )}
+                  {layer === 2 && (
+                    <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                      <h2 className="text-3xl font-black mb-8 uppercase tracking-tighter border-b-2 border-black/10 pb-4">{settings.titleInclusions}</h2>
+                      <ul className="space-y-3 mb-10 text-sm md:text-base font-bold uppercase font-mono">
+                        {[settings.inclusion1, settings.inclusion2, settings.inclusion3, settings.inclusion4].map((item, i) => (
+                            <li key={i} className="flex items-center gap-4 p-4 border-2 border-black/5 hover:border-black/20 transition-colors bg-white/50">
+                                <div className="w-3 h-3 bg-black" />
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                      </ul>
+                      <div className="mb-10 p-6 border-2 border-[#ff2a00] bg-[#ff2a00]/5 font-black text-2xl tracking-tight flex flex-col">
+                          <span className="text-[10px] text-[#ff2a00] tracking-widest uppercase mb-1 font-mono">DEADLINE</span>
+                          {settings.contentDeadline}
+                      </div>
+                      <div className="flex gap-4">
+                          <button onClick={()=>setLayer(1)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity">Back</button>
+                          <button onClick={()=>setLayer(3)} className="flex-1 ui-btn-solid">Proceed To Form</button>
+                      </div>
+                    </div>
+                  )}
+                  {layer === 3 && (
+                    <div className="animate-in fade-in slide-in-from-right-4 duration-500 text-inherit">
+                       {formStatus === 'success' ? (
+                          <div className="text-center py-16 border-2 border-black/10 bg-white/50">
+                              <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-[#ff2a00]">Success</h2>
+                              <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold">Data Transmitted</p>
+                              <button onClick={()=>{setLayer(0); setFormStatus('idle'); setFormAnswers({});}} className="ui-btn-solid w-3/4 mx-auto block">Reset System</button>
+                          </div>
+                       ) : (
+                          <div className="flex flex-col gap-6">
+                            <div className="border-b-2 border-black/10 pb-6 mb-2">
+                                <h2 className="text-3xl font-black uppercase tracking-tighter">{settings.formTitle}</h2>
+                            </div>
+                            {settings.useInternalForm ? (
+                               <form className="flex flex-col gap-6" onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
+                                  {settings.questions.map((q) => (
+                                    <div key={q.id} className="flex flex-col gap-2">
+                                       <div className="flex justify-between items-center px-1">
+                                           <label className="text-[10px] font-bold opacity-60 uppercase tracking-[0.1em] font-mono">[{q.label}] {q.required && <span className="text-[#ff2a00]">*</span>}</label>
+                                       </div>
+
+                                       {/* DYNAMIC FORM RENDERER (Supports Radio/Checkbox/Select/Text) */}
+                                       {q.type === 'textarea' ? (
+                                           <textarea className="form-input min-h-[140px]" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />
+                                       ) : q.type === 'radio' ? (
+                                           <div className="flex flex-col gap-2 p-2">
+                                             {q.options?.map(opt => (
+                                                <label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100">
+                                                  <input type="radio" name={q.id} value={opt} checked={formAnswers[q.id] === opt} onChange={e => setFormAnswers({...formAnswers, [q.id]: e.target.value})} required={q.required} className="w-4 h-4 accent-black" />
+                                                  {opt}
+                                                </label>
+                                             ))}
+                                           </div>
+                                       ) : q.type === 'checkbox' ? (
+                                           <div className="flex flex-col gap-2 p-2">
+                                             {q.options?.map(opt => {
+                                                const isChecked = (formAnswers[q.id] || []).includes(opt);
+                                                return (
+                                                <label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100">
+                                                  <input type="checkbox" name={q.id} value={opt} checked={isChecked} onChange={e => {
+                                                      const current = formAnswers[q.id] || [];
+                                                      const updated = e.target.checked ? [...current, opt] : current.filter(x => x !== opt);
+                                                      setFormAnswers({...formAnswers, [q.id]: updated});
+                                                  }} className="w-4 h-4 accent-black rounded-none" />
+                                                  {opt}
+                                                </label>
+                                             )})}
+                                           </div>
+                                       ) : q.type === 'select' ? (
+                                           <select className="form-input" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})}>
+                                              <option value="">Select an option...</option>
+                                              {q.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                           </select>
+                                       ) : (
+                                           <input className="form-input" type={q.type} required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />
+                                       )}
+
+                                    </div>
+                                  ))}
+                                  <button type="submit" className="ui-btn-solid w-full mt-4">Transmit Data</button>
+                                  <button type="button" onClick={()=>setLayer(2)} className="mt-4 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity">Cancel</button>
+                               </form>
+                            ) : (
+                               <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-black/10 bg-white/50">
+                                  <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold px-8">Routing to external secure portal.</p>
+                                  <button onClick={()=>window.open(settings.applyLink, '_blank')} className="ui-btn-solid w-3/4 mx-auto block">Open Portal</button>
+                                  <button onClick={()=>setLayer(2)} className="mt-8 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity">Back</button>
+                               </div>
+                            )}
+                          </div>
+                       )}
+                    </div>
+                  )}
+              </div>
+          </div>
+      )}
+
+      {/* MID-SIZED DEVELOPER DEBUG CONSOLE */}
+      {showDebug && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-3/4 lg:w-1/2 h-[70vh] bg-black/95 text-green-400 font-mono text-xs rounded-xl shadow-2xl border border-green-500/30 flex flex-col overflow-hidden z-[9999] backdrop-blur-md">
+              <div className="flex justify-between items-center p-3 border-b border-green-500/30 bg-black">
+                  <div className="flex items-center gap-3">
+                      <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500 cursor-pointer" onClick={() => setShowDebug(false)}></div>
+                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      </div>
+                      <span className="font-bold opacity-70 tracking-widest uppercase">SYS_DEBUG_CONSOLE</span>
+                  </div>
+                  <div className="flex gap-4">
+                      <button onClick={handleCopySource} className="text-blue-500/50 hover:text-blue-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{sourceCopyText}</button>
+                      <button onClick={handleCopyDebug} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{debugCopyText}</button>
+                      <button onClick={() => setDebugLogs([])} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">Clear</button>
+                  </div>
+              </div>
+              <div ref={debugScrollRef} className="flex-1 p-4 overflow-y-auto custom-scrollbar whitespace-pre-wrap flex flex-col gap-1">
+                  {debugLogs.length === 0 && <span className="opacity-50 italic">Waiting for events... (Press 'D' to close)</span>}
+                  {debugLogs.map((log, i) => (
+                      <div key={i} className={`pb-2 mb-2 border-b border-green-500/10 ${log.type === 'ERROR' ? 'text-red-400' : log.type === 'WARN' ? 'text-yellow-400' : log.type === 'SUCCESS' ? 'text-blue-400' : 'text-green-400'}`}>
+                          <div className="flex gap-3 font-bold opacity-70">
+                              <span>[{log.time}]</span>
+                              <span>[{log.type}]</span>
+                              <span>{log.message}</span>
+                          </div>
+                          {log.details && (
+                              <div className="mt-1 pl-4 opacity-80 overflow-x-hidden break-all border-l border-current">
+                                  {log.details}
+                              </div>
+                          )}
+                      </div>
+                  ))}
+              </div>
+          </div>
+      )}
+
+      {/* ADMIN GEAR */}
+      {showSettingsBtn && (
+        <button onClick={() => setIsEditorOpen(!isEditorOpen)} className="absolute bottom-6 left-6 z-[100] w-14 h-14 bg-white border-2 border-black/10 rounded-none shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all hover:border-black"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 home 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+      )}
+
+      {/* ADMIN PANEL */}
+      {showSettingsBtn && isEditorOpen && (
+        <div className="absolute bottom-24 left-6 z-[100] w-[460px] max-w-[calc(100vw-3rem)] ui-panel-bg flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-4 duration-300 shadow-[24px_24px_0px_rgba(0,0,0,0.1)]">
+          <div className="px-6 py-5 border-b-2 border-black/10 flex justify-between items-center bg-white">
+              <span className="font-black text-[11px] tracking-[0.2em] uppercase font-mono text-black">
+                  {activeEditorMenu === 'main' ? 'Admin / Menu' : `Admin / ${activeEditorMenu}`}
+              </span>
+              <button onClick={() => setIsEditorOpen(false)} className="text-[10px] font-black opacity-50 hover:opacity-100 transition-opacity bg-black/5 px-3 py-1.5 rounded-none uppercase tracking-widest border border-transparent hover:border-black/20">Close X</button>
+          </div>
+          <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6 custom-scrollbar bg-[#f8f8f8]">
+            {activeEditorMenu === 'main' ? (
+                <div className="flex flex-col gap-3">
+                    <MenuButton icon="📦" label="Data & Submissions" onClick={()=>setActiveEditorMenu('data')} />
+                    <MenuButton icon="📷" label="Assets & Media" onClick={()=>setActiveEditorMenu('assets')} />
+                    <MenuButton icon="🎨" label="Environment" onClick={()=>setActiveEditorMenu('colors')} />
+                    <MenuButton icon="📝" label="Content Editor" onClick={()=>setActiveEditorMenu('content')} />
+                    <MenuButton icon="📋" label="Form Designer" onClick={()=>setActiveEditorMenu('forms')} />
+                    <MenuButton icon="🧲" label="Form Mapper" onClick={()=>setActiveEditorMenu('mapper')} />
+                    <MenuButton icon="🚀" label="Export & Deploy" onClick={()=>setActiveEditorMenu('deploy')} />
+                </div>
+            ) : activeEditorMenu === 'assets' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest text-left hover:opacity-100 transition-opacity flex items-center gap-2">← BACK TO MENU</button>
+
+                    <SectionGroup title="Media Gallery">
+                      {settings.mediaGallery && settings.mediaGallery.length > 0 && (
+                        <div className="grid grid-cols-2 gap-3 mb-2">
+                          {settings.mediaGallery.map((url, idx) => (
+                            <div key={idx} className="relative w-full h-24 rounded-none overflow-hidden border-2 border-black/10 bg-white group shadow-sm">
+                              {url.startsWith('data:') || url.startsWith('http') ? (
+                                  <img src={url} className="w-full h-full object-cover" alt="Preview" />
+                              ) : <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold opacity-30 text-center p-2 break-all font-mono">{url}</span>}
+                              <button onClick={() => handleRemoveMedia(idx)} className="absolute inset-0 bg-[#ff2a00]/90 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] tracking-[0.2em] uppercase font-mono">DEL</button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <label className="w-full flex items-center justify-center py-4 bg-black text-white text-[10px] font-black tracking-widest uppercase rounded-none cursor-pointer hover:bg-neutral-800 transition-colors border-2 border-black shadow-md">
+                        + Upload File(s)
+                        <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
+                      </label>
+
+                      <div className="flex items-center gap-3 my-2 opacity-30">
+                        <div className="flex-1 h-[2px] bg-black"></div>
+                        <span className="text-[9px] font-black uppercase font-mono tracking-widest">OR Paste URL</span>
+                        <div className="flex-1 h-[2px] bg-black"></div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <input
+                          className="flex-1 bg-white border-2 border-black/10 rounded-none p-3 text-[10px] outline-none focus:border-black font-mono"
+                          value={tempMediaUrl}
+                          onChange={e => setTempMediaUrl(e.target.value)}
+                          placeholder="https://..."
+                        />
+                        <button onClick={handleAddExternalUrl} className="px-5 bg-black text-white rounded-none text-[10px] font-black uppercase tracking-widest hover:bg-neutral-800 transition-colors border-2 border-black shadow-sm">Add</button>
+                      </div>
+                    </SectionGroup>
+
+                    <SectionGroup title="Display Layout">
+                      <div className="flex gap-3">
+                        <button onClick={()=>handleSettingChange('mediaStyle', 'floating')} className={`flex-1 py-4 text-[10px] font-black border-2 rounded-none transition-all tracking-widest ${settings.mediaStyle === 'floating' ? 'bg-black text-white border-black shadow-md' : 'bg-white text-black opacity-50 border-black/20 hover:opacity-100 hover:border-black'}`}>GALLERY</button>
+                        <button onClick={()=>handleSettingChange('mediaStyle', 'wrap')} className={`flex-1 py-4 text-[10px] font-black border-2 rounded-none transition-all tracking-widest ${settings.mediaStyle === 'wrap' ? 'bg-black text-white border-black shadow-md' : 'bg-white text-black opacity-50 border-black/20 hover:opacity-100 hover:border-black'}`}>WRAP</button>
+                      </div>
+                    </SectionGroup>
+                </div>
+            ) : activeEditorMenu === 'colors' ? (
+              <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                  <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+
+                  <SectionGroup title="Typography">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">Global Font</label>
+                      <select className="bg-white border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black font-mono cursor-pointer transition-colors" value={settings.uiFont} onChange={e=>handleSettingChange('uiFont', e.target.value)}>
+                        <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                        <option value="'Montserrat', sans-serif">Montserrat</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="'Playfair Display', serif">Playfair Display (Serif)</option>
+                        <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+                      </select>
+                    </div>
+                  </SectionGroup>
+
+                  <SectionGroup title="Colors">
+                    <ColorInput label="Background" value={settings.bgColor} onChange={v => handleSettingChange('bgColor', v)} />
+                    <ColorInput label="Outer Arch" value={settings.archColor} onChange={v => handleSettingChange('archColor', v)} />
+                    <ColorInput label="Glass Core" value={settings.glassColor} onChange={v => handleSettingChange('glassColor', v)} />
+                    <ColorInput label="Primary Accent" value={settings.uiAccentColor} onChange={v => handleSettingChange('uiAccentColor', v)} />
+                  </SectionGroup>
+
+                  <SectionGroup title="Geometry Controls">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">Outer Arch</label>
+                      <select className="bg-white border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black font-mono uppercase cursor-pointer transition-colors" value={settings.archShape} onChange={e=>handleSettingChange('archShape', e.target.value)}>
+                        <option value="torus_half">Half Torus</option>
+                        <option value="torus_full">Full Torus</option>
+                        <option value="cylinder">Cylinder</option>
+                        <option value="box">Monolith</option>
+                        <option value="wireframe_torus">Wireframe</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2 mt-3">
+                      <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">Glass Core</label>
+                      <select className="bg-white border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black font-mono uppercase cursor-pointer transition-colors" value={settings.coreShape} onChange={e=>handleSettingChange('coreShape', e.target.value)}>
+                        <option value="sphere">Sphere</option>
+                        <option value="box">Cube</option>
+                        <option value="icosahedron">Crystal</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2 mt-3">
+                      <label className="text-[10px] text-neutral-500 font-black uppercase tracking-widest font-mono">Orbit Rings</label>
+                      <select className="bg-white border-2 border-black/10 rounded-none p-3 text-xs outline-none focus:border-black font-mono uppercase cursor-pointer transition-colors" value={settings.ringShape} onChange={e=>handleSettingChange('ringShape', e.target.value)}>
+                        <option value="thin">Thin Orbit</option>
+                        <option value="thick">Thick Ring</option>
+                        <option value="square">Square Frame</option>
+                        <option value="orbit_rings">Multi-Orbit</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                  </SectionGroup>
+              </div>
+            ) : activeEditorMenu === 'content' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+                    <SectionGroup title="Copy Editor">
+                      <TextInput label="Tagline" value={settings.contentTag} onChange={v => handleSettingChange('contentTag', v)} />
+                      <TextInput label="Headline" value={settings.contentTitle} onChange={v => handleSettingChange('contentTitle', v)} />
+                      <TextAreaInput label="Intro (ARM)" value={settings.contentIntro1} onChange={v => handleSettingChange('contentIntro1', v)} />
+                      <TextAreaInput label="Intro (ENG)" value={settings.contentIntro2} onChange={v => handleSettingChange('contentIntro2', v)} />
+                      <TextAreaInput label="Main Text (ARM)" value={settings.contentDesc1} onChange={v => handleSettingChange('contentDesc1', v)} />
+                      <TextAreaInput label="Main Text (ENG)" value={settings.contentDesc2} onChange={v => handleSettingChange('contentDesc2', v)} />
+                      <TextInput label="Deadline Label" value={settings.contentDeadline} onChange={v => handleSettingChange('contentDeadline', v)} />
+                    </SectionGroup>
+                </div>
+            ) : activeEditorMenu === 'data' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+                    <SectionGroup title="Local Submissions">
+                        <p className="text-[10px] font-mono opacity-60 leading-relaxed">
+                            Applications are saved securely in your browser's local storage.
+                            <br/><br/>
+                            Currently stored: <strong className="text-black text-sm">{submissions.length}</strong>
+                        </p>
+                        <button onClick={handleDownloadSubmissions} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-[#ff2a00] shadow-md">
+                            Download as CSV
+                        </button>
+                        <button onClick={handleClearSubmissions} className="py-3 text-[#ff2a00] border-2 border-[#ff2a00]/30 hover:bg-[#ff2a00]/10 text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors">
+                            Clear All Data
+                        </button>
+                    </SectionGroup>
+                </div>
+            ) : activeEditorMenu === 'forms' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+                    <SectionGroup title="Routing">
+                      <div className="flex gap-3">
+                        <button onClick={()=>handleSettingChange('useInternalForm', true)} className={`flex-1 py-4 text-[10px] font-black border-2 rounded-none transition-all tracking-widest ${settings.useInternalForm ? 'bg-black text-white border-black shadow-md' : 'bg-white text-black opacity-40 border-black/20 hover:opacity-100 hover:border-black'}`}>CUSTOM UI</button>
+                        <button onClick={()=>handleSettingChange('useInternalForm', false)} className={`flex-1 py-4 text-[10px] font-bold border-2 rounded-none transition-all tracking-widest ${!settings.useInternalForm ? 'bg-black text-white border-black shadow-md' : 'bg-white text-black opacity-40 border-black/20 hover:opacity-100 hover:border-black'}`}>LINK OUT</button>
+                      </div>
+                      {!settings.useInternalForm && <TextInput label="External Form URL" value={settings.applyLink} onChange={v => handleSettingChange('applyLink', v)} placeholder="https://..." />}
+                    </SectionGroup>
+
+                    {settings.useInternalForm && (
+                      <>
+                        <SectionGroup title="Mapping Engine">
+                          <TextInput label="formResponse Webhook URL" value={settings.webhookUrl} onChange={v => handleSettingChange('webhookUrl', v)} placeholder="https://docs.google.com/.../formResponse" />
+                        </SectionGroup>
+
+                        <SectionGroup title="Form Builder">
+                            <div className="flex flex-col gap-4">
+                                {settings.questions.map((q, idx) => (
+                                   <div key={q.id} className="p-5 bg-white border-2 border-black/10 flex flex-col gap-4 relative group shadow-sm hover:border-black/30 transition-colors">
+                                      <div className="flex justify-between items-center border-b-2 border-black/5 pb-2">
+                                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 font-mono">Field {idx + 1}</span>
+                                          <button onClick={()=>removeQuestion(q.id)} className="text-[#ff2a00] hover:bg-[#ff2a00]/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-colors font-mono opacity-0 group-hover:opacity-100">Delete</button>
+                                      </div>
+
+                                      <div className="flex flex-col gap-1.5">
+                                          <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 font-mono">Question Label</span>
+                                          <input className="w-full bg-neutral-50 border-2 border-black/10 p-3 text-xs font-bold outline-none focus:border-black font-mono transition-colors" value={q.label} onChange={e=>updateQuestion(q.id, 'label', e.target.value)} />
+                                      </div>
+
+                                      <div className="grid grid-cols-3 gap-3">
+                                         <div className="col-span-2 flex flex-col gap-1.5">
+                                             <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 font-mono">Input Type</span>
+                                             <select className="bg-neutral-50 border-2 border-black/10 p-3 text-xs font-bold outline-none focus:border-black font-mono uppercase cursor-pointer transition-colors" value={q.type} onChange={e=>updateQuestion(q.id, 'type', e.target.value)}>
+                                                <option value="text">Short Text</option>
+                                                <option value="textarea">Long Text</option>
+                                                <option value="email">Email</option>
+                                                <option value="url">Link / URL</option>
+                                                <option value="radio">Radio Choice</option>
+                                                <option value="checkbox">Checkbox</option>
+                                                <option value="select">Dropdown</option>
+                                             </select>
+                                         </div>
+                                         <div className="col-span-1 flex flex-col gap-1.5">
+                                             <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 font-mono">Required</span>
+                                             <button onClick={()=>updateQuestion(q.id, 'required', !q.required)} className={`h-full p-3 text-xs font-black border-2 transition-all flex items-center justify-center tracking-widest ${q.required ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-black opacity-40 border-black/20 hover:opacity-100 hover:border-black'}`}>REQ {q.required ? '✓' : ''}</button>
+                                         </div>
+                                      </div>
+
+                                      {['radio', 'checkbox', 'select'].includes(q.type) && (
+                                         <div className="flex flex-col gap-1.5 bg-neutral-50 p-3 border-2 border-black/5">
+                                             <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500 font-mono">Options (Comma separated)</span>
+                                             <input className="bg-white border-2 border-black/10 p-2.5 text-xs font-mono outline-none focus:border-black" placeholder="Option 1, Option 2..." value={(q.options || []).join(', ')} onChange={e=>updateQuestion(q.id, 'options', e.target.value.split(',').map(s=>s.trim()))} />
+                                         </div>
+                                      )}
+
+                                      <div className="flex flex-col gap-1.5 pt-2 border-t-2 border-black/5 mt-1">
+                                          <span className="text-[9px] font-black uppercase tracking-widest text-blue-600 font-mono">Google Form entry.ID</span>
+                                          <input className="bg-blue-50/50 border-2 border-blue-200/60 p-3 text-xs font-mono outline-none focus:border-blue-500 text-blue-900 font-bold tracking-wider" placeholder="entry.123456" value={q.googleId || ''} onChange={e=>updateQuestion(q.id, 'googleId', e.target.value)} />
+                                      </div>
+                                   </div>
+                                ))}
+                            </div>
+                            <button onClick={addQuestion} className="w-full py-5 border-2 border-dashed border-black/20 bg-neutral-50 hover:bg-black hover:text-white transition-all font-black text-[11px] uppercase tracking-[0.2em] font-mono mt-2">+ Add Custom Field</button>
+                        </SectionGroup>
+                      </>
+                    )}
+                </div>
+            ) : activeEditorMenu === 'mapper' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+
+                    <SectionGroup title="Form Mapping Data">
+                        <p className="text-[10px] font-mono opacity-60 leading-relaxed">Paste your Google Form URL here to automatically extract and map your questions. (If automatic fetch fails due to security, you can also paste the raw 'Page Source' HTML here!)</p>
+                        <textarea
+                          value={prefillUrl}
+                          onChange={(e)=>setPrefillUrl(e.target.value)}
+                          placeholder="https://docs.google.com/forms/..."
+                          className="w-full h-20 p-4 text-xs border-2 border-black/10 bg-neutral-50 rounded-none outline-none focus:border-black custom-scrollbar font-mono break-all transition-colors"
+                        />
+                        <button
+                          onClick={handleAutoMapForm}
+                          disabled={isMappingLoading}
+                          className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-[#ff2a00] shadow-md"
+                        >
+                          {isMappingLoading ? 'Mapping Form...' : 'Auto-Map Form'}
+                        </button>
+                    </SectionGroup>
+                </div>
+            ) : (
+                <div className="flex flex-col gap-4 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left mb-2">← BACK TO MENU</button>
+                    <button onClick={() => handleExportImage(false)} className="py-5 bg-white border-2 border-black/10 rounded-none text-[11px] font-black uppercase tracking-[0.2em] hover:border-black transition-colors text-inherit">Raw Render (PNG)</button>
+                    <button onClick={() => handleExportImage(true)} className="py-5 bg-black text-white border-2 border-black rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-neutral-800 transition-colors">Poster Layout (PNG)</button>
+                    <button onClick={handleStartVideoRecording} disabled={isRecording} className={`py-5 text-white border-2 rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors ${isRecording ? 'bg-red-800 border-red-800' : 'bg-[#ff2a00] border-[#ff2a00] hover:bg-red-700'}`}>{isRecording ? 'Recording Scene (Wait)' : 'Record Poster Reel (WEBM)'}</button>
+                    <button onClick={handleDownloadWebsiteBuild} className="py-5 bg-blue-600 text-white border-2 border-blue-600 rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-blue-700 transition-colors mt-4">Download Source (HTML)</button>
+                </div>
+            )}
+          </div>
+          <div className="p-6 bg-white border-t-2 border-black/10 flex gap-2">
+              <button onClick={handleSaveSettings} className="flex-1 py-5 bg-black text-white text-[11px] font-black rounded-none uppercase tracking-[0.2em] w-full hover:bg-neutral-800 transition-colors border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.2)] active:translate-y-1 active:translate-x-1 active:shadow-none">
+                  {isSaved ? 'CONFIG SAVED ✓' : 'SAVE CONFIGURATION'}
+              </button>
+          </div>
+        </div>
+      )}
+
+      {/* EXPORT OVERLAY */}
+      {exportedImage && (
+        <div className="absolute inset-0 z-[200] bg-neutral-900/95 flex flex-col items-center justify-center p-8 animate-in fade-in duration-300">
+            <button onClick={()=>setExportedImage(null)} className="absolute top-8 right-8 text-white font-bold opacity-50 hover:opacity-100 transition-opacity">CLOSE [X]</button>
+            <button onClick={handleDownloadImage} className="mb-6 px-12 py-4 bg-white text-black font-black uppercase tracking-[0.2em] rounded-none shadow-2xl hover:bg-neutral-200 transition-colors border-2 border-white">SAVE PNG</button>
+            <img src={exportedImage} className="max-h-[70vh] rounded-none shadow-2xl border-2 border-white/20" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+  </script>
+</body>
+</html>
