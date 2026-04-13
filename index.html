@@ -14,46 +14,45 @@
 </head>
 <body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 selection:bg-neutral-900 selection:text-white font-sans">
 
-  <!-- Netlify Form Detection (Hidden) -->
-  <form name="applications" data-netlify="true" hidden>
-    <input type="text" name="project_name" />
-    <textarea name="all_answers"></textarea>
-  </form>
-
   <div id="root"></div>
 
   <script type="text/babel" id="app-source">
 /**
  * ============================================================================
- * FULL SYSTEM MANIFEST (The "Everything" Reference)
+ * FULL SYSTEM MANIFEST (FINAL OPTIMIZED PRODUCTION BUILD)
  * ============================================================================
- * * 1. ACCESS ADMIN: Gear is HIDDEN. Press 'H' (PC) or Triple-Tap (Mobile).
- * * 2. DEBUG TERMINAL: Press 'D' to toggle the Developer Console.
- * * 3. MEDIA & VISUALS: Admin > Assets & Media (Local Uploads) & Environment.
- * * 4. FORM DESIGNER: Admin > Form Designer. Add/Edit/Delete questions live.
- * * 5. DUAL ROUTING: Internal 3D Form (Netlify) or External Google Forms URL.
- * * 6. AI STUDIO: Branding Generator, Artwork Generator, Form Auto-Mapper.
- * * 7. EXPORT: Metamodern Poster Layouts, Raw PNGs, and Video Capture.
+ * * 1. ACCESS ADMIN: Press 'H', Triple-Tap background, or Click Bottom-Left.
+ * * 2. DEBUG TERMINAL: Press 'D' to toggle the Developer Console & Copy App.
+ * * 3. MEDIA & VISUALS: Upload local images or paste external URLs.
+ * * 4. DUAL ROUTING: Custom UI (iFrame bypass) or External Google Forms URL.
+ * * 5. FORM MAPPER: Native JS Google Form Auto-Mapper.
+ * * 6. EXPORT: Metamodern Poster PNGs and WEBM Video Capture.
+ * * 7. DATA: Local Submissions backup with CSV download.
  * ============================================================================
  */
 
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useRef } = React;
 
 const DEFAULT_SETTINGS = {
-  exportWidth: 1080, exportHeight: 1350, frameWidth: 0.0, frameColor: '#ffffff', videoDuration: 5.0,
+  exportWidth: 1080, exportHeight: 1350, videoDuration: 5.0,
   artPosX: 0.0, artPosY: 0.0, artZoom: 0.0,
   archShape: 'torus_half', coreShape: 'sphere', catalystShape: 'tetrahedron', ringShape: 'thin',
   mediaGallery: [], mediaStyle: 'floating',
-  bgColor: '#e4e4e4', archColor: '#111111', ringColor: '#888888', cubeColor: '#ff2a00', glassColor: '#ffffff', particleColor: '#ff2a00',
-  glassIor: 1.6, archScale: 1.0, ringScale: 1.0, cubeScale: 1.0, glassScale: 1.0, uiAccentColor: '#ff2a00', uiPanelBg: '#ffffff', uiFont: "'Space Grotesk', sans-serif",
-  useInternalForm: true, submissionMethod: 'google', applyLink: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform', webhookUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/formResponse',
+  bgColor: '#e4e4e4', archColor: '#111111', ringColor: '#888888', cubeColor: '#ff2a00', glassColor: '#ffffff',
+  glassIor: 1.6, archScale: 1.0, ringScale: 1.0, cubeScale: 1.0, glassScale: 1.0, uiAccentColor: '#ff2a00', uiFont: "'Space Grotesk', sans-serif",
+  useInternalForm: true, applyLink: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform', webhookUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/formResponse',
   contentHero: 'WCC:', contentSub: 'Women Creating Change', btnEnter: 'Enter the Lab',
-  contentTag: 'OPEN CALL / ԲԱՑ ԿԱՆՉ', contentTitle: 'A 3-month intensive creative lab',
-  contentDesc1: 'WCC: announces an open call for a 3-month creative lab programme on-site in Gyumri and online (April–June 2026), for 12 participants — girls, women, and individuals from marginalized communities. Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance.',
-  contentDesc2: 'WCC-ն հայտարարում է բաց կանչ 3-ամսյա ստեղծագործական լաբորատորիայի համար Գյումրիում և առցանց։ Ժամանակացույց՝ 3 հանդիպում ապրիլին, 4 հանդիպում մայիսին, 2 հանդիպում հունիսին։ (Questions? gin.syuz@gmail.com)',
-  titleInclusions: 'Programme / Ծրագիր:', inclusion1: 'Workshops / Աշխատարաններ', inclusion2: 'Talks / Բաց քննարկումներ', inclusion3: 'Mentorship / Մենթորինգ', inclusion4: 'Virtual Exhibition / Առցանց ցուցահանդես',
-  titleDeadline: 'Application Deadline', contentDeadline: 'April 12, 2026 / Ապրիլի 12, 2026',
-  formTitle: 'Submit Proposal', formSuccessTitle: 'Application Received', formSuccessMsg: 'Thank you for submitting your proposal. We will review your materials soon.',
+  contentTag: 'Բաց կանչ/Open call',
+  contentTitle: 'WCC: Women Creating Change',
+  contentIntro1: '3-ամսյա ինտենսիվ ստեղծագործական լաբորատորիա\nԱշխատարաններ / Բաց քննարկումներ / Մենթորինգ / Առցանց ցուցահանդես\nԱրվեստագետների և առանց նախնական փորձի անհատների համար',
+  contentIntro2: 'A 3-month intensive creative lab\nWorkshops / Talks / Mentorship / Virtual Exhibition\nFor artists and individuals with no prior experience',
+  contentDesc1: 'WCC-ն հայտարարում է բաց կանչ՝ 3-ամսյա ստեղծագործական լաբորատոր ծրագրի համար, որը տեղի կունենա Գյումրիում և առցանց (ապրիլ–հունիս 2026)։\nԲաց կանչի արդյունքում կընտրվեն 12 մասնակից — աղջիկներ, կանայք և մարգինալացված համայնքների ներկայացուցիչներ։\nՄասնակիցները ներգրավված կլինեն համատեղ ստեղծագործական գործընթացներին՝ մասնակցելով աշխատարաններին, փորձագետների հետ քննարկումներին և մենթորության ծրագրին։\nԾրագրի ընթացքում մասնակիցները կմշակեն նախագծեր, որոնք կանդրադառնան ինքնությանը, փորձառությանը և դիմադրությանը, և որոնք կներկայացվեն առցանց ցուցահանդեսի շրջանակում։\n\nԺամանակացույց՝\nԱպրիլ — 2 հանդիպում հրավիրված մասնագետների հետ (առցանց/օֆլայն)\nՄայիս — 4 մենթորական հանդիպում՝ նախագծերի զարգացման համար\nՀունիս — ավարտական հանդիպում, գնահատում և ցուցահանդեսի բացում\n\n',
+  contentDesc2: 'WCC: announces an open call for a 3-month creative lab program on-site in Gyumri and online, which will include a group of 12 participants — girls, women, and individuals from marginalized communities to engage in collaborative artistic processes. Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance, culminating in a virtual exhibition.\n\nTimeline:\nApril — 2 sessions with invited experts (online/offline)\nMay — 4 mentorship sessions focused on project development\nJune — final meetings, evaluation, and exhibition launch',
+  titleInclusions: 'Programme / Ծրագիր:', inclusion1: 'Աշխատարաններ / Workshops', inclusion2: 'Բաց քննարկումներ / Talks', inclusion3: 'Մենթորինգ / Mentorship', inclusion4: 'Առցանց ցուցահանդես / Virtual Exhibition',
+  titleDeadline: 'Application Deadline', contentDeadline: 'Ապրիլի 12, 2026 / April 12, 2026',
+  formTitle: 'Apply', formSuccessTitle: 'Application Received', formSuccessMsg: 'Thank you.',
+  
+  // NOTE: If you already mapped your real form, replace these entry.1 placeholders with your real mapped array!
   questions: [
     { id: 'q1', label: 'Անուն, ազգանուն / Name, Surname', type: 'text', required: true, googleId: 'entry.1' },
     { id: 'q2', label: 'Տարիք / Age', type: 'text', required: true, googleId: 'entry.2' },
@@ -69,6 +68,36 @@ const DEFAULT_SETTINGS = {
     { id: 'q12', label: 'CV կամ պորտֆոլիո / CV or Portfolio (Link)', type: 'url', required: false, googleId: 'entry.12' },
     { id: 'q13', label: 'Սոցիալական կայքերի հղում / Social Media Links', type: 'url', required: false, googleId: 'entry.13' }
   ]
+};
+
+// --- GEOMETRY FACTORIES ---
+const createArchGeo = (type) => {
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100);
+    case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64);
+    case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8);
+    case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64);
+    case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5);
+  }
+};
+const createCoreGeo = (type) => {
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8);
+    case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0);
+    case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64);
+  }
+};
+const createRingGeo = (type, radius) => {
+  const thick = 0.02;
+  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
+  switch(type) {
+    case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100);
+    case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100);
+    case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100);
+    case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100);
+  }
 };
 
 // --- GLOBAL UI ATOMS ---
@@ -113,74 +142,6 @@ const ColorInput = ({ label, value, onChange }) => (
   </div>
 );
 
-// --- GEOMETRY FACTORIES ---
-const createArchGeo = (type) => {
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100);
-    case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64);
-    case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8);
-    case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64);
-    case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5);
-  }
-};
-const createCoreGeo = (type) => {
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8);
-    case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0);
-    case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64);
-  }
-};
-const createRingGeo = (type, radius) => {
-  const thick = 0.02;
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100);
-    case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100);
-    case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100);
-    case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100);
-  }
-};
-
-// --- API HELPER WITH EXPONENTIAL BACKOFF ---
-const fetchWithRetry = async (url, options, maxRetries = 5) => {
-  const delays = [1000, 2000, 4000, 8000, 16000];
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const res = await fetch(url, options);
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      if (i === maxRetries - 1) throw e;
-      await new Promise(resolve => setTimeout(resolve, delays[i]));
-    }
-  }
-};
-
-const extractJson = (text) => {
-  try {
-     return JSON.parse(text);
-  } catch(e) {
-     const startObj = text.indexOf('{');
-     const endObj = text.lastIndexOf('}');
-     const startArr = text.indexOf('[');
-     const endArr = text.lastIndexOf(']');
-
-     let start = -1, end = -1;
-     if (startObj !== -1 && endObj !== -1 && (startArr === -1 || startObj < startArr)) {
-         start = startObj; end = endObj;
-     } else if (startArr !== -1 && endArr !== -1) {
-         start = startArr; end = endArr;
-     }
-
-     if (start !== -1 && end !== -1 && end >= start) {
-         return JSON.parse(text.substring(start, end + 1));
-     }
-     throw e;
-  }
-};
-
 function App() {
   const mountRef = useRef(null);
   const sceneRefs = useRef({});
@@ -189,36 +150,42 @@ function App() {
   const [layer, setLayer] = useState(0);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [showSettingsBtn, setShowSettingsBtn] = useState(false);
-  const [showDebug, setShowDebug] = useState(false);
-  const [debugLogs, setDebugLogs] = useState([]);
-  const [debugCopyText, setDebugCopyText] = useState('Copy All');
   const [activeEditorMenu, setActiveEditorMenu] = useState('main');
-  const [showMediaModal, setShowMediaModal] = useState(false);
   const [exportedImage, setExportedImage] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
 
   // Form State
   const [formAnswers, setFormAnswers] = useState({});
   const [formStatus, setFormStatus] = useState('idle');
+  const [submissions, setSubmissions] = useState(() => {
+    try {
+        const saved = localStorage.getItem('wcc_app_submissions');
+        return saved ? JSON.parse(saved) : [];
+    } catch(e) { return []; }
+  });
 
-  // AI & Generation States
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [posterPrompt, setPosterPrompt] = useState('');
-  const [prefillUrl, setPrefillUrl] = useState('');
-  const [isAiLoading, setIsAiLoading] = useState(false);
-  const [isPosterLoading, setIsPosterLoading] = useState(false);
+  // Media & Recording States
   const [isRecording, setIsRecording] = useState(false);
-  const [isPolishing, setIsPolishing] = useState(false);
-  const [isMocking, setIsMocking] = useState(false);
   const [tempMediaUrl, setTempMediaUrl] = useState('');
 
+  // Mapper State
+  const [prefillUrl, setPrefillUrl] = useState('https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform');
+  const [isMappingLoading, setIsMappingLoading] = useState(false);
+
+  // Debug States
+  const [showDebug, setShowDebug] = useState(false);
+  const [debugLogs, setDebugLogs] = useState([]);
+  const [debugCopyText, setDebugCopyText] = useState('Copy Logs');
+  const [sourceCopyText, setSourceCopyText] = useState('Copy App');
+
   // REFS
-  const isPausedRef = useRef(false);
-  const isRecordingRef = useRef(false);
   const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
+  const isRecordingRef = useRef(false);
   const originalRendererStateRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
+  const recCanvasRef = useRef(null);
+  const recCtxRef = useRef(null);
   const debugScrollRef = useRef(null);
 
   const [settings, setSettings] = useState(() => {
@@ -257,7 +224,28 @@ function App() {
       try {
           document.execCommand('copy');
           setDebugCopyText('COPIED!');
-          setTimeout(() => setDebugCopyText('Copy All'), 2000);
+          setTimeout(() => setDebugCopyText('Copy Logs'), 2000);
+      } catch (err) {
+          console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+  };
+
+  const handleCopySource = () => {
+      const scriptNode = document.getElementById('app-source');
+      if (!scriptNode) return;
+      const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
+      const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?\};/, replacementStr);
+      const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = newHtml;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+          document.execCommand('copy');
+          setSourceCopyText('COPIED!');
+          setTimeout(() => setSourceCopyText('Copy App'), 2000);
       } catch (err) {
           console.error('Copy failed', err);
       }
@@ -272,6 +260,7 @@ function App() {
   // CORE HANDLERS
   // ---------------------------------------------------------
   const handleSettingChange = (key, value) => setSettings(prev => ({ ...prev, [key]: value }));
+  
   const handleSaveSettings = () => {
     try {
         localStorage.setItem('wcc_app_settings_v4', JSON.stringify(settings));
@@ -317,36 +306,316 @@ function App() {
     const scriptNode = document.getElementById('app-source'); if (!scriptNode) return;
     const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
     const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?\};/, replacementStr);
-    const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 font-sans">\n  <form name="applications" data-netlify="true" hidden><input type="text" name="project_name" /><textarea name="all_answers"></textarea></form>\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+    const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n</head>\n<body class="bg-[#e4e4e4] overflow-hidden m-0 p-0 text-neutral-900 font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
     const blob = new Blob([newHtml], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'index.html'; a.click();
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault(); setFormStatus('submitting');
-    if (settings.submissionMethod === 'google') {
-        const googleFormData = new URLSearchParams();
+  const handleFormSubmit = () => {
+    // Custom Validation: Ensure all required fields are actually filled out
+    for (const q of settings.questions) {
+        if (q.required) {
+            const val = formAnswers[q.id];
+            if (!val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && val.trim() === '')) {
+                alert(`Please answer the required question: [ ${q.label} ]`);
+                return;
+            }
+        }
+    }
+
+    setFormStatus('submitting');
+
+    // 1. Save locally for CSV download
+    const newSubmission = { date: new Date().toISOString(), ...formAnswers };
+    const updatedSubmissions = [...submissions, newSubmission];
+    setSubmissions(updatedSubmissions);
+    try { localStorage.setItem('wcc_app_submissions', JSON.stringify(updatedSubmissions)); } catch(e) {}
+
+    // 2. Transmit to Google Forms via Hidden IFrame (Bypasses 403 / CORS)
+    if (settings.webhookUrl) {
+        const iframeName = 'hidden_iframe_' + Date.now();
+        const iframe = document.createElement('iframe');
+        iframe.name = iframeName;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = settings.webhookUrl;
+        form.target = iframeName;
+
         settings.questions.forEach(q => {
             const val = formAnswers[q.id];
             if (Array.isArray(val)) {
-                val.forEach(v => googleFormData.append(q.googleId, v)); // Google expects identical keys for checkboxes
+                val.forEach(v => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = q.googleId;
+                    input.value = v;
+                    form.appendChild(input);
+                });
             } else {
-                googleFormData.append(q.googleId, val || "");
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = q.googleId;
+                input.value = val || "";
+                form.appendChild(input);
             }
         });
-        try {
-            await fetch(settings.webhookUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: googleFormData.toString()
-            });
-        } catch(err) { logDebug("ERROR", "Google Submit Error", err.message); }
-    } else {
-        const encode = (data) => Object.keys(data).map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])).join("&");
-        const payload = { "form-name": "applications", "project_name": settings.contentHero, "all_answers": JSON.stringify(formAnswers, null, 2) };
-        try { await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: encode(payload) }); } catch (err) { logDebug("ERROR", "Netlify Submit Error", err.message); }
+
+        document.body.appendChild(form);
+        form.submit();
+
+        // Cleanup DOM after submission
+        setTimeout(() => {
+            document.body.removeChild(form);
+            setTimeout(() => document.body.removeChild(iframe), 2000);
+        }, 100);
     }
+    
     setTimeout(() => setFormStatus('success'), 1200);
+  };
+
+  const handleDownloadSubmissions = () => {
+     if (submissions.length === 0) return alert("No submissions to download yet.");
+     const headers = ['Date', ...settings.questions.map(q => q.label)];
+     const csvRows = [headers.join(',')];
+     submissions.forEach(sub => {
+         const row = [sub.date];
+         settings.questions.forEach(q => {
+             let val = sub[q.id] || "";
+             if (Array.isArray(val)) val = val.join('; ');
+             val = `"${String(val).replace(/"/g, '""')}"`;
+             row.push(val);
+         });
+         csvRows.push(row.join(','));
+     });
+     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+     const url = URL.createObjectURL(blob);
+     const a = document.createElement('a');
+     a.href = url; a.download = 'wcc_submissions.csv'; a.click();
+  };
+
+  const handleClearSubmissions = () => {
+      if(confirm("Are you sure you want to clear all saved submissions? This cannot be undone.")) {
+          setSubmissions([]);
+          localStorage.removeItem('wcc_app_submissions');
+      }
+  };
+
+  // --- NATIVE JS FORM MAPPER ---
+  const handleAutoMapForm = async (silentMode = false) => {
+      const isSilent = silentMode === true; // Prevent click events from evaluating to true
+      
+      if (!isSilent) {
+          logDebug('INFO', 'Starting Native Form Auto-Map Process');
+          setShowDebug(true);
+      }
+      
+      let inputRaw = prefillUrl.trim();
+      if (!inputRaw) return;
+
+      setIsMappingLoading(true);
+      try {
+          let extractedData = "";
+          let base = "";
+
+          if (inputRaw.startsWith('http')) {
+              if (!inputRaw.includes('docs.google.com/forms')) {
+                  throw new Error("Must be a docs.google.com/forms URL.");
+              }
+              let urlObj = new URL(inputRaw);
+              base = urlObj.origin + urlObj.pathname;
+              base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
+              if (!isSilent) logDebug('INFO', 'Webhook Target Base URL', base);
+
+              let html = "";
+              let fetchSuccess = false;
+              
+              // Robust proxy list for bypassing Google blocks on localhost
+              const proxyList = [
+                  { name: 'AllOrigins', url: `https://api.allorigins.win/raw?url=${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'CodeTabs', url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'ThingProxy', url: `https://thingproxy.freeboard.io/fetch/${urlObj.href}`, type: 'text' }
+              ];
+
+              for (const proxy of proxyList) {
+                  if (!isSilent) logDebug('FETCH', `Trying Proxy: ${proxy.name}`, proxy.url);
+                  try {
+                      const corsRes = await fetch(proxy.url);
+                      if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`);
+                      html = proxy.type === 'json' ? (await corsRes.json()).contents : await corsRes.text();
+                      if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) {
+                          fetchSuccess = true;
+                          break;
+                      }
+                  } catch (err) { if (!isSilent) logDebug('WARN', `${proxy.name} failed`, err.message); }
+              }
+
+              if (!fetchSuccess) {
+                  if (!isSilent) alert("Google's security blocked the automatic fetch. \n\nFALLBACK MODE: Please open your Google Form in a new browser tab, right-click and select 'View Page Source', copy all the code, and paste it into this box instead of the URL!");
+                  setIsMappingLoading(false);
+                  return;
+              }
+
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
+              const startIndex = html.indexOf(searchStr);
+              if (startIndex !== -1) {
+                  const dataStart = startIndex + searchStr.length;
+                  let scriptEndIndex = html.indexOf("</" + "script>", dataStart);
+                  let dataEnd = scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000;
+                  if (dataEnd - dataStart > 100000) dataEnd = dataStart + 100000;
+                  extractedData = html.substring(dataStart, dataEnd);
+              } else { throw new Error("Could not find schema pattern in fetched HTML."); }
+
+          } else if (inputRaw.includes('FB_PUBLIC_LOAD_DATA_')) {
+              if (!isSilent) logDebug('INFO', 'Raw HTML detected. Bypassing fetch.');
+              const actionMatch = inputRaw.match(/action="(https:\/\/docs\.google\.com\/forms\/[^"]+\/formResponse)"/);
+              if (actionMatch) {
+                  base = actionMatch[1];
+                  if (!isSilent) logDebug('INFO', 'Extracted Webhook Target', base);
+              } else {
+                  throw new Error("Could not find the form action URL. Make sure you copied the entire page source.");
+              }
+
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
+              const startIndex = inputRaw.indexOf(searchStr);
+              if (startIndex !== -1) {
+                  const dataStart = startIndex + searchStr.length;
+                  let scriptEndIndex = inputRaw.indexOf("</" + "script>", dataStart);
+                  let dataEnd = scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000;
+                  if (dataEnd - dataStart > 100000) dataEnd = dataStart + 100000;
+                  extractedData = inputRaw.substring(dataStart, dataEnd);
+              } else { throw new Error("Could not find schema pattern in pasted HTML."); }
+          } else {
+              throw new Error("Invalid input. Paste a Google Forms URL or the raw Page Source HTML.");
+          }
+
+          // Pure JS JSON Parser (No AI API Keys Needed)
+          if (!isSilent) logDebug('INFO', 'Parsing JSON data natively...');
+          
+          let cleanJsonStr = extractedData.trim();
+          let openBrackets = 0;
+          let endIndex = -1;
+          for (let i = 0; i < cleanJsonStr.length; i++) {
+              if (cleanJsonStr[i] === '[') openBrackets++;
+              else if (cleanJsonStr[i] === ']') {
+                  openBrackets--;
+                  if (openBrackets === 0) {
+                      endIndex = i;
+                      break;
+                  }
+              }
+          }
+          if (endIndex !== -1) {
+              cleanJsonStr = cleanJsonStr.substring(0, endIndex + 1);
+          }
+
+          const formData = JSON.parse(cleanJsonStr);
+          const formItems = formData[1][1];
+          if (!Array.isArray(formItems)) throw new Error("Invalid form data structure");
+
+          const parsedQuestions = [];
+          let qIndex = 1;
+
+          formItems.forEach(item => {
+              if (!item || !Array.isArray(item)) return;
+              const typeCode = item[3];
+              const typeMap = { 0: 'text', 1: 'textarea', 2: 'radio', 3: 'select', 4: 'checkbox', 9: 'text', 10: 'text' };
+              const qType = typeMap[typeCode];
+
+              if (qType && item[4] && Array.isArray(item[4]) && item[4][0]) {
+                  const entryIdStr = item[4][0][0];
+                  // item[4][0][2] explicitly maps Google's 'required' asterisk flag
+                  const isRequired = item[4][0][2] === 1 || item[4][0][2] === true;
+                  const label = item[1] || `Question ${qIndex}`;
+                  
+                  const qObj = {
+                      id: 'q' + qIndex,
+                      label: label,
+                      type: qType,
+                      required: isRequired,
+                      googleId: `entry.${entryIdStr}`
+                  };
+
+                  if ([2, 3, 4].includes(typeCode) && item[4][0][1] && Array.isArray(item[4][0][1])) {
+                      qObj.options = item[4][0][1].map(opt => opt[0]).filter(o => o !== null && o !== undefined && o !== "");
+                  }
+
+                  parsedQuestions.push(qObj);
+                  qIndex++;
+              }
+          });
+
+          if (parsedQuestions.length === 0) throw new Error("No questions could be parsed.");
+
+          const newConfig = { 
+              ...settingsRef.current, 
+              useInternalForm: true, 
+              applyLink: inputRaw.startsWith('http') ? inputRaw : base.replace('formResponse', 'viewform'), 
+              webhookUrl: base, 
+              questions: parsedQuestions 
+          };
+
+          setSettings(newConfig);
+          setFormAnswers({});
+          
+          if (!isSilent) {
+              setPrefillUrl('');
+              logDebug('SUCCESS', 'Native form mapping complete.');
+              alert("Form Map Complete! Click 'Save Configuration' at the bottom to apply it.");
+          } else {
+              try { localStorage.setItem('wcc_app_settings_v4', JSON.stringify(newConfig)); } catch(e) {}
+              console.log("Silently mapped Google Form defaults in the background.");
+          }
+
+      } catch (e) {
+          if (!isSilent) {
+              logDebug('ERROR', 'Auto-map failed', e.message);
+              alert("Failed to map form: " + e.message);
+          } else {
+              console.warn("Silent background mapping failed.", e.message);
+          }
+      }
+      setIsMappingLoading(false);
+  };
+
+  const drawPosterOverlay = (ctx, expW, expH, s) => {
+    const pad = expW * 0.05;
+    ctx.strokeStyle = s.archColor;
+    ctx.lineWidth = expW * 0.004;
+    ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.fillRect(pad, pad, expW * 0.03, expW * 0.03);
+    const panelH = expH * 0.32;
+    ctx.fillStyle = s.bgColor;
+    ctx.fillRect(pad, expH - pad - panelH, expW - pad * 2, panelH);
+    ctx.beginPath();
+    ctx.moveTo(pad, expH - pad - panelH);
+    ctx.lineTo(expW - pad, expH - pad - panelH);
+    ctx.stroke();
+    ctx.textAlign = 'left';
+    const leftMargin = pad + expW * 0.04;
+    let textY = expH - pad - panelH + expH * 0.06;
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.font = `800 ${expW * 0.02}px monospace`;
+    ctx.fillText(s.contentTag.toUpperCase(), leftMargin, textY);
+    textY += expH * 0.08;
+    ctx.fillStyle = s.archColor;
+    ctx.font = `900 ${expW * 0.09}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentHero.toUpperCase(), leftMargin, textY);
+    textY += expH * 0.045;
+    ctx.font = `800 ${expW * 0.035}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentTitle, leftMargin, textY);
+    textY += expH * 0.03;
+    ctx.globalAlpha = 0.7;
+    ctx.font = `600 ${expW * 0.022}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
+    ctx.fillText(s.contentSub, leftMargin, textY);
+    ctx.globalAlpha = 1.0;
+    textY += expH * 0.05;
+    ctx.fillStyle = s.uiAccentColor;
+    ctx.font = `800 ${expW * 0.022}px monospace`;
+    ctx.fillText(`DEADLINE: ${s.contentDeadline.toUpperCase()}`, leftMargin, textY);
   };
 
   const handleExportImage = (isPosterMode = false) => {
@@ -358,60 +627,7 @@ function App() {
     const canvas2d = document.createElement('canvas'); canvas2d.width = expW; canvas2d.height = expH; const ctx = canvas2d.getContext('2d');
     ctx.fillStyle = s.bgColor; ctx.fillRect(0, 0, expW, expH); ctx.drawImage(renderer.domElement, 0, 0);
 
-    if (isPosterMode) {
-      const pad = expW * 0.05;
-      ctx.strokeStyle = s.archColor;
-      ctx.lineWidth = expW * 0.004;
-      ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
-
-      // Top Left Accent Box
-      ctx.fillStyle = s.uiAccentColor;
-      ctx.fillRect(pad, pad, expW * 0.03, expW * 0.03);
-
-      // Bottom Panel
-      const panelH = expH * 0.32;
-      ctx.fillStyle = s.bgColor;
-      ctx.fillRect(pad, expH - pad - panelH, expW - pad * 2, panelH);
-
-      // Top line of bottom panel
-      ctx.beginPath();
-      ctx.moveTo(pad, expH - pad - panelH);
-      ctx.lineTo(expW - pad, expH - pad - panelH);
-      ctx.stroke();
-
-      ctx.textAlign = 'left';
-      const leftMargin = pad + expW * 0.04;
-      let textY = expH - pad - panelH + expH * 0.06;
-
-      // 1. Tag
-      ctx.fillStyle = s.uiAccentColor;
-      ctx.font = `800 ${expW * 0.02}px monospace`;
-      ctx.fillText(s.contentTag.toUpperCase(), leftMargin, textY);
-
-      // 2. Hero
-      textY += expH * 0.08;
-      ctx.fillStyle = s.archColor;
-      ctx.font = `900 ${expW * 0.09}px ${s.uiFont}`;
-      ctx.fillText(s.contentHero.toUpperCase(), leftMargin, textY);
-
-      // 3. Title
-      textY += expH * 0.045;
-      ctx.font = `800 ${expW * 0.035}px ${s.uiFont}`;
-      ctx.fillText(s.contentTitle, leftMargin, textY);
-
-      // 4. Sub
-      textY += expH * 0.03;
-      ctx.globalAlpha = 0.7;
-      ctx.font = `600 ${expW * 0.022}px ${s.uiFont}`;
-      ctx.fillText(s.contentSub, leftMargin, textY);
-      ctx.globalAlpha = 1.0;
-
-      // 5. Deadline (Aligned below)
-      textY += expH * 0.05;
-      ctx.fillStyle = s.uiAccentColor;
-      ctx.font = `800 ${expW * 0.022}px monospace`;
-      ctx.fillText(`DEADLINE: ${s.contentDeadline.toUpperCase()}`, leftMargin, textY);
-    }
+    if (isPosterMode) drawPosterOverlay(ctx, expW, expH, s);
 
     setExportedImage(canvas2d.toDataURL());
     renderer.setPixelRatio(origPr); renderer.setSize(window.innerWidth, window.innerHeight, false);
@@ -424,15 +640,24 @@ function App() {
     const s = settingsRef.current;
     setIsRecording(true);
 
+    const expW = parseInt(s.exportWidth);
+    const expH = parseInt(s.exportHeight);
+    
+    recCanvasRef.current = document.createElement('canvas');
+    recCanvasRef.current.width = expW;
+    recCanvasRef.current.height = expH;
+    recCtxRef.current = recCanvasRef.current.getContext('2d');
+
     originalRendererStateRef.current = {
         w: window.innerWidth, h: window.innerHeight, aspect: camera.aspect, pr: renderer.getPixelRatio()
     };
 
-    renderer.setSize(s.exportWidth, s.exportHeight, false);
-    camera.aspect = s.exportWidth / s.exportHeight;
+    renderer.setPixelRatio(1);
+    renderer.setSize(expW, expH, false);
+    camera.aspect = expW / expH;
     camera.updateProjectionMatrix();
 
-    const stream = renderer.domElement.captureStream(30);
+    const stream = recCanvasRef.current.captureStream(30);
     mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
     chunksRef.current = [];
 
@@ -441,223 +666,28 @@ function App() {
         const blob = new Blob(chunksRef.current, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url; a.download = `wcc_capture.webm`; a.click();
+        a.href = url; a.download = `wcc_poster_reel.webm`; a.click();
+        
         setIsRecording(false);
         isRecordingRef.current = false;
+        recCanvasRef.current = null;
+        recCtxRef.current = null;
 
         const orig = originalRendererStateRef.current;
+        renderer.setPixelRatio(orig.pr);
         renderer.setSize(orig.w, orig.h, false);
         camera.aspect = orig.aspect;
         camera.updateProjectionMatrix();
     };
 
-    mediaRecorderRef.current.start();
     isRecordingRef.current = true;
+    mediaRecorderRef.current.start();
 
     setTimeout(() => {
         if(isRecordingRef.current && mediaRecorderRef.current.state !== 'inactive') {
             mediaRecorderRef.current.stop();
         }
     }, s.videoDuration * 1000);
-  };
-
-  // --- AI DESIGN TOOLS ---
-  const handleGenerateMainModel = async () => {
-    if (!aiPrompt.trim()) return;
-    setIsAiLoading(true);
-    const apiKey = "";
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-    const sys = `Visionary designer: Create a clean art open call theme. Respond ONLY JSON mapping to DEFAULT_SETTINGS structure. Use shapes: torus_half, cylinder, box.`;
-    const payload = {
-      contents: [{ parts: [{ text: aiPrompt }] }],
-      systemInstruction: { parts: [{ text: sys }] },
-      generationConfig: { responseMimeType: "application/json" }
-    };
-    try {
-      const data = await fetchWithRetry(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if(data && data.candidates) {
-        const rawText = data.candidates[0].content.parts[0].text;
-        setSettings(prev => ({ ...prev, ...extractJson(rawText) }));
-      }
-    } catch(e) { console.log("Generation failed:", e.message); }
-    setIsAiLoading(false);
-  };
-
-  const handleGeneratePoster = async () => {
-    if (!posterPrompt.trim()) return;
-    setIsPosterLoading(true);
-    const apiKey = "";
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
-    const payload = {
-      instances: [{ prompt: `Fine art gallery photography, minimalist: ${posterPrompt}` }],
-      parameters: { sampleCount: 1 }
-    };
-    try {
-      const data = await fetchWithRetry(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if(data && data.predictions) {
-        handleSettingChange('mediaGallery', [...settings.mediaGallery, `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`]);
-        handleSettingChange('mediaStyle', 'floating');
-      }
-    } catch(e) { console.log("Artwork generation failed:", e.message); }
-    setIsPosterLoading(false);
-  };
-
-  const handleAutoMapForm = async () => {
-      logDebug('INFO', 'Starting Form Auto-Map Process');
-      setShowDebug(true); // Auto-open debugger
-      let urlToUse = prefillUrl.trim();
-      if (!urlToUse) {
-          logDebug('ERROR', 'No URL provided');
-          return;
-      }
-      if (!urlToUse.startsWith('http')) urlToUse = 'https://' + urlToUse;
-
-      if (!urlToUse.includes('docs.google.com/forms')) {
-          logDebug('ERROR', 'Invalid URL format (Not Google Forms)', urlToUse);
-          return alert('Invalid Google Forms URL. Must be a docs.google.com/forms URL.');
-      }
-
-      let urlObj;
-      try {
-          urlObj = new URL(urlToUse);
-          logDebug('INFO', 'URL Parsed Successfully', urlObj.href);
-      } catch(e) {
-          logDebug('ERROR', 'Invalid URL structure', e.message);
-          return alert('Invalid URL format.');
-      }
-
-      let base = urlObj.origin + urlObj.pathname;
-      base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
-      logDebug('INFO', 'Webhook Target Base URL', base);
-
-      setIsAiLoading(true);
-      try {
-        let extractedData = "";
-
-        // 1. Check if user provided pre-filled parameters natively
-        const entries = [];
-        urlObj.searchParams.forEach((value, key) => {
-          if (key.toLowerCase().startsWith('entry.')) entries.push({ id: key, label: value });
-        });
-
-        if (entries.length > 0) {
-            logDebug('INFO', 'Pre-filled parameters detected in URL', entries);
-            extractedData = JSON.stringify(entries);
-        } else {
-            logDebug('INFO', 'No pre-filled params found. Attempting multi-proxy crawl sequence...');
-
-            // 2. Multi-Proxy Fallback Matrix
-            let html = "";
-            let fetchSuccess = false;
-
-            const proxyList = [
-                { name: 'CodeTabs', url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlObj.href)}`, type: 'text' },
-                { name: 'AllOrigins', url: `https://api.allorigins.win/get?url=${encodeURIComponent(urlObj.href)}`, type: 'json' },
-                { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' }
-            ];
-
-            for (const proxy of proxyList) {
-                logDebug('FETCH', `Trying Proxy: ${proxy.name}`, proxy.url);
-                try {
-                    const corsRes = await fetch(proxy.url);
-                    if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`);
-
-                    if (proxy.type === 'json') {
-                        const corsData = await corsRes.json();
-                        html = corsData.contents;
-                    } else {
-                        html = await corsRes.text();
-                    }
-
-                    if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) {
-                        logDebug('SUCCESS', `${proxy.name} Fetched Valid HTML`, `Length: ${html.length} bytes`);
-                        fetchSuccess = true;
-                        break; // Stop trying proxies once successful
-                    } else {
-                        throw new Error(`Missing Google Form schema in response.`);
-                    }
-                } catch (err) {
-                    logDebug('WARN', `${proxy.name} proxy failed`, err.message);
-                }
-            }
-
-            if (!fetchSuccess) {
-                throw new Error("All proxy attempts failed or were blocked by your browser network rules.");
-            }
-
-            // 3. Extract Google's internal schema structure natively (Dynamic Length Method)
-            logDebug('INFO', 'Searching for FB_PUBLIC_LOAD_DATA_ schema in HTML...');
-            const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
-            const startIndex = html.indexOf(searchStr);
-
-            if (startIndex !== -1) {
-                const dataStart = startIndex + searchStr.length;
-                let scriptEndIndex = html.indexOf("</" + "script>", dataStart);
-                let dataEnd = scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000;
-
-                if (dataEnd - dataStart > 100000) dataEnd = dataStart + 100000;
-
-                extractedData = html.substring(dataStart, dataEnd);
-                logDebug('SUCCESS', 'Schema extracted from HTML', `Length: ${extractedData.length} chars`);
-            } else {
-                throw new Error("Could not find form schema pattern in HTML payload.");
-            }
-        }
-
-        logDebug('INFO', 'Preparing Gemini AI prompt payload');
-        const prompt = `I am mapping a Google Form to a custom UI.
-Here is a raw data chunk extracted from the form's source code:
-${extractedData}
-
-Analyze this data and extract ALL the form questions.
-
-Return a JSON array of objects with this EXACT structure mapping EVERY question found:
-[{ "id": "q1", "label": "The extracted question title", "type": "text|email|url|textarea|radio|checkbox|select", "required": true, "googleId": "entry.XXXX", "options": ["Opt 1", "Opt 2"] }]
-
-Rules:
-1. 'googleId' MUST be the exact 'entry.XXXX' string associated with the question.
-2. Guess the best HTML input 'type' (text, textarea, email, url, radio, checkbox, select) based on the question.
-3. If the question has multiple choices (radio, checkbox, dropdown), you MUST extract the choices into the "options" array of strings. If not, omit the "options" field.
-4. Respond ONLY with a valid, raw JSON array containing all questions.`;
-
-        const apiKey = "";
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-        const payload = {
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: "application/json" }
-        };
-
-        logDebug('FETCH', 'Sending data to Gemini API...', 'Awaiting response');
-        const res = await fetchWithRetry(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-
-        if(res && res.candidates) {
-          const rawText = res.candidates[0].content.parts[0].text;
-          logDebug('SUCCESS', 'Received Gemini Response', rawText);
-
-          const questions = extractJson(rawText);
-          logDebug('INFO', 'Parsed JSON questions successfully', questions);
-
-          if (!Array.isArray(questions) || questions.length === 0) {
-              throw new Error("AI returned empty mapping.");
-          }
-
-          setSettings(prev => ({
-            ...prev,
-            submissionMethod: 'google',
-            useInternalForm: true,
-            webhookUrl: base,
-            questions: questions
-          }));
-          setFormAnswers({});
-          setPrefillUrl('');
-          logDebug('DONE', 'Form mapping complete and injected into state.');
-          alert("Form mapped successfully! Check the Form Designer tab to review the generated fields.");
-        }
-      } catch (e) {
-        logDebug('ERROR', 'Auto-map encountered a fatal exception', e.message);
-        alert("Failed to map form automatically.\n\nOpen Debug Panel ('D' key) for details. Please generate a 'Get pre-filled link' and paste that instead.");
-      }
-      setIsAiLoading(false);
   };
 
   const addQuestion = () => handleSettingChange('questions', [...settings.questions, { id: 'q' + Date.now(), label: 'New Question', type: 'text', required: false, googleId: 'entry.' }]);
@@ -707,11 +737,9 @@ Rules:
 
     // Resize Handle
     const handleResize = () => {
-      if(!isRecordingRef.current) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      }
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -719,18 +747,29 @@ Rules:
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       const s = settingsRef.current;
-      if (!isPausedRef.current) {
-        time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
-        if(s.mediaGallery?.length > 0 && s.mediaStyle === 'floating') {
-            galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15;
-            galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05;
-        }
+      
+      time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
+      if(s.mediaGallery?.length > 0 && s.mediaStyle === 'floating') {
+          galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15;
+          galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05;
       }
+      
       shelterGroup.position.x += ((targetArtPosRef.current.x + s.artPosX) - shelterGroup.position.x) * 0.05;
       shelterGroup.position.y += ((targetArtPosRef.current.y + s.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
       innerMesh.position.y = Math.sin(time * 0.001) * 0.1; cube.position.y = 1.5 + Math.sin(time * 0.002) * 0.2;
       camera.position.z += ((targetArtPosRef.current.z + s.artZoom) - camera.position.z) * 0.05;
-      camera.lookAt(0, 0, 0); renderer.render(scene, camera);
+      camera.lookAt(0, 0, 0); 
+      
+      renderer.render(scene, camera);
+
+      if (isRecordingRef.current && recCtxRef.current && recCanvasRef.current) {
+          const w = recCanvasRef.current.width;
+          const h = recCanvasRef.current.height;
+          recCtxRef.current.fillStyle = s.bgColor;
+          recCtxRef.current.fillRect(0, 0, w, h);
+          recCtxRef.current.drawImage(renderer.domElement, 0, 0, w, h);
+          drawPosterOverlay(recCtxRef.current, w, h, s);
+      }
     };
     animate();
 
@@ -757,13 +796,16 @@ Rules:
 
     // Media & Material sync updates (Gallery Mode)
     if (JSON.stringify(sceneRefs.current.currentGallery) !== JSON.stringify(settings.mediaGallery) || sceneRefs.current.currentMediaStyle !== settings.mediaStyle) {
-      // 1. Dispose old resources
+      // 1. Dispose old resources thoroughly
       sceneRefs.current.currentTextures.forEach(t => t.dispose());
       while(galleryGroup.children.length > 0) {
           const child = galleryGroup.children[0];
           child.traverse((c) => {
              if (c.geometry) c.geometry.dispose();
-             if (c.material) c.material.dispose();
+             if (c.material) {
+                 if (c.material.map) c.material.map.dispose();
+                 c.material.dispose();
+             }
           });
           galleryGroup.remove(child);
       }
@@ -825,7 +867,7 @@ Rules:
 
     // Color & Scale sync updates
     scene.background.set(settings.bgColor);
-    scene.fog.color.set(settings.bgColor); // Fix: Syncs Fog to avoid visual box artifacts
+    scene.fog.color.set(settings.bgColor); // Syncs Fog to avoid visual box artifacts
     arch.material.color.set(settings.archColor);
     cube.material.color.set(settings.cubeColor);
     ring.material.color.set(settings.ringColor);
@@ -842,6 +884,13 @@ Rules:
 
   // Global Sync Logic
   useEffect(() => {
+    // 1. SILENT INITIALIZATION: Automatically map defaults if starting from scratch
+    const saved = localStorage.getItem('wcc_app_settings_v4');
+    if (!saved && settingsRef.current.questions[0]?.googleId === 'entry.1') {
+        handleAutoMapForm(true); // Trigger background patcher
+    }
+
+    // 2. Global Hotkeys & Taps
     const handleKeyDown = (e) => {
         if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
             setShowSettingsBtn(p => !p); setIsEditorOpen(false);
@@ -851,13 +900,32 @@ Rules:
         }
     };
     let tapCount = 0; let tapTimer;
-    const handleTouch = (e) => { if (['INPUT', 'TEXTAREA', 'BUTTON'].includes(e.target.tagName)) return; tapCount++; clearTimeout(tapTimer); if (tapCount === 3) { setShowSettingsBtn(p => !p); setIsEditorOpen(false); tapCount = 0; } else { tapTimer = setTimeout(() => { tapCount = 0; }, 400); } };
-    window.addEventListener('keydown', handleKeyDown); window.addEventListener('touchstart', handleTouch);
-    return () => { window.removeEventListener('keydown', handleKeyDown); window.removeEventListener('touchstart', handleTouch); };
+    const handleInteract = (e) => { 
+        if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'OPTION', 'A'].includes(e.target.tagName)) return; 
+        tapCount++; 
+        clearTimeout(tapTimer); 
+        if (tapCount >= 3) { 
+            setShowSettingsBtn(p => !p); setIsEditorOpen(false); tapCount = 0; 
+        } else { 
+            tapTimer = setTimeout(() => { tapCount = 0; }, 400); 
+        } 
+    };
+    window.addEventListener('keydown', handleKeyDown); 
+    window.addEventListener('touchstart', handleInteract);
+    window.addEventListener('mousedown', handleInteract);
+    return () => { 
+        window.removeEventListener('keydown', handleKeyDown); 
+        window.removeEventListener('touchstart', handleInteract);
+        window.removeEventListener('mousedown', handleInteract); 
+    };
   }, []);
 
   return (
     <div className="relative w-full h-screen overflow-hidden text-neutral-900 bg-[#e4e4e4]" style={{ fontFamily: settings.uiFont }}>
+      
+      {/* FOOLPROOF INVISIBLE ADMIN TOGGLE - Click extreme bottom-left corner */}
+      <div onClick={() => {setShowSettingsBtn(p => !p); setIsEditorOpen(false);}} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
+
       <style>{`
         .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px); }
         .ui-panel-bg { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border: 2px solid rgba(0,0,0,0.1); border-radius: 0; box-shadow: 16px 16px 0px rgba(0,0,0,0.05); }
@@ -893,9 +961,13 @@ Rules:
                             <p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono">{settings.contentTag}</p>
                         </div>
                         <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tighter uppercase">{settings.contentTitle}</h2>
+                        <div className="mb-8 space-y-4 text-sm font-bold opacity-90 border-l-4 border-[#ff2a00] pl-4 font-mono">
+                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro1}</p>
+                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro2}</p>
+                        </div>
                         <div className="space-y-6 opacity-80 leading-relaxed mb-12 text-base font-medium font-serif border-l-2 border-black/20 pl-6">
-                            <p>{settings.contentDesc1}</p>
-                            <p>{settings.contentDesc2}</p>
+                            <p className="whitespace-pre-wrap">{settings.contentDesc1}</p>
+                            <p className="whitespace-pre-wrap">{settings.contentDesc2}</p>
                         </div>
                         <div className="flex gap-4 pt-6 border-t-2 border-black/10">
                             <button onClick={()=>setLayer(0)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity">Abort</button>
@@ -938,7 +1010,7 @@ Rules:
                                 <h2 className="text-3xl font-black uppercase tracking-tighter">{settings.formTitle}</h2>
                             </div>
                             {settings.useInternalForm ? (
-                               <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
+                               <form className="flex flex-col gap-6" onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
                                   {settings.questions.map((q) => (
                                     <div key={q.id} className="flex flex-col gap-2">
                                        <div className="flex justify-between items-center px-1">
@@ -1014,6 +1086,7 @@ Rules:
                       <span className="font-bold opacity-70 tracking-widest uppercase">SYS_DEBUG_CONSOLE</span>
                   </div>
                   <div className="flex gap-4">
+                      <button onClick={handleCopySource} className="text-blue-500/50 hover:text-blue-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{sourceCopyText}</button>
                       <button onClick={handleCopyDebug} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{debugCopyText}</button>
                       <button onClick={() => setDebugLogs([])} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">Clear</button>
                   </div>
@@ -1040,7 +1113,7 @@ Rules:
 
       {/* ADMIN GEAR */}
       {showSettingsBtn && (
-        <button onClick={() => setIsEditorOpen(!isEditorOpen)} className="absolute bottom-6 left-6 z-[100] w-14 h-14 bg-white border-2 border-black/10 rounded-none shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all hover:border-black"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 home 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+        <button onClick={() => setIsEditorOpen(!isEditorOpen)} className="absolute bottom-6 left-6 z-[100] w-14 h-14 bg-white border-2 border-black/10 rounded-none shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all hover:border-black"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 home 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
       )}
 
       {/* ADMIN PANEL */}
@@ -1055,11 +1128,12 @@ Rules:
           <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6 custom-scrollbar bg-[#f8f8f8]">
             {activeEditorMenu === 'main' ? (
                 <div className="flex flex-col gap-3">
+                    <MenuButton icon="📦" label="Data & Submissions" onClick={()=>setActiveEditorMenu('data')} />
                     <MenuButton icon="📷" label="Assets & Media" onClick={()=>setActiveEditorMenu('assets')} />
                     <MenuButton icon="🎨" label="Environment" onClick={()=>setActiveEditorMenu('colors')} />
                     <MenuButton icon="📝" label="Content Editor" onClick={()=>setActiveEditorMenu('content')} />
                     <MenuButton icon="📋" label="Form Designer" onClick={()=>setActiveEditorMenu('forms')} />
-                    <MenuButton icon="✨" label="AI Studio" onClick={()=>setActiveEditorMenu('ai')} />
+                    <MenuButton icon="🧲" label="Form Mapper" onClick={()=>setActiveEditorMenu('mapper')} />
                     <MenuButton icon="🚀" label="Export & Deploy" onClick={()=>setActiveEditorMenu('deploy')} />
                 </div>
             ) : activeEditorMenu === 'assets' ? (
@@ -1172,9 +1246,28 @@ Rules:
                     <SectionGroup title="Copy Editor">
                       <TextInput label="Tagline" value={settings.contentTag} onChange={v => handleSettingChange('contentTag', v)} />
                       <TextInput label="Headline" value={settings.contentTitle} onChange={v => handleSettingChange('contentTitle', v)} />
-                      <TextAreaInput label="Paragraph 1" value={settings.contentDesc1} onChange={v => handleSettingChange('contentDesc1', v)} />
-                      <TextAreaInput label="Paragraph 2" value={settings.contentDesc2} onChange={v => handleSettingChange('contentDesc2', v)} />
+                      <TextAreaInput label="Intro (ARM)" value={settings.contentIntro1} onChange={v => handleSettingChange('contentIntro1', v)} />
+                      <TextAreaInput label="Intro (ENG)" value={settings.contentIntro2} onChange={v => handleSettingChange('contentIntro2', v)} />
+                      <TextAreaInput label="Main Text (ARM)" value={settings.contentDesc1} onChange={v => handleSettingChange('contentDesc1', v)} />
+                      <TextAreaInput label="Main Text (ENG)" value={settings.contentDesc2} onChange={v => handleSettingChange('contentDesc2', v)} />
                       <TextInput label="Deadline Label" value={settings.contentDeadline} onChange={v => handleSettingChange('contentDeadline', v)} />
+                    </SectionGroup>
+                </div>
+            ) : activeEditorMenu === 'data' ? (
+                <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
+                    <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
+                    <SectionGroup title="Local Submissions">
+                        <p className="text-[10px] font-mono opacity-60 leading-relaxed">
+                            Applications are saved securely in your browser's local storage.
+                            <br/><br/>
+                            Currently stored: <strong className="text-black text-sm">{submissions.length}</strong>
+                        </p>
+                        <button onClick={handleDownloadSubmissions} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-[#ff2a00] shadow-md">
+                            Download as CSV
+                        </button>
+                        <button onClick={handleClearSubmissions} className="py-3 text-[#ff2a00] border-2 border-[#ff2a00]/30 hover:bg-[#ff2a00]/10 text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors">
+                            Clear All Data
+                        </button>
                     </SectionGroup>
                 </div>
             ) : activeEditorMenu === 'forms' ? (
@@ -1191,13 +1284,7 @@ Rules:
                     {settings.useInternalForm && (
                       <>
                         <SectionGroup title="Mapping Engine">
-                          <div className="flex gap-3 mb-2">
-                            <button onClick={()=>handleSettingChange('submissionMethod', 'netlify')} className={`flex-1 py-3 text-[10px] font-black border-2 rounded-none transition-all tracking-widest ${settings.submissionMethod === 'netlify' ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-black opacity-40 border-black/20 hover:opacity-100 hover:border-black'}`}>NETLIFY NATIVE</button>
-                            <button onClick={()=>handleSettingChange('submissionMethod', 'google')} className={`flex-1 py-3 text-[10px] font-black border-2 rounded-none transition-all tracking-widest ${settings.submissionMethod === 'google' ? 'bg-black text-white border-black shadow-sm' : 'bg-white text-black opacity-40 border-black/20 hover:opacity-100 hover:border-black'}`}>GOOGLE FORMS</button>
-                          </div>
-                          {settings.submissionMethod === 'google' && (
-                            <TextInput label="formResponse Webhook URL" value={settings.webhookUrl} onChange={v => handleSettingChange('webhookUrl', v)} placeholder="https://docs.google.com/.../formResponse" />
-                          )}
+                          <TextInput label="formResponse Webhook URL" value={settings.webhookUrl} onChange={v => handleSettingChange('webhookUrl', v)} placeholder="https://docs.google.com/.../formResponse" />
                         </SectionGroup>
 
                         <SectionGroup title="Form Builder">
@@ -1240,12 +1327,10 @@ Rules:
                                          </div>
                                       )}
 
-                                      {settings.submissionMethod === 'google' && (
-                                        <div className="flex flex-col gap-1.5 pt-2 border-t-2 border-black/5 mt-1">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-blue-600 font-mono">Google Form entry.ID</span>
-                                            <input className="bg-blue-50/50 border-2 border-blue-200/60 p-3 text-xs font-mono outline-none focus:border-blue-500 text-blue-900 font-bold tracking-wider" placeholder="entry.123456" value={q.googleId || ''} onChange={e=>updateQuestion(q.id, 'googleId', e.target.value)} />
-                                        </div>
-                                      )}
+                                      <div className="flex flex-col gap-1.5 pt-2 border-t-2 border-black/5 mt-1">
+                                          <span className="text-[9px] font-black uppercase tracking-widest text-blue-600 font-mono">Google Form entry.ID</span>
+                                          <input className="bg-blue-50/50 border-2 border-blue-200/60 p-3 text-xs font-mono outline-none focus:border-blue-500 text-blue-900 font-bold tracking-wider" placeholder="entry.123456" value={q.googleId || ''} onChange={e=>updateQuestion(q.id, 'googleId', e.target.value)} />
+                                      </div>
                                    </div>
                                 ))}
                             </div>
@@ -1254,19 +1339,12 @@ Rules:
                       </>
                     )}
                 </div>
-            ) : activeEditorMenu === 'ai' ? (
+            ) : activeEditorMenu === 'mapper' ? (
                 <div className="flex flex-col gap-6 animate-in slide-in-from-left-4">
                     <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left">← BACK TO MENU</button>
-                    <SectionGroup title="Creative AI">
-                        <textarea value={aiPrompt} onChange={(e)=>setAiPrompt(e.target.value)} placeholder="Branding theme..." className="w-full h-24 p-4 text-xs border-2 border-black/10 bg-neutral-50 rounded-none outline-none focus:border-black custom-scrollbar font-mono transition-colors" />
-                        <button onClick={handleGenerateMainModel} disabled={isAiLoading} className="py-4 bg-black hover:bg-neutral-800 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-black shadow-md">{isAiLoading ? 'Synthesizing...' : 'Redesign Site'}</button>
-                    </SectionGroup>
-                    <SectionGroup title="Artwork AI">
-                        <textarea value={posterPrompt} onChange={(e)=>setPosterPrompt(e.target.value)} placeholder="Visual style..." className="w-full h-20 p-4 text-xs border-2 border-black/10 bg-neutral-50 rounded-none outline-none focus:border-black custom-scrollbar font-mono transition-colors" />
-                        <button onClick={handleGeneratePoster} disabled={isPosterLoading} className="py-4 bg-black hover:bg-neutral-800 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-black shadow-md">{isPosterLoading ? 'Painting...' : 'Paint Artwork'}</button>
-                    </SectionGroup>
-                    <SectionGroup title="Form Mapping AI">
-                        <p className="text-[10px] font-mono opacity-60 leading-relaxed">Paste your Google Form URL here to automatically extract and map your questions (Ensure your form is public).</p>
+
+                    <SectionGroup title="Form Mapping Data">
+                        <p className="text-[10px] font-mono opacity-60 leading-relaxed">Paste your Google Form URL here to automatically extract and map your questions. (If automatic fetch fails due to security, you can also paste the raw 'Page Source' HTML here!)</p>
                         <textarea
                           value={prefillUrl}
                           onChange={(e)=>setPrefillUrl(e.target.value)}
@@ -1275,10 +1353,10 @@ Rules:
                         />
                         <button
                           onClick={handleAutoMapForm}
-                          disabled={isAiLoading}
+                          disabled={isMappingLoading}
                           className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border-2 border-[#ff2a00] shadow-md"
                         >
-                          {isAiLoading ? 'Mapping Data...' : 'Auto-Map Form'}
+                          {isMappingLoading ? 'Mapping Form...' : 'Auto-Map Form'}
                         </button>
                     </SectionGroup>
                 </div>
@@ -1287,7 +1365,7 @@ Rules:
                     <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left mb-2">← BACK TO MENU</button>
                     <button onClick={() => handleExportImage(false)} className="py-5 bg-white border-2 border-black/10 rounded-none text-[11px] font-black uppercase tracking-[0.2em] hover:border-black transition-colors text-inherit">Raw Render (PNG)</button>
                     <button onClick={() => handleExportImage(true)} className="py-5 bg-black text-white border-2 border-black rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-neutral-800 transition-colors">Poster Layout (PNG)</button>
-                    <button onClick={handleStartVideoRecording} disabled={isRecording} className={`py-5 text-white border-2 rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors ${isRecording ? 'bg-red-800 border-red-800' : 'bg-[#ff2a00] border-[#ff2a00] hover:bg-red-700'}`}>{isRecording ? 'Recording Scene (Wait)' : 'Record Video (WEBM)'}</button>
+                    <button onClick={handleStartVideoRecording} disabled={isRecording} className={`py-5 text-white border-2 rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors ${isRecording ? 'bg-red-800 border-red-800' : 'bg-[#ff2a00] border-[#ff2a00] hover:bg-red-700'}`}>{isRecording ? 'Recording Scene (Wait)' : 'Record Poster Reel (WEBM)'}</button>
                     <button onClick={handleDownloadWebsiteBuild} className="py-5 bg-blue-600 text-white border-2 border-blue-600 rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-blue-700 transition-colors mt-4">Download Source (HTML)</button>
                 </div>
             )}
