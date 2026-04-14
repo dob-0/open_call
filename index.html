@@ -86,106 +86,19 @@ const DEFAULT_SETTINGS = {
   "formSuccessTitle": "Application Received",
   "formSuccessMsg": "Thank you.",
   "questions": [
-    {
-      "id": "q1",
-      "label": "Անուն, ազգանուն / Name, Surname",
-      "type": "text",
-      "required": true,
-      "googleId": "entry.1"
-    },
-    {
-      "id": "q2",
-      "label": "Տարիք / Age",
-      "type": "text",
-      "required": true,
-      "googleId": "entry.2"
-    },
-    {
-      "id": "q3",
-      "label": "Քաղաք, մարզ / City, Region",
-      "type": "text",
-      "required": true,
-      "googleId": "entry.3"
-    },
-    {
-      "id": "q4",
-      "label": "Հեռախոսահամար / Phone Number",
-      "type": "text",
-      "required": true,
-      "googleId": "entry.4"
-    },
-    {
-      "id": "q5",
-      "label": "Էլ․ հասցե / Email",
-      "type": "email",
-      "required": true,
-      "googleId": "entry.5"
-    },
-    {
-      "id": "q6",
-      "label": "Մի փոքր պատմեք Ձեր մասին (մինչև 150 բառ) / Short bio",
-      "type": "textarea",
-      "required": true,
-      "googleId": "entry.6"
-    },
-    {
-      "id": "q7",
-      "label": "Ինչու՞ եք ցանկանում մասնակցել WCC ծրագրին / Why do you want to participate?",
-      "type": "textarea",
-      "required": true,
-      "googleId": "entry.7"
-    },
-    {
-      "id": "q8",
-      "label": "Ունե՞ք արդյոք գաղափար նախագծի համար / Do you have a project idea?",
-      "type": "textarea",
-      "required": false,
-      "googleId": "entry.8"
-    },
-    {
-      "id": "q9",
-      "label": "Ինչպե՞ս կցանկանաք մասնակցել / How would you like to participate?",
-      "type": "radio",
-      "options": [
-        "Գյումրիում ֆիզիկապես / Physically in Gyumri",
-        "Առցանց / Online",
-        "Երկուսը / Both"
-      ],
-      "required": true,
-      "googleId": "entry.9"
-    },
-    {
-      "id": "q10",
-      "label": "Հասանելի՞ եք ապրիլ–հունիսին / Available April–June?",
-      "type": "radio",
-      "options": [
-        "Այո / Yes",
-        "Ոչ / No"
-      ],
-      "required": true,
-      "googleId": "entry.10"
-    },
-    {
-      "id": "q11",
-      "label": "Արդյո՞ք ունեք որևէ կարիք աջակցություն ստանալու / Support needs?",
-      "type": "textarea",
-      "required": false,
-      "googleId": "entry.11"
-    },
-    {
-      "id": "q12",
-      "label": "CV կամ պորտֆոլիո / CV or Portfolio (Link)",
-      "type": "url",
-      "required": false,
-      "googleId": "entry.12"
-    },
-    {
-      "id": "q13",
-      "label": "Սոցիալական կայքերի հղում / Social Media Links",
-      "type": "url",
-      "required": false,
-      "googleId": "entry.13"
-    }
+    { "id": "q1", "label": "Անուն, ազգանուն / Name, Surname", "type": "text", "required": true, "googleId": "entry.1" },
+    { "id": "q2", "label": "Տարիք / Age", "type": "text", "required": true, "googleId": "entry.2" },
+    { "id": "q3", "label": "Քաղաք, մարզ / City, Region", "type": "text", "required": true, "googleId": "entry.3" },
+    { "id": "q4", "label": "Հեռախոսահամար / Phone Number", "type": "text", "required": true, "googleId": "entry.4" },
+    { "id": "q5", "label": "Էլ․ հասցե / Email", "type": "email", "required": true, "googleId": "entry.5" },
+    { "id": "q6", "label": "Մի փոքր պատմեք Ձեր մասին (մինչև 150 բառ) / Short bio", "type": "textarea", "required": true, "googleId": "entry.6" },
+    { "id": "q7", "label": "Ինչու՞ եք ցանկանում մասնակցել WCC ծրագրին / Why do you want to participate?", "type": "textarea", "required": true, "googleId": "entry.7" },
+    { "id": "q8", "label": "Ունե՞ք արդյոք գաղափար նախագծի համար / Do you have a project idea?", "type": "textarea", "required": false, "googleId": "entry.8" },
+    { "id": "q9", "label": "Ինչպե՞ս կցանկանաք մասնակցել / How would you like to participate?", "type": "radio", "options": [ "Գյումրիում ֆիզիկապես / Physically in Gyumri", "Առցանց / Online", "Երկուսը / Both" ], "required": true, "googleId": "entry.9" },
+    { "id": "q10", "label": "Հասանելի՞ եք ապրիլ–հունիսին / Available April–June?", "type": "radio", "options": [ "Այո / Yes", "Ոչ / No" ], "required": true, "googleId": "entry.10" },
+    { "id": "q11", "label": "Արդյո՞ք ունեք որևէ կարիք աջակցություն ստանալու / Support needs?", "type": "textarea", "required": false, "googleId": "entry.11" },
+    { "id": "q12", "label": "CV կամ պորտֆոլիո / CV or Portfolio (Link)", "type": "url", "required": false, "googleId": "entry.12" },
+    { "id": "q13", "label": "Սոցիալական կայքերի հղում / Social Media Links", "type": "url", "required": false, "googleId": "entry.13" }
   ]
 };
 
@@ -308,6 +221,12 @@ function App() {
   const [prefillUrl, setPrefillUrl] = useState('');
   const [isMappingLoading, setIsMappingLoading] = useState(false);
 
+  // Debug States
+  const [showDebug, setShowDebug] = useState(false);
+  const [debugLogs, setDebugLogs] = useState([]);
+  const [debugCopyText, setDebugCopyText] = useState('Copy Logs');
+  const [sourceCopyText, setSourceCopyText] = useState('Copy App');
+
   // REFS
   const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
   const isRecordingRef = useRef(false);
@@ -317,6 +236,7 @@ function App() {
   const recCanvasRef = useRef(null);
   const recCtxRef = useRef(null);
   const secretClickRef = useRef({ count: 0, timer: null });
+  const debugScrollRef = useRef(null);
 
   const [settings, setSettings] = useState(() => {
     try {
@@ -325,12 +245,12 @@ function App() {
             const parsed = JSON.parse(saved);
             if (parsed.mediaUrl && !parsed.mediaGallery) parsed.mediaGallery = [parsed.mediaUrl];
             if (!parsed.mediaGallery) parsed.mediaGallery = [];
-            
+
             // Force remove the unsplash placeholder if it's cached in local storage
             if (parsed.mediaGallery[0] && parsed.mediaGallery[0].includes('unsplash.com')) {
                 parsed.mediaGallery[0] = 'https://lh3.googleusercontent.com/d/12eRDfhxcSlHPO5STUEe1sGw7lD7T31JL';
             }
-            
+
             return { ...DEFAULT_SETTINGS, ...parsed };
         }
     } catch (e) {}
@@ -339,6 +259,54 @@ function App() {
 
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
+
+  // --- DEBUG LOGGER ---
+  const logDebug = (type, message, details = '') => {
+      console.log(`[${type}] ${message}`, details);
+      setDebugLogs(prev => [...prev, {
+          time: new Date().toISOString().split('T')[1].slice(0, -1),
+          type,
+          message,
+          details: typeof details === 'object' ? JSON.stringify(details, null, 2) : details
+      }]);
+  };
+
+  const handleCopyDebug = () => {
+      const logString = debugLogs.map(log => `[${log.time}] [${log.type}] ${log.message}${log.details ? '\n' + log.details : ''}`).join('\n\n');
+      const textArea = document.createElement("textarea");
+      textArea.value = logString;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+          document.execCommand('copy');
+          setDebugCopyText('COPIED!');
+          setTimeout(() => setDebugCopyText('Copy Logs'), 2000);
+      } catch (err) {}
+      document.body.removeChild(textArea);
+  };
+
+  const handleCopySource = () => {
+      const scriptNode = document.getElementById('app-source');
+      if (!scriptNode) return;
+      const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
+      const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?(?=\/\/ --- GEOMETRY FACTORIES ---)/, replacementStr + '\n\n');
+      const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">\n</head>\n<body class="bg-[#0a0a0a] overflow-hidden m-0 p-0 text-white selection:bg-white selection:text-black font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = newHtml;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+          document.execCommand('copy');
+          setSourceCopyText('COPIED!');
+          setTimeout(() => setSourceCopyText('Copy App'), 2000);
+      } catch (err) {}
+      document.body.removeChild(textArea);
+  };
+
+  useEffect(() => {
+      if (debugScrollRef.current) debugScrollRef.current.scrollTop = debugScrollRef.current.scrollHeight;
+  }, [debugLogs]);
 
   // ---------------------------------------------------------
   // CORE HANDLERS
@@ -463,9 +431,21 @@ function App() {
   const removeQuestion = (id) => handleSettingChange('questions', settings.questions.filter(q => q.id !== id));
   const updateQuestion = (id, key, val) => handleSettingChange('questions', settings.questions.map(q => q.id === id ? { ...q, [key]: val } : q));
 
-  const handleAutoMapForm = async () => {
+  const handleAutoMapForm = async (silentMode = false) => {
+      const isSilent = silentMode === true;
+
+      if (!isSilent) {
+          logDebug('INFO', 'Starting Native Form Auto-Map Process');
+          setShowDebug(true);
+      }
+
       let inputRaw = prefillUrl.trim();
-      if (!inputRaw) return;
+      if (!inputRaw && !isSilent) return;
+      if (!inputRaw && isSilent) {
+          // If silent, use the default Apply Link
+          inputRaw = settings.applyLink;
+      }
+
       setIsMappingLoading(true);
       try {
           let extractedData = ""; let base = "";
@@ -473,21 +453,26 @@ function App() {
               let urlObj = new URL(inputRaw);
               base = urlObj.origin + urlObj.pathname;
               base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
+              if (!isSilent) logDebug('INFO', 'Webhook Target Base URL', base);
+
               let html = ""; let fetchSuccess = false;
               const proxyList = [
                   { name: 'AllOrigins', url: `https://api.allorigins.win/raw?url=${encodeURIComponent(urlObj.href)}`, type: 'text' },
-                  { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' }
+                  { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'CodeTabs', url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlObj.href)}`, type: 'text' },
+                  { name: 'ThingProxy', url: `https://thingproxy.freeboard.io/fetch/${urlObj.href}`, type: 'text' }
               ];
               for (const proxy of proxyList) {
+                  if (!isSilent) logDebug('FETCH', `Trying Proxy: ${proxy.name}`, proxy.url);
                   try {
                       const corsRes = await fetch(proxy.url);
                       if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`);
-                      html = await corsRes.text();
+                      html = proxy.type === 'json' ? (await corsRes.json()).contents : await corsRes.text();
                       if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) { fetchSuccess = true; break; }
-                  } catch (err) {}
+                  } catch (err) { if (!isSilent) logDebug('WARN', `${proxy.name} failed`, err.message); }
               }
               if (!fetchSuccess) {
-                  alert("Google blocked fetch. Paste the raw Page Source HTML instead.");
+                  if (!isSilent) alert("Google blocked fetch. Paste the raw Page Source HTML instead.");
                   setIsMappingLoading(false); return;
               }
               const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
@@ -498,6 +483,7 @@ function App() {
                   extractedData = html.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000);
               } else throw new Error("Could not find schema.");
           } else if (inputRaw.includes('FB_PUBLIC_LOAD_DATA_')) {
+              if (!isSilent) logDebug('INFO', 'Raw HTML detected. Bypassing fetch.');
               const actionMatch = inputRaw.match(/action="(https:\/\/docs\.google\.com\/forms\/[^"]+\/formResponse)"/);
               if (actionMatch) base = actionMatch[1]; else throw new Error("Could not find form action.");
               const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
@@ -508,6 +494,8 @@ function App() {
                   extractedData = inputRaw.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000);
               } else throw new Error("Could not find schema.");
           } else throw new Error("Invalid input.");
+
+          if (!isSilent) logDebug('INFO', 'Parsing JSON data natively...');
 
           let cleanJsonStr = extractedData.trim();
           let openBrackets = 0; let endIndex = -1;
@@ -539,9 +527,24 @@ function App() {
           if (parsedQuestions.length === 0) throw new Error("No questions parsed.");
 
           const newConfig = { ...settingsRef.current, useInternalForm: true, applyLink: inputRaw.startsWith('http') ? inputRaw : base.replace('formResponse', 'viewform'), webhookUrl: base, questions: parsedQuestions };
-          setSettings(newConfig); setFormAnswers({}); setPrefillUrl('');
-          alert("Form Map Complete! Click 'Save Configuration'.");
-      } catch (e) { alert("Failed to map form: " + e.message); }
+          setSettings(newConfig); setFormAnswers({});
+
+          if (!isSilent) {
+              setPrefillUrl('');
+              logDebug('SUCCESS', 'Native form mapping complete.');
+              alert("Form Map Complete! Click 'Save Configuration'.");
+          } else {
+              try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(newConfig)); } catch(e) {}
+              console.log("Silently mapped Google Form defaults in the background.");
+          }
+      } catch (e) {
+          if (!isSilent) {
+              logDebug('ERROR', 'Auto-map failed', e.message);
+              alert("Failed to map form: " + e.message);
+          } else {
+              console.warn("Silent mapping failed.", e.message);
+          }
+      }
       setIsMappingLoading(false);
   };
 
@@ -553,13 +556,13 @@ function App() {
           alert("Error: Cannot find source code to export.");
           return;
       }
-      
+
       const scriptContent = scriptElement.textContent;
       const newSettingsStr = `const DEFAULT_SETTINGS = ${JSON.stringify(currentSettings, null, 2)};`;
-      
+
       // Inject the live settings dynamically back into the source code
       const modifiedScript = scriptContent.replace(
-          /const DEFAULT_SETTINGS = \{[\s\S]*?(?=\/\/ --- GEOMETRY FACTORIES ---)/, 
+          /const DEFAULT_SETTINGS = \{[\s\S]*?(?=\/\/ --- GEOMETRY FACTORIES ---)/,
           newSettingsStr + '\n\n'
       );
 
@@ -584,9 +587,9 @@ function App() {
 
       const blob = new Blob([fullHtml], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); 
-      a.href = url; 
-      a.download = 'wcc_configured_app.html'; 
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'wcc_configured_app.html';
       a.click();
   };
 
@@ -790,7 +793,7 @@ function App() {
           const sourceH = renderer.domElement.height;
           const sourceAspect = sourceW / sourceH;
           const destAspect = w / h;
-          
+
           let sx = 0, sy = 0, sw = sourceW, sh = sourceH;
           if (sourceAspect > destAspect) {
               sw = sh * destAspect;
@@ -799,7 +802,7 @@ function App() {
               sh = sw / destAspect;
               sy = (sourceH - sh) / 2;
           }
-          
+
           pCtx.drawImage(renderer.domElement, sx, sy, sw, sh, 0, 0, w, h);
           drawPosterOverlay(pCtx, w, h, s); // Overlay the text perfectly scaled
       }
@@ -859,17 +862,17 @@ function App() {
                  clonedTexture.matrixAutoUpdate = false;
 
                  const imageAspect = texture.image.width / texture.image.height;
-                 
+
                  // Advanced UV Matrix Transform to match CSS object-position and transform scale
                  const baseSx = imageAspect > 1.0 ? 1.0 / imageAspect : 1.0;
                  const baseSy = imageAspect > 1.0 ? 1.0 : imageAspect;
-                 
+
                  const finalSx = baseSx / (settings.imageScale || 1.0);
                  const finalSy = baseSy / (settings.imageScale || 1.0);
-                 
+
                  const rangeX = 1.0 - finalSx;
                  const rangeY = 1.0 - finalSy;
-                 
+
                  const tx = rangeX * (settings.imageOffsetX ?? 0.5);
                  const ty = rangeY * (1.0 - (settings.imageOffsetY ?? 0.5)); // WebGL Y is inverted vs CSS
 
@@ -914,29 +917,47 @@ function App() {
     cube.scale.setScalar(settings.cubeScale); innerMesh.scale.setScalar(settings.glassScale);
   }, [settings]);
 
+  // Global Sync Logic & Listeners
   useEffect(() => {
+    // 1. SILENT INITIALIZATION: Map defaults if starting from scratch
+    const saved = localStorage.getItem('wcc_app_settings_unified');
+    if (!saved && settingsRef.current.questions[0]?.googleId === 'entry.1') {
+        handleAutoMapForm(true); // Trigger background patcher silently
+    }
+
     const handleKeyDown = (e) => {
         if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowSettingsBtn(p => !p); setIsEditorOpen(false); }
+        if (e.key.toLowerCase() === 'd' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowDebug(p => !p); }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => { window.removeEventListener('keydown', handleKeyDown); };
-  }, []);
 
-  const handleSecretAdminClick = () => {
-      secretClickRef.current.count += 1;
-      clearTimeout(secretClickRef.current.timer);
-      if (secretClickRef.current.count >= 3) {
-          setShowSettingsBtn(p => !p); setIsEditorOpen(false);
-          secretClickRef.current.count = 0;
-      } else {
-          secretClickRef.current.timer = setTimeout(() => { secretClickRef.current.count = 0; }, 400);
-      }
-  };
+    // 2. Global Hotkeys & Taps
+    let tapCount = 0; let tapTimer;
+    const handleInteract = (e) => {
+        if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'OPTION', 'A'].includes(e.target.tagName)) return;
+        tapCount++;
+        clearTimeout(tapTimer);
+        if (tapCount >= 3) {
+            setShowSettingsBtn(p => !p); setIsEditorOpen(false); tapCount = 0;
+        } else {
+            tapTimer = setTimeout(() => { tapCount = 0; }, 400);
+        }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleInteract);
+    window.addEventListener('mousedown', handleInteract);
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('touchstart', handleInteract);
+        window.removeEventListener('mousedown', handleInteract);
+    };
+  }, []);
 
   return (
     <div className="relative w-full h-screen overflow-hidden text-white bg-[#0a0a0a]" style={{ fontFamily: settings.uiFont }}>
 
-      <div onClick={handleSecretAdminClick} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
+      {/* INVISIBLE ADMIN TOGGLE CORNER */}
+      <div onClick={() => {setShowSettingsBtn(p => !p); setIsEditorOpen(false);}} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
 
       <style>{`
         .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); }
@@ -971,18 +992,18 @@ function App() {
 
             {settings.mediaGallery && settings.mediaGallery[0] && (
               <div className="w-full h-48 overflow-hidden relative border-b border-white/10 flex items-center justify-center bg-black">
-                <img 
-                  src={settings.mediaGallery[0]} 
-                  crossOrigin="anonymous" 
-                  className="opacity-70 group-hover:opacity-100 transition-opacity" 
+                <img
+                  src={settings.mediaGallery[0]}
+                  crossOrigin="anonymous"
+                  className="opacity-70 group-hover:opacity-100 transition-opacity"
                   style={{
-                      width: '100%', 
-                      height: '100%', 
-                      objectFit: 'cover', 
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
                       objectPosition: `${(settings.imageOffsetX ?? 0.5) * 100}% ${(settings.imageOffsetY ?? 0.5) * 100}%`,
                       transform: `scale(${settings.imageScale || 1.0})`
                   }}
-                  alt="Speaker" 
+                  alt="Speaker"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
               </div>
@@ -1126,7 +1147,7 @@ function App() {
 
       {/* RIGHT SIDE: FLOATING LIVE PREVIEW */}
       {showSettingsBtn && isEditorOpen && activeEditorMenu === 'deploy' && (
-          <div className="absolute top-1/2 -translate-y-1/2 right-12 z-[100] bg-[#111]/90 backdrop-blur-md border border-white/20 p-5 shadow-2xl flex flex-col gap-4 animate-in slide-in-from-right-8 pointer-events-none">
+          <div className="absolute top-1/2 -translate-y-1/2 right-12 z-[100] bg-[#111]/90 backdrop-blur-md border border-white/20 p-5 shadow-2xl flex flex-col gap-4 animate-in slide-in-from-right-8 pointer-events-none hidden md:flex">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <span className="text-[10px] font-black tracking-widest uppercase text-white font-mono flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#ff2a00] animate-pulse"></span>
@@ -1148,6 +1169,44 @@ function App() {
                   height={settings.exportHeight / 3}
                   className="w-[280px] md:w-[360px] h-auto object-contain border border-black shadow-[0_0_40px_rgba(0,0,0,0.5)]"
               />
+          </div>
+      )}
+
+      {/* MID-SIZED DEVELOPER DEBUG CONSOLE */}
+      {showDebug && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-3/4 lg:w-1/2 h-[70vh] bg-black/95 text-green-400 font-mono text-xs rounded-xl shadow-2xl border border-green-500/30 flex flex-col overflow-hidden z-[9999] backdrop-blur-md">
+              <div className="flex justify-between items-center p-3 border-b border-green-500/30 bg-black">
+                  <div className="flex items-center gap-3">
+                      <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500 cursor-pointer" onClick={() => setShowDebug(false)}></div>
+                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      </div>
+                      <span className="font-bold opacity-70 tracking-widest uppercase">SYS_DEBUG_CONSOLE</span>
+                  </div>
+                  <div className="flex gap-4">
+                      <button onClick={handleCopySource} className="text-blue-500/50 hover:text-blue-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{sourceCopyText}</button>
+                      <button onClick={handleCopyDebug} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{debugCopyText}</button>
+                      <button onClick={() => setDebugLogs([])} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">Clear</button>
+                  </div>
+              </div>
+              <div ref={debugScrollRef} className="flex-1 p-4 overflow-y-auto custom-scrollbar whitespace-pre-wrap flex flex-col gap-1">
+                  {debugLogs.length === 0 && <span className="opacity-50 italic">Waiting for events... (Press 'D' to close)</span>}
+                  {debugLogs.map((log, i) => (
+                      <div key={i} className={`pb-2 mb-2 border-b border-green-500/10 ${log.type === 'ERROR' ? 'text-red-400' : log.type === 'WARN' ? 'text-yellow-400' : log.type === 'SUCCESS' ? 'text-blue-400' : 'text-green-400'}`}>
+                          <div className="flex gap-3 font-bold opacity-70">
+                              <span>[{log.time}]</span>
+                              <span>[{log.type}]</span>
+                              <span>{log.message}</span>
+                          </div>
+                          {log.details && (
+                              <div className="mt-1 pl-4 opacity-80 overflow-x-hidden break-all border-l border-current">
+                                  {log.details}
+                              </div>
+                          )}
+                      </div>
+                  ))}
+              </div>
           </div>
       )}
 
@@ -1330,7 +1389,7 @@ function App() {
                     <SectionGroup title="Form Mapping Data">
                         <p className="text-[10px] font-mono opacity-60 leading-relaxed text-white">Paste your Google Form URL here to automatically extract and map your questions.</p>
                         <textarea value={prefillUrl} onChange={(e)=>setPrefillUrl(e.target.value)} placeholder="https://docs.google.com/forms/..." className="w-full h-20 p-4 text-xs border border-white/10 bg-[#222] text-white rounded-none outline-none focus:border-white custom-scrollbar font-mono break-all transition-colors" />
-                        <button onClick={handleAutoMapForm} disabled={isMappingLoading} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border border-[#ff2a00] shadow-md">
+                        <button onClick={() => handleAutoMapForm(false)} disabled={isMappingLoading} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border border-[#ff2a00] shadow-md">
                           {isMappingLoading ? 'Mapping Form...' : 'Auto-Map Form'}
                         </button>
                     </SectionGroup>
