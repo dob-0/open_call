@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WCC - Open Call & Talks Hub</title>
+  <title>WCC - Admin Editor</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -14,220 +14,68 @@
 <body class="bg-[#0a0a0a] overflow-hidden m-0 p-0 text-white selection:bg-white selection:text-black font-sans">
   <div id="root"></div>
   <script type="text/babel" id="app-source">
-/**
- * ============================================================================
- * WCC UNIFIED CAMPAIGN ENGINE (OPEN CALL + TALKS + POSTER EXPORT)
- * DEVELOPER README & SYSTEM DOCUMENTATION - ULTIMATE MIX
- * ============================================================================
- */
-
 const { useState, useEffect, useRef } = React;
 
 const DEFAULT_SETTINGS = {
-  "exportWidth": 1080,
-  "exportHeight": 1350,
-  "videoDuration": 5,
-  "artPosX": 0.3,
-  "artPosY": 1.2,
-  "artZoom": -0.4,
-  "artRotX": 0.39,
-  "artRotY": 0.13,
-  "artRotZ": -0.07,
-  "archShape": "torus_half",
-  "coreShape": "icosahedron",
-  "catalystShape": "tetrahedron",
-  "ringShape": "thin",
-  "mediaGallery": [
-    "https://lh3.googleusercontent.com/d/12eRDfhxcSlHPO5STUEe1sGw7lD7T31JL"
-  ],
-  "mediaStyle": "floating",
-  "imageOffsetX": 0.5,
-  "imageOffsetY": 0.05,
-  "imageScale": 1,
-  "posterPanelHeight": 0.31,
-  "posterTextOffset": -0.01,
-  "posterBottomOffset": 0.01,
-  "bgColor": "#0a0a0a",
-  "archColor": "#333333",
-  "ringColor": "#888888",
-  "cubeColor": "#ff2a00",
-  "glassColor": "#ffffff",
-  "glassIor": 1.6,
-  "archScale": 1,
-  "ringScale": 1,
-  "cubeScale": 1,
-  "glassScale": 1,
-  "uiAccentColor": "#ff2a00",
-  "uiFont": "'Space Grotesk', sans-serif",
-  "contentHero": "WCC:",
-  "contentSub": "Women Creating Change",
-  "btnEnter": "Enter the Lab",
-  "contentTag": "Բաց կանչ/Open call",
-  "contentTitle": "WCC: Women Creating Change",
-  "contentIntro1": "3-ամսյա ինտենսիվ ստեղծագործական լաբորատորիա\nԱշխատարաններ / Բաց քննարկումներ / Մենթորինգ / Առցանց ցուցահանդես\nԱրվեստագետների և առանց նախնական փորձի անհատների համար",
-  "contentIntro2": "A 3-month intensive creative lab\nWorkshops / Talks / Mentorship / Virtual Exhibition\nFor artists and individuals with no prior experience",
-  "contentDesc1": "WCC-ն հայտարարում է բաց կանչ՝ 3-ամսյա ստեղծագործական լաբորատոր ծրագրի համար, որը տեղի կունենա Գյումրիում և առցանց (ապրիլ–հունիս 2026)։\nԲաց կանչի արդյունքում կընտրվեն 12 մասնակից — աղջիկներ, կանայք և մարգինալացված համայնքների ներկայացուցիչներ։\nՄասնակիցները ներգրավված կլինեն համատեղ ստեղծագործական գործընթացներին՝ մասնակցելով աշխատարաններին, փորձագետների հետ քննարկումներին և մենթորության ծրագրին։\nԾրագրի ընթացքում մասնակիցները կմշակեն նախագծեր, որոնք կանդրադառնան ինքնությանը, փորձառությանը և դիմադրությանը, և որոնք կներկայացվեն առցանց ցուցահանդեսի շրջանակում։\n\nԺամանակացույց՝\nԱպրիլ — 2 հանդիպում հրավիրված մասնագետների հետ (առցանց/օֆլայն)\nՄայիս — 4 մենթորական հանդիպում՝ նախագծերի զարգացման համար\nՀունիս — ավարտական հանդիպում, գնահատում և ցուցահանդեսի բացում\n\n",
-  "contentDesc2": "WCC announces an open call for a 3-month creative lab program on-site in Gyumri and online, which will include a group of 12 participants — girls, women, and individuals from marginalized communities to engage in collaborative artistic processes. Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance, culminating in a virtual exhibition.\n\nTimeline:\nApril — 2 sessions with invited experts (online/offline)\nMay — 4 mentorship sessions focused on project development\nJune — final meetings, evaluation, and exhibition launch",
-  "titleInclusions": "Programme / Ծրագիր:",
-  "inclusion1": "Աշխատարաններ / Workshops",
-  "inclusion2": "Բաց քննարկումներ / Talks",
-  "inclusion3": "Մենթորինգ / Mentorship",
-  "inclusion4": "Առցանց ցուցահանդես / Virtual Exhibition",
-  "titleDeadline": "Application Deadline",
-  "contentDeadline": "Ապրիլի 12, 2026 / April 12, 2026",
-  "talkTag": "Guest Speaker / Հյուր Բանախոս",
-  "talkTitle": "Tatev Hovakimyan",
-  "talkSubtitle": "Theater & Cinema Actress",
-  "talkDetails": "April 15 | 16:00\nGyumri",
-  "useInternalForm": true,
-  "applyLink": "https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform",
-  "webhookUrl": "https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/formResponse",
-  "formTitle": "Apply",
-  "formSuccessTitle": "Application Received",
-  "formSuccessMsg": "Thank you.",
-  "questions": [
-    { "id": "q1", "label": "Անուն, ազգանուն / Name, Surname", "type": "text", "required": true, "googleId": "entry.1" },
-    { "id": "q2", "label": "Տարիք / Age", "type": "text", "required": true, "googleId": "entry.2" },
-    { "id": "q3", "label": "Քաղաք, մարզ / City, Region", "type": "text", "required": true, "googleId": "entry.3" },
-    { "id": "q4", "label": "Հեռախոսահամար / Phone Number", "type": "text", "required": true, "googleId": "entry.4" },
-    { "id": "q5", "label": "Էլ․ հասցե / Email", "type": "email", "required": true, "googleId": "entry.5" },
-    { "id": "q6", "label": "Մի փոքր պատմեք Ձեր մասին (մինչև 150 բառ) / Short bio", "type": "textarea", "required": true, "googleId": "entry.6" },
-    { "id": "q7", "label": "Ինչու՞ եք ցանկանում մասնակցել WCC ծրագրին / Why do you want to participate?", "type": "textarea", "required": true, "googleId": "entry.7" },
-    { "id": "q8", "label": "Ունե՞ք արդյոք գաղափար նախագծի համար / Do you have a project idea?", "type": "textarea", "required": false, "googleId": "entry.8" },
-    { "id": "q9", "label": "Ինչպե՞ս կցանկանաք մասնակցել / How would you like to participate?", "type": "radio", "options": [ "Գյումրիում ֆիզիկապես / Physically in Gyumri", "Առցանց / Online", "Երկուսը / Both" ], "required": true, "googleId": "entry.9" },
-    { "id": "q10", "label": "Հասանելի՞ եք ապրիլ–հունիսին / Available April–June?", "type": "radio", "options": [ "Այո / Yes", "Ոչ / No" ], "required": true, "googleId": "entry.10" },
-    { "id": "q11", "label": "Արդյո՞ք ունեք որևէ կարիք աջակցություն ստանալու / Support needs?", "type": "textarea", "required": false, "googleId": "entry.11" },
-    { "id": "q12", "label": "CV կամ պորտֆոլիո / CV or Portfolio (Link)", "type": "url", "required": false, "googleId": "entry.12" },
-    { "id": "q13", "label": "Սոցիալական կայքերի հղում / Social Media Links", "type": "url", "required": false, "googleId": "entry.13" }
+  exportWidth: 1080, exportHeight: 1350, videoDuration: 5.0,
+  artPosX: 0.0, artPosY: 1.6, artZoom: 0.0, artRotX: 0.0, artRotY: 0.0, artRotZ: 0.0,
+  archShape: 'torus_half', coreShape: 'icosahedron', catalystShape: 'tetrahedron', ringShape: 'thin',
+  mediaGallery: ['https://lh3.googleusercontent.com/d/12eRDfhxcSlHPO5STUEe1sGw7lD7T31JL'],
+  mediaStyle: 'floating', imageOffsetX: 0.5, imageOffsetY: 0.5, imageScale: 1.0,
+  posterPanelHeight: 0.38, posterTextOffset: 0.0, posterBottomOffset: 0.0,
+  bgColor: '#0a0a0a', archColor: '#333333', ringColor: '#888888', cubeColor: '#ff2a00', glassColor: '#ffffff',
+  glassIor: 1.6, archScale: 1.0, ringScale: 1.0, cubeScale: 1.0, glassScale: 1.0, uiAccentColor: '#ff2a00', uiFont: "'Space Grotesk', sans-serif",
+  contentHero: 'WCC:', contentSub: 'Women Creating Change', btnEnter: 'Enter the Lab', contentTag: 'Բաց կանչ/Open call',
+  contentTitle: 'WCC: Women Creating Change',
+  contentIntro1: '3-ամսյա ինտենսիվ ստեղծագործական լաբորատորիա\nԱշխատարաններ / Բաց քննարկումներ / Մենթորինգ / Առցանց ցուցահանդես\nԱրվեստագետների և առանց նախնական փորձի անհատների համար',
+  contentIntro2: 'A 3-month intensive creative lab\nWorkshops / Talks / Mentorship / Virtual Exhibition\nFor artists and individuals with no prior experience',
+  contentDesc1: 'WCC-ն հայտարարում է բաց կանչ՝ 3-ամսյա ստեղծագործական լաբորատոր ծրագրի համար, որը տեղի կունենա Գյումրիում և առցանց (ապրիլ–հունիս 2026)։\nԲաց կանչի արդյունքում կընտրվեն 12 մասնակից — աղջիկներ, կանայք և մարգինալացված համայնքների ներկայացուցիչներ։\nՄասնակիցները ներգրավված կլինեն համատեղ ստեղծագործական գործընթացներին՝ մասնակցելով աշխատարաններին, փորձագետների հետ քննարկումներին և մենթորության ծրագրին։\nԾրագրի ընթացքում մասնակիցները կմշակեն նախագծեր, որոնք կանդրադառնան ինքնությանը, փորձառությանը և դիմադրությանը, և որոնք կներկայացվեն առցանց ցուցահանդեսի շրջանակում։\n\nԺամանակացույց՝\nԱպրիլ — 2 հանդիպում հրավիրված մասնագետների հետ (առցանց/օֆլայն)\nՄայիս — 4 մենթորական հանդիպում՝ նախագծերի զարգացման համար\nՀունիս — ավարտական հանդիպում, գնահատում և ցուցահանդեսի բացում\n\n',
+  contentDesc2: 'WCC announces an open call for a 3-month creative lab program on-site in Gyumri and online, which will include a group of 12 participants — girls, women, and individuals from marginalized communities to engage in collaborative artistic processes. Through workshops, expert-led talks, and mentorship, participants will develop projects exploring identity, experience, and resistance, culminating in a virtual exhibition.\n\nTimeline:\nApril — 2 sessions with invited experts (online/offline)\nMay — 4 mentorship sessions focused on project development\nJune — final meetings, evaluation, and exhibition launch',
+  titleInclusions: 'Programme / Ծրագիր:', inclusion1: 'Աշխատարաններ / Workshops', inclusion2: 'Բաց քննարկումներ / Talks', inclusion3: 'Մենթորինգ / Mentorship', inclusion4: 'Առցանց ցուցահանդես / Virtual Exhibition',
+  titleDeadline: 'Application Deadline', contentDeadline: 'Ապրիլի 12, 2026 / April 12, 2026',
+  talkTag: 'Guest Speaker / Հյուր Բանախոս', talkTitle: 'Tatev Hovakimyan', talkSubtitle: 'Theater & Cinema Actress', talkDetails: 'April 15 | 16:00\nGyumri',
+  useInternalForm: true, applyLink: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/viewform', webhookUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSemFIErSjuiLq7fRxoq5cJVLS7PpKexclBI7f5otVgLgYaPVw/formResponse',
+  formTitle: 'Apply', formSuccessTitle: 'Application Received', formSuccessMsg: 'Thank you.',
+  questions: [
+    { id: 'q1', label: 'Անուն, ազգանուն / Name, Surname', type: 'text', required: true, googleId: 'entry.1' },
+    { id: 'q2', label: 'Տարիք / Age', type: 'text', required: true, googleId: 'entry.2' },
+    { id: 'q3', label: 'Քաղաք, մարզ / City, Region', type: 'text', required: true, googleId: 'entry.3' },
+    { id: 'q4', label: 'Հեռախոսահամար / Phone Number', type: 'text', required: true, googleId: 'entry.4' },
+    { id: 'q5', label: 'Էլ․ հասցե / Email', type: 'email', required: true, googleId: 'entry.5' },
+    { id: 'q6', label: 'Մի փոքր պատմեք Ձեր մասին (մինչև 150 բառ) / Short bio', type: 'textarea', required: true, googleId: 'entry.6' }
   ]
 };
 
-// --- GEOMETRY FACTORIES ---
-const createArchGeo = (type) => {
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100);
-    case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64);
-    case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8);
-    case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64);
-    case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5);
-  }
-};
-const createCoreGeo = (type) => {
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8);
-    case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0);
-    case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64);
-  }
-};
-const createRingGeo = (type, radius) => {
-  const thick = 0.02;
-  if (type === 'none') return new THREE.BoxGeometry(0,0,0);
-  switch(type) {
-    case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100);
-    case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100);
-    case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100);
-    case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100);
-  }
-};
+const createArchGeo = (type) => { if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100); case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64); case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8); case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64); case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5); } };
+const createCoreGeo = (type) => { if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8); case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0); case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64); } };
+const createRingGeo = (type, radius) => { const thick = 0.02; if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100); case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100); case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100); case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100); } };
 
-// --- GLOBAL UI ATOMS ---
-const SectionGroup = ({ title, children }) => (
-  <div className="bg-[#1a1a1a] text-white p-5 rounded-none shadow-sm border border-white/10 flex flex-col gap-4 w-full">
-    <span className="text-xs font-black text-white/50 uppercase tracking-[0.15em] border-b border-white/10 pb-3">{title}</span>
-    <div className="flex flex-col gap-3">{children}</div>
-  </div>
-);
-
-const MenuButton = ({ icon, label, onClick }) => (
-  <button onClick={onClick} className="w-full flex items-center justify-between p-4 bg-[#1a1a1a] text-white hover:bg-white hover:text-black border border-white/10 rounded-none text-left shadow-sm font-bold uppercase text-xs tracking-widest group transition-all">
-    <div className="flex items-center gap-4">
-      <span className="text-xl group-hover:scale-110 transition-transform">{icon}</span>
-      <span className="text-xs font-black tracking-[0.1em] uppercase">{label}</span>
-    </div>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 group-hover:opacity-100"><polyline points="9 18 15 12 9 6"></polyline></svg>
-  </button>
-);
-
-const TextInput = ({ label, value, onChange, placeholder = "", type="text" }) => (
-  <div className="flex flex-col gap-2 w-full">
-    <label className="text-[10px] text-white/50 font-black uppercase tracking-widest font-mono">{label}</label>
-    <input type={type} className="bg-[#222] border border-white/10 rounded-none p-3 text-xs outline-none focus:border-white w-full text-white transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
-  </div>
-);
-
-const TextAreaInput = ({ label, value, onChange }) => (
-  <div className="flex flex-col gap-2 w-full">
-    <label className="text-[10px] text-white/50 font-black uppercase tracking-widest font-mono">{label}</label>
-    <textarea className="bg-[#222] border border-white/10 rounded-none p-3 text-xs outline-none focus:border-white min-h-[100px] resize-none w-full text-white custom-scrollbar transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} />
-  </div>
-);
-
-const ColorInput = ({ label, value, onChange }) => (
-  <div className="flex justify-between items-center w-full bg-[#222] border border-white/10 p-3">
-    <label className="text-[10px] font-black text-white/70 uppercase tracking-widest font-mono">{label}</label>
-    <div className="flex items-center gap-3">
-      <span className="text-[10px] font-black font-mono opacity-60 uppercase">{value}</span>
-      <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="w-8 h-8 border border-white/20 rounded-none cursor-pointer p-0 overflow-hidden bg-transparent" />
-    </div>
-  </div>
-);
-
-const SliderInput = ({ label, value, min, max, step, onChange }) => (
-  <div className="flex flex-col gap-3 w-full p-2 bg-[#222] border border-white/10">
-    <div className="flex justify-between items-center">
-        <label className="text-[9px] text-white/70 font-black uppercase tracking-widest font-mono">{label}</label>
-        <span className="text-[10px] font-mono text-[#ff2a00] font-black bg-black/50 px-2 py-0.5">{value.toFixed(2)}</span>
-    </div>
-    <input
-      type="range" min={min} max={max} step={step}
-      className="w-full h-1 bg-white/20 appearance-none rounded-none outline-none accent-[#ff2a00] cursor-pointer"
-      value={value}
-      onChange={e => onChange(parseFloat(e.target.value))}
-    />
-  </div>
-);
+const SectionGroup = ({ title, children }) => (<div className="bg-[#1a1a1a] text-white p-5 rounded-none shadow-sm border border-white/10 flex flex-col gap-4 w-full"><span className="text-xs font-black text-white/50 uppercase tracking-[0.15em] border-b border-white/10 pb-3">{title}</span><div className="flex flex-col gap-3">{children}</div></div>);
+const MenuButton = ({ icon, label, onClick }) => (<button onClick={onClick} className="w-full flex items-center justify-between p-4 bg-[#1a1a1a] text-white hover:bg-white hover:text-black border border-white/10 rounded-none text-left shadow-sm font-bold uppercase text-xs tracking-widest group transition-all"><div className="flex items-center gap-4"><span className="text-xl group-hover:scale-110 transition-transform">{icon}</span><span className="text-xs font-black tracking-[0.1em] uppercase">{label}</span></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 group-hover:opacity-100"><polyline points="9 18 15 12 9 6"></polyline></svg></button>);
+const TextInput = ({ label, value, onChange, placeholder = "", type="text" }) => (<div className="flex flex-col gap-2 w-full"><label className="text-[10px] text-white/50 font-black uppercase tracking-widest font-mono">{label}</label><input type={type} className="bg-[#222] border border-white/10 rounded-none p-3 text-xs outline-none focus:border-white w-full text-white transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} /></div>);
+const TextAreaInput = ({ label, value, onChange }) => (<div className="flex flex-col gap-2 w-full"><label className="text-[10px] text-white/50 font-black uppercase tracking-widest font-mono">{label}</label><textarea className="bg-[#222] border border-white/10 rounded-none p-3 text-xs outline-none focus:border-white min-h-[100px] resize-none w-full text-white custom-scrollbar transition-colors font-mono" value={value} onChange={e => onChange(e.target.value)} /></div>);
+const ColorInput = ({ label, value, onChange }) => (<div className="flex justify-between items-center w-full bg-[#222] border border-white/10 p-3"><label className="text-[10px] font-black text-white/70 uppercase tracking-widest font-mono">{label}</label><div className="flex items-center gap-3"><span className="text-[10px] font-black font-mono opacity-60 uppercase">{value}</span><input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="w-8 h-8 border border-white/20 rounded-none cursor-pointer p-0 overflow-hidden bg-transparent" /></div></div>);
+const SliderInput = ({ label, value, min, max, step, onChange }) => (<div className="flex flex-col gap-3 w-full p-2 bg-[#222] border border-white/10"><div className="flex justify-between items-center"><label className="text-[9px] text-white/70 font-black uppercase tracking-widest font-mono">{label}</label><span className="text-[10px] font-mono text-[#ff2a00] font-black bg-black/50 px-2 py-0.5">{(value||0).toFixed(2)}</span></div><input type="range" min={min} max={max} step={step} className="w-full h-1 bg-white/20 appearance-none rounded-none outline-none accent-[#ff2a00] cursor-pointer" value={value||0} onChange={e => onChange(parseFloat(e.target.value))} /></div>);
 
 function App() {
   const mountRef = useRef(null);
   const sceneRefs = useRef({});
-
-  // UX State
   const [layer, setLayer] = useState(0);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [showSettingsBtn, setShowSettingsBtn] = useState(false);
   const [activeEditorMenu, setActiveEditorMenu] = useState('main');
   const [exportedImage, setExportedImage] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
-
-  // Sync active menu to ref for the animate loop to read
-  useEffect(() => {
-    if (sceneRefs.current) {
-        sceneRefs.current.activeMenu = activeEditorMenu;
-    }
-  }, [activeEditorMenu]);
-
-  // Form State
   const [formAnswers, setFormAnswers] = useState({});
   const [formStatus, setFormStatus] = useState('idle');
-  const [submissions, setSubmissions] = useState(() => {
-    try { const saved = localStorage.getItem('wcc_app_submissions_unified'); return saved ? JSON.parse(saved) : []; } catch(e) { return []; }
-  });
-
-  // Media & Mapper States
+  const [submissions, setSubmissions] = useState(() => { try { const saved = localStorage.getItem('wcc_app_submissions_unified'); return saved ? JSON.parse(saved) : []; } catch(e) { return []; } });
   const [isRecording, setIsRecording] = useState(false);
   const [tempMediaUrl, setTempMediaUrl] = useState('');
   const [prefillUrl, setPrefillUrl] = useState('');
   const [isMappingLoading, setIsMappingLoading] = useState(false);
-
-  // Debug States
   const [showDebug, setShowDebug] = useState(false);
   const [debugLogs, setDebugLogs] = useState([]);
-  const [debugCopyText, setDebugCopyText] = useState('Copy Logs');
-  const [sourceCopyText, setSourceCopyText] = useState('Copy App');
 
-  // REFS
   const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
   const isRecordingRef = useRef(false);
   const originalRendererStateRef = useRef(null);
@@ -238,163 +86,44 @@ function App() {
   const secretClickRef = useRef({ count: 0, timer: null });
   const debugScrollRef = useRef(null);
 
-  const [settings, setSettings] = useState(() => {
-    try {
-        const saved = localStorage.getItem('wcc_app_settings_unified');
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            if (parsed.mediaUrl && !parsed.mediaGallery) parsed.mediaGallery = [parsed.mediaUrl];
-            if (!parsed.mediaGallery) parsed.mediaGallery = [];
+  const [settings, setSettings] = useState(() => { try { const saved = localStorage.getItem('wcc_app_settings_unified'); if (saved) { const parsed = JSON.parse(saved); return { ...DEFAULT_SETTINGS, ...parsed }; } } catch (e) {} return DEFAULT_SETTINGS; });
+  const settingsRef = useRef(settings); settingsRef.current = settings;
 
-            // Force remove the unsplash placeholder if it's cached in local storage
-            if (parsed.mediaGallery[0] && parsed.mediaGallery[0].includes('unsplash.com')) {
-                parsed.mediaGallery[0] = 'https://lh3.googleusercontent.com/d/12eRDfhxcSlHPO5STUEe1sGw7lD7T31JL';
-            }
+  useEffect(() => { if (sceneRefs.current) { sceneRefs.current.activeMenu = activeEditorMenu; } }, [activeEditorMenu]);
+  useEffect(() => { if (debugScrollRef.current) debugScrollRef.current.scrollTop = debugScrollRef.current.scrollHeight; }, [debugLogs]);
 
-            return { ...DEFAULT_SETTINGS, ...parsed };
-        }
-    } catch (e) {}
-    return DEFAULT_SETTINGS;
-  });
-
-  const settingsRef = useRef(settings);
-  settingsRef.current = settings;
-
-  // --- DEBUG LOGGER ---
-  const logDebug = (type, message, details = '') => {
-      console.log(`[${type}] ${message}`, details);
-      setDebugLogs(prev => [...prev, {
-          time: new Date().toISOString().split('T')[1].slice(0, -1),
-          type,
-          message,
-          details: typeof details === 'object' ? JSON.stringify(details, null, 2) : details
-      }]);
-  };
-
-  const handleCopyDebug = () => {
-      const logString = debugLogs.map(log => `[${log.time}] [${log.type}] ${log.message}${log.details ? '\n' + log.details : ''}`).join('\n\n');
-      const textArea = document.createElement("textarea");
-      textArea.value = logString;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-          document.execCommand('copy');
-          setDebugCopyText('COPIED!');
-          setTimeout(() => setDebugCopyText('Copy Logs'), 2000);
-      } catch (err) {}
-      document.body.removeChild(textArea);
-  };
-
-  const handleCopySource = () => {
-      const scriptNode = document.getElementById('app-source');
-      if (!scriptNode) return;
-      const replacementStr = `const DEFAULT_SETTINGS = ${JSON.stringify(settings, null, 2)};`;
-      const finalSourceCode = scriptNode.textContent.replace(/const DEFAULT_SETTINGS = \{[\s\S]*?(?=\/\/ --- GEOMETRY FACTORIES ---)/, replacementStr + '\n\n');
-      const newHtml = `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">\n  <title>${settings.contentHero}</title>\n  <script src="https://cdn.tailwindcss.com"><\/script>\n  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>\n  <script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>\n  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>\n  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">\n</head>\n<body class="bg-[#0a0a0a] overflow-hidden m-0 p-0 text-white selection:bg-white selection:text-black font-sans">\n  <div id="root"></div>\n  <script type="text/babel" id="app-source">\n${finalSourceCode}\n  <\/script>\n</body>\n</html>`;
-
-      const textArea = document.createElement("textarea");
-      textArea.value = newHtml;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-          document.execCommand('copy');
-          setSourceCopyText('COPIED!');
-          setTimeout(() => setSourceCopyText('Copy App'), 2000);
-      } catch (err) {}
-      document.body.removeChild(textArea);
-  };
-
-  useEffect(() => {
-      if (debugScrollRef.current) debugScrollRef.current.scrollTop = debugScrollRef.current.scrollHeight;
-  }, [debugLogs]);
-
-  // ---------------------------------------------------------
-  // CORE HANDLERS
-  // ---------------------------------------------------------
+  const logDebug = (type, message, details = '') => { console.log(`[${type}] ${message}`, details); setDebugLogs(prev => [...prev, { time: new Date().toISOString().split('T')[1].slice(0, -1), type, message, details: typeof details === 'object' ? JSON.stringify(details, null, 2) : details }]); };
   const handleSettingChange = (key, value) => setSettings(prev => ({ ...prev, [key]: value }));
-
-  const handleSaveSettings = () => {
-    try {
-        localStorage.setItem('wcc_app_settings_unified', JSON.stringify(settings));
-        setIsSaved(true);
-        setTimeout(() => setIsSaved(false), 2000);
-    } catch (e) {
-        alert("Cannot save to localStorage. Images are too large.");
-    }
-  };
-
+  const handleSaveSettings = () => { try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(settings)); setIsSaved(true); setTimeout(() => setIsSaved(false), 2000); } catch (e) { alert("Cannot save to localStorage. Images are too large."); } };
   const handleDownloadImage = () => { if (!exportedImage) return; const a = document.createElement('a'); a.download = 'art_capture.png'; a.href = exportedImage; a.click(); };
-
+  const handleRemoveMedia = (index) => { const newGallery = [...settings.mediaGallery]; newGallery.splice(index, 1); handleSettingChange('mediaGallery', newGallery); };
+  
   const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length === 0) return;
-    const readPromises = files.map(file => {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (ev) => resolve(ev.target.result);
-            reader.readAsDataURL(file);
-        });
-    });
+    const files = Array.from(e.target.files); if (files.length === 0) return;
+    const readPromises = files.map(file => { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (ev) => resolve(ev.target.result); reader.readAsDataURL(file); }); });
     const results = await Promise.all(readPromises);
-    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), ...results] }));
-    e.target.value = null;
+    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), ...results] })); e.target.value = null;
   };
 
   const handleAddExternalUrl = () => {
-    let rawUrl = tempMediaUrl.trim();
-    if(!rawUrl) return;
-
-    // Auto-convert Google Drive sharing links to direct image links suitable for WebGL
+    let rawUrl = tempMediaUrl.trim(); if(!rawUrl) return;
     const driveMatch = rawUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
-    if (driveMatch && driveMatch[1]) {
-        rawUrl = `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
-    }
-
-    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), rawUrl] }));
-    setTempMediaUrl('');
+    if (driveMatch && driveMatch[1]) { rawUrl = `https://lh3.googleusercontent.com/d/$$${driveMatch[1]}`; }
+    setSettings(prev => ({ ...prev, mediaGallery: [...(prev.mediaGallery || []), rawUrl] })); setTempMediaUrl('');
   };
 
-  const handleRemoveMedia = (index) => {
-    const newGallery = [...settings.mediaGallery];
-    newGallery.splice(index, 1);
-    handleSettingChange('mediaGallery', newGallery);
-  };
-
-  // --- FORM LOGIC ---
   const handleFormSubmit = () => {
-    for (const q of settings.questions) {
-        if (q.required) {
-            const val = formAnswers[q.id];
-            if (!val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && val.trim() === '')) {
-                alert(`Please answer the required question: [ ${q.label} ]`);
-                return;
-            }
-        }
-    }
+    for (const q of settings.questions) { if (q.required) { const val = formAnswers[q.id]; if (!val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && val.trim() === '')) { alert(`Please answer the required question: [ ${q.label} ]`); return; } } }
     setFormStatus('submitting');
-    const newSubmission = { date: new Date().toISOString(), ...formAnswers };
-    const updatedSubmissions = [...submissions, newSubmission];
-    setSubmissions(updatedSubmissions);
+    const newSubmission = { date: new Date().toISOString(), ...formAnswers }; const updatedSubmissions = [...submissions, newSubmission]; setSubmissions(updatedSubmissions);
     try { localStorage.setItem('wcc_app_submissions_unified', JSON.stringify(updatedSubmissions)); } catch(e) {}
-
     if (settings.webhookUrl) {
-        const iframeName = 'hidden_iframe_' + Date.now();
-        const iframe = document.createElement('iframe');
-        iframe.name = iframeName; iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        const form = document.createElement('form');
-        form.method = 'POST'; form.action = settings.webhookUrl; form.target = iframeName;
+        const iframeName = 'hidden_iframe_' + Date.now(); const iframe = document.createElement('iframe'); iframe.name = iframeName; iframe.style.display = 'none'; document.body.appendChild(iframe);
+        const form = document.createElement('form'); form.method = 'POST'; form.action = settings.webhookUrl; form.target = iframeName;
         settings.questions.forEach(q => {
             const val = formAnswers[q.id];
-            if (Array.isArray(val)) {
-                val.forEach(v => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden'; input.name = q.googleId; input.value = v; form.appendChild(input);
-                });
-            } else {
-                const input = document.createElement('input');
-                input.type = 'hidden'; input.name = q.googleId; input.value = val || ""; form.appendChild(input);
-            }
+            if (Array.isArray(val)) { val.forEach(v => { const input = document.createElement('input'); input.type = 'hidden'; input.name = q.googleId; input.value = v; form.appendChild(input); }); }
+            else { const input = document.createElement('input'); input.type = 'hidden'; input.name = q.googleId; input.value = val || ""; form.appendChild(input); }
         });
         document.body.appendChild(form); form.submit();
         setTimeout(() => { document.body.removeChild(form); setTimeout(() => document.body.removeChild(iframe), 2000); }, 100);
@@ -404,123 +133,57 @@ function App() {
 
   const handleDownloadSubmissions = () => {
      if (submissions.length === 0) return alert("No submissions to download yet.");
-     const headers = ['Date', ...settings.questions.map(q => q.label)];
-     const csvRows = [headers.join(',')];
-     submissions.forEach(sub => {
-         const row = [sub.date];
-         settings.questions.forEach(q => {
-             let val = sub[q.id] || "";
-             if (Array.isArray(val)) val = val.join('; ');
-             val = `"${String(val).replace(/"/g, '""')}"`;
-             row.push(val);
-         });
-         csvRows.push(row.join(','));
-     });
-     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-     const url = URL.createObjectURL(blob);
-     const a = document.createElement('a'); a.href = url; a.download = 'wcc_submissions.csv'; a.click();
+     const headers = ['Date', ...settings.questions.map(q => q.label)]; const csvRows = [headers.join(',')];
+     submissions.forEach(sub => { const row = [sub.date]; settings.questions.forEach(q => { let val = sub[q.id] || ""; if (Array.isArray(val)) val = val.join('; '); val = `"${String(val).replace(/"/g, '""')}"`; row.push(val); }); csvRows.push(row.join(',')); });
+     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'wcc_submissions.csv'; a.click();
   };
 
-  const handleClearSubmissions = () => {
-      if(confirm("Are you sure you want to clear all saved submissions?")) {
-          setSubmissions([]); localStorage.removeItem('wcc_app_submissions_unified');
-      }
-  };
-
+  const handleClearSubmissions = () => { if(confirm("Are you sure you want to clear all saved submissions?")) { setSubmissions([]); localStorage.removeItem('wcc_app_submissions_unified'); } };
   const addQuestion = () => handleSettingChange('questions', [...settings.questions, { id: 'q' + Date.now(), label: 'New Question', type: 'text', required: false, googleId: 'entry.' }]);
   const removeQuestion = (id) => handleSettingChange('questions', settings.questions.filter(q => q.id !== id));
   const updateQuestion = (id, key, val) => handleSettingChange('questions', settings.questions.map(q => q.id === id ? { ...q, [key]: val } : q));
 
   const handleAutoMapForm = async (silentMode = false) => {
       const isSilent = silentMode === true;
-
-      if (!isSilent) {
-          logDebug('INFO', 'Starting Native Form Auto-Map Process');
-          setShowDebug(true);
-      }
-
-      let inputRaw = prefillUrl.trim();
-      if (!inputRaw && !isSilent) return;
-      if (!inputRaw && isSilent) {
-          // If silent, use the default Apply Link
-          inputRaw = settings.applyLink;
-      }
-
+      if (!isSilent) { logDebug('INFO', 'Starting Native Form Auto-Map Process'); setShowDebug(true); }
+      let inputRaw = prefillUrl.trim(); if (!inputRaw && !isSilent) return;
+      if (!inputRaw && isSilent) { inputRaw = settings.applyLink; }
       setIsMappingLoading(true);
       try {
           let extractedData = ""; let base = "";
           if (inputRaw.startsWith('http')) {
-              let urlObj = new URL(inputRaw);
-              base = urlObj.origin + urlObj.pathname;
-              base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
+              let urlObj = new URL(inputRaw); base = urlObj.origin + urlObj.pathname; base = base.replace('viewform', 'formResponse').replace('prefill', 'formResponse');
               if (!isSilent) logDebug('INFO', 'Webhook Target Base URL', base);
-
               let html = ""; let fetchSuccess = false;
-              const proxyList = [
-                  { name: 'AllOrigins', url: `https://api.allorigins.win/raw?url=${encodeURIComponent(urlObj.href)}`, type: 'text' },
-                  { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' },
-                  { name: 'CodeTabs', url: `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlObj.href)}`, type: 'text' },
-                  { name: 'ThingProxy', url: `https://thingproxy.freeboard.io/fetch/${urlObj.href}`, type: 'text' }
-              ];
+              const proxyList = [ { name: 'AllOrigins', url: `https://api.allorigins.win/raw?url=${encodeURIComponent(urlObj.href)}`, type: 'text' }, { name: 'CorsProxy', url: `https://corsproxy.io/?${encodeURIComponent(urlObj.href)}`, type: 'text' } ];
               for (const proxy of proxyList) {
                   if (!isSilent) logDebug('FETCH', `Trying Proxy: ${proxy.name}`, proxy.url);
-                  try {
-                      const corsRes = await fetch(proxy.url);
-                      if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`);
-                      html = proxy.type === 'json' ? (await corsRes.json()).contents : await corsRes.text();
-                      if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) { fetchSuccess = true; break; }
-                  } catch (err) { if (!isSilent) logDebug('WARN', `${proxy.name} failed`, err.message); }
+                  try { const corsRes = await fetch(proxy.url); if (!corsRes.ok) throw new Error(`HTTP ${corsRes.status}`); html = await corsRes.text(); if (html && html.includes('FB_PUBLIC_LOAD_DATA_')) { fetchSuccess = true; break; } } catch (err) { if (!isSilent) logDebug('WARN', `${proxy.name} failed`, err.message); }
               }
-              if (!fetchSuccess) {
-                  if (!isSilent) alert("Google blocked fetch. Paste the raw Page Source HTML instead.");
-                  setIsMappingLoading(false); return;
-              }
-              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
-              const startIndex = html.indexOf(searchStr);
-              if (startIndex !== -1) {
-                  const dataStart = startIndex + searchStr.length;
-                  let scriptEndIndex = html.indexOf("</" + "script>", dataStart);
-                  extractedData = html.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000);
-              } else throw new Error("Could not find schema.");
+              if (!fetchSuccess) { if (!isSilent) alert("Google blocked fetch. Paste the raw Page Source HTML instead."); setIsMappingLoading(false); return; }
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = "; const startIndex = html.indexOf(searchStr);
+              if (startIndex !== -1) { const dataStart = startIndex + searchStr.length; let scriptEndIndex = html.indexOf("</" + "script>", dataStart); extractedData = html.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000); } else throw new Error("Could not find schema.");
           } else if (inputRaw.includes('FB_PUBLIC_LOAD_DATA_')) {
               if (!isSilent) logDebug('INFO', 'Raw HTML detected. Bypassing fetch.');
               const actionMatch = inputRaw.match(/action="(https:\/\/docs\.google\.com\/forms\/[^"]+\/formResponse)"/);
               if (actionMatch) base = actionMatch[1]; else throw new Error("Could not find form action.");
-              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = ";
-              const startIndex = inputRaw.indexOf(searchStr);
-              if (startIndex !== -1) {
-                  const dataStart = startIndex + searchStr.length;
-                  let scriptEndIndex = inputRaw.indexOf("</" + "script>", dataStart);
-                  extractedData = inputRaw.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000);
-              } else throw new Error("Could not find schema.");
+              const searchStr = "var FB_PUBLIC_LOAD_DATA_ = "; const startIndex = inputRaw.indexOf(searchStr);
+              if (startIndex !== -1) { const dataStart = startIndex + searchStr.length; let scriptEndIndex = inputRaw.indexOf("</" + "script>", dataStart); extractedData = inputRaw.substring(dataStart, scriptEndIndex !== -1 ? scriptEndIndex : dataStart + 50000); } else throw new Error("Could not find schema.");
           } else throw new Error("Invalid input.");
 
           if (!isSilent) logDebug('INFO', 'Parsing JSON data natively...');
-
-          let cleanJsonStr = extractedData.trim();
-          let openBrackets = 0; let endIndex = -1;
-          for (let i = 0; i < cleanJsonStr.length; i++) {
-              if (cleanJsonStr[i] === '[') openBrackets++;
-              else if (cleanJsonStr[i] === ']') { openBrackets--; if (openBrackets === 0) { endIndex = i; break; } }
-          }
+          let cleanJsonStr = extractedData.trim(); let openBrackets = 0; let endIndex = -1;
+          for (let i = 0; i < cleanJsonStr.length; i++) { if (cleanJsonStr[i] === '[') openBrackets++; else if (cleanJsonStr[i] === ']') { openBrackets--; if (openBrackets === 0) { endIndex = i; break; } } }
           if (endIndex !== -1) cleanJsonStr = cleanJsonStr.substring(0, endIndex + 1);
 
-          const formData = JSON.parse(cleanJsonStr);
-          const formItems = formData[1][1];
-          const parsedQuestions = []; let qIndex = 1;
+          const formData = JSON.parse(cleanJsonStr); const formItems = formData[1][1]; const parsedQuestions = []; let qIndex = 1;
           formItems.forEach(item => {
               if (!item || !Array.isArray(item)) return;
-              const typeCode = item[3];
-              const typeMap = { 0: 'text', 1: 'textarea', 2: 'radio', 3: 'select', 4: 'checkbox', 9: 'text', 10: 'text' };
-              const qType = typeMap[typeCode];
+              const typeCode = item[3]; const typeMap = { 0: 'text', 1: 'textarea', 2: 'radio', 3: 'select', 4: 'checkbox', 9: 'text', 10: 'text' }; const qType = typeMap[typeCode];
               if (qType && item[4] && Array.isArray(item[4]) && item[4][0]) {
-                  const entryIdStr = item[4][0][0];
-                  const isRequired = item[4][0][2] === 1 || item[4][0][2] === true;
-                  const label = item[1] || `Question ${qIndex}`;
+                  const entryIdStr = item[4][0][0]; const isRequired = item[4][0][2] === 1 || item[4][0][2] === true; const label = item[1] || `Question ${qIndex}`;
                   const qObj = { id: 'q' + qIndex, label: label, type: qType, required: isRequired, googleId: `entry.${entryIdStr}` };
-                  if ([2, 3, 4].includes(typeCode) && item[4][0][1]) {
-                      qObj.options = item[4][0][1].map(opt => opt[0]).filter(o => o !== null && o !== undefined && o !== "");
-                  }
+                  if ([2, 3, 4].includes(typeCode) && item[4][0][1]) { qObj.options = item[4][0][1].map(opt => opt[0]).filter(o => o !== null && o !== undefined && o !== ""); }
                   parsedQuestions.push(qObj); qIndex++;
               }
           });
@@ -528,50 +191,23 @@ function App() {
 
           const newConfig = { ...settingsRef.current, useInternalForm: true, applyLink: inputRaw.startsWith('http') ? inputRaw : base.replace('formResponse', 'viewform'), webhookUrl: base, questions: parsedQuestions };
           setSettings(newConfig); setFormAnswers({});
-
-          if (!isSilent) {
-              setPrefillUrl('');
-              logDebug('SUCCESS', 'Native form mapping complete.');
-              alert("Form Map Complete! Click 'Save Configuration'.");
-          } else {
-              try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(newConfig)); } catch(e) {}
-              console.log("Silently mapped Google Form defaults in the background.");
-          }
-      } catch (e) {
-          if (!isSilent) {
-              logDebug('ERROR', 'Auto-map failed', e.message);
-              alert("Failed to map form: " + e.message);
-          } else {
-              console.warn("Silent mapping failed.", e.message);
-          }
-      }
+          if (!isSilent) { setPrefillUrl(''); logDebug('SUCCESS', 'Native form mapping complete.'); alert("Form Map Complete! Click 'Save Configuration'."); } 
+          else { try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(newConfig)); } catch(e) {} console.log("Silently mapped Google Form defaults."); }
+      } catch (e) { if (!isSilent) { logDebug('ERROR', 'Auto-map failed', e.message); alert("Failed to map form: " + e.message); } else { console.warn("Silent mapping failed.", e.message); } }
       setIsMappingLoading(false);
   };
 
-  // ----- EXPORT CONFIGURED HTML TO LOCAL MACHINE -----
-  const handleExportHtml = () => {
-      const currentSettings = settingsRef.current;
-      const scriptElement = document.getElementById('app-source');
-      if (!scriptElement) {
-          alert("Error: Cannot find source code to export.");
-          return;
-      }
+  // ----- GENERATES THE LIGHTWEIGHT CLIENT HTML & SAVES DIRECTLY -----
+  const handleExportHtml = async () => {
+      const s = settingsRef.current;
+      const settingsJson = JSON.stringify(s, null, 2);
 
-      const scriptContent = scriptElement.textContent;
-      const newSettingsStr = `const DEFAULT_SETTINGS = ${JSON.stringify(currentSettings, null, 2)};`;
-
-      // Inject the live settings dynamically back into the source code
-      const modifiedScript = scriptContent.replace(
-          /const DEFAULT_SETTINGS = \{[\s\S]*?(?=\/\/ --- GEOMETRY FACTORIES ---)/,
-          newSettingsStr + '\n\n'
-      );
-
-      const fullHtml = `<!DOCTYPE html>
+      const lightweightHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WCC - Open Call & Talks Hub</title>
+  <title>${s.contentHero}</title>
   <script src="https://cdn.tailwindcss.com"><\/script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>
@@ -579,84 +215,255 @@ function App() {
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"><\/script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-[#0a0a0a] overflow-hidden m-0 p-0 text-white selection:bg-white selection:text-black font-sans">
+<body class="bg-[#0a0a0a] overflow-hidden m-0 p-0 text-white selection:bg-white selection:text-black font-sans" style="font-family: ${s.uiFont.replace(/"/g, "'")}">
   <div id="root"></div>
-  <script type="text/babel" id="app-source">${modifiedScript}<\/script>
+  <script type="text/babel">
+  const { useState, useEffect, useRef } = React;
+  const DEFAULT_SETTINGS = ${settingsJson};
+
+  const createArchGeo = (type) => { if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'torus_full': return new THREE.TorusGeometry(2.4, 0.35, 32, 100); case 'cylinder': return new THREE.CylinderGeometry(2.4, 2.4, 0.7, 64); case 'box': return new THREE.BoxGeometry(4.8, 0.7, 4.8); case 'wireframe_torus': return new THREE.TorusGeometry(3, 0.4, 16, 64); case 'torus_half': default: return new THREE.TorusGeometry(2.4, 0.35, 32, 100, Math.PI * 1.5); } };
+  const createCoreGeo = (type) => { if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'box': return new THREE.BoxGeometry(1.8, 1.8, 1.8); case 'icosahedron': return new THREE.IcosahedronGeometry(1.2, 0); case 'sphere': default: return new THREE.SphereGeometry(1.2, 64, 64); } };
+  const createRingGeo = (type, radius) => { const thick = 0.02; if (type === 'none') return new THREE.BoxGeometry(0,0,0); switch(type) { case 'thick': return new THREE.TorusGeometry(radius, 0.08, 16, 100); case 'square': return new THREE.TorusGeometry(radius, 0.06, 4, 100); case 'orbit_rings': return new THREE.TorusGeometry(radius, 0.005, 8, 100); case 'thin': default: return new THREE.TorusGeometry(radius, thick, 16, 100); } };
+
+  function App() {
+    const mountRef = useRef(null);
+    const sceneRefs = useRef({});
+    const [layer, setLayer] = useState(0);
+    const [formAnswers, setFormAnswers] = useState({});
+    const [formStatus, setFormStatus] = useState('idle');
+    const targetArtPosRef = useRef({ x: 0, y: 0.5, z: 8.0 });
+    const settings = DEFAULT_SETTINGS;
+
+    const handleFormSubmit = () => {
+      for (const q of settings.questions) { if (q.required) { const val = formAnswers[q.id]; if (!val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && val.trim() === '')) { alert("Please answer the required question: [ " + q.label + " ]"); return; } } }
+      setFormStatus('submitting');
+      if (settings.webhookUrl) {
+          const iframeName = 'hidden_iframe_' + Date.now();
+          const iframe = document.createElement('iframe'); iframe.name = iframeName; iframe.style.display = 'none'; document.body.appendChild(iframe);
+          const form = document.createElement('form'); form.method = 'POST'; form.action = settings.webhookUrl; form.target = iframeName;
+          settings.questions.forEach(q => {
+              const val = formAnswers[q.id];
+              if (Array.isArray(val)) { val.forEach(v => { const input = document.createElement('input'); input.type = 'hidden'; input.name = q.googleId; input.value = v; form.appendChild(input); }); }
+              else { const input = document.createElement('input'); input.type = 'hidden'; input.name = q.googleId; input.value = val || ""; form.appendChild(input); }
+          });
+          document.body.appendChild(form); form.submit();
+          setTimeout(() => { document.body.removeChild(form); setTimeout(() => document.body.removeChild(iframe), 2000); }, 100);
+      }
+      setTimeout(() => setFormStatus('success'), 1200);
+    };
+
+    useEffect(() => {
+      const scene = new THREE.Scene(); scene.background = new THREE.Color(settings.bgColor); scene.fog = new THREE.FogExp2(settings.bgColor, 0.05);
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000); camera.position.set(0, 0, targetArtPosRef.current.z);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
+      scene.add(new THREE.AmbientLight(0xffffff, 1.2)); const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(5, 10, 5); scene.add(dirLight);
+
+      const shelterGroup = new THREE.Group();
+      const arch = new THREE.Mesh(createArchGeo(settings.archShape), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 })); arch.rotation.z = -Math.PI / 4; shelterGroup.add(arch);
+      const ring = new THREE.Mesh(createRingGeo(settings.ringShape, 2.1), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.2, metalness: 0.8 })); shelterGroup.add(ring);
+      const innerRing = new THREE.Mesh(createRingGeo(settings.ringShape, 1.6), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.1, metalness: 1.0 })); innerRing.rotation.x = Math.PI / 2; shelterGroup.add(innerRing);
+      const cube = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.6,0.6), new THREE.MeshStandardMaterial({ color: settings.cubeColor, roughness: 0.2, metalness: 0.1 })); cube.position.set(1.5, 1.5, 1.5); shelterGroup.add(cube);
+      const innerMesh = new THREE.Mesh(createCoreGeo(settings.coreShape), new THREE.MeshPhysicalMaterial({ color: settings.glassColor, metalness: 0.1, roughness: 0.05, transmission: 1.0, ior: settings.glassIor, thickness: 2.0, transparent: true })); shelterGroup.add(innerMesh);
+      const galleryGroup = new THREE.Group(); shelterGroup.add(galleryGroup); scene.add(shelterGroup);
+
+      arch.scale.setScalar(settings.archScale); ring.scale.setScalar(settings.ringScale); innerRing.scale.setScalar(settings.ringScale); cube.scale.setScalar(settings.cubeScale); innerMesh.scale.setScalar(settings.glassScale);
+
+      if (settings.mediaGallery && settings.mediaGallery.length > 0) {
+        const loader = new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
+        settings.mediaGallery.forEach((url, i) => {
+            loader.load(url, (texture) => {
+              texture.colorSpace = THREE.SRGBColorSpace;
+              if (settings.mediaStyle === 'floating') {
+                 innerMesh.material.map = null; innerMesh.material.transmission = 1.0;
+                 const size = 3.2; const clonedTexture = texture.clone(); clonedTexture.needsUpdate = true; clonedTexture.matrixAutoUpdate = false;
+                 const imageAspect = texture.image.width / texture.image.height;
+                 const baseSx = imageAspect > 1.0 ? 1.0 / imageAspect : 1.0; const baseSy = imageAspect > 1.0 ? 1.0 : imageAspect;
+                 const finalSx = baseSx / (settings.imageScale || 1.0); const finalSy = baseSy / (settings.imageScale || 1.0);
+                 const tx = (1.0 - finalSx) * (settings.imageOffsetX ?? 0.5); const ty = (1.0 - finalSy) * (1.0 - (settings.imageOffsetY ?? 0.5));
+                 clonedTexture.matrix.setUvTransform(tx, ty, finalSx, finalSy, 0, 0, 0);
+                 const canvasGroup = new THREE.Group();
+                 const canvasMesh = new THREE.Mesh(new THREE.BoxGeometry(size, size, 0.05), new THREE.MeshStandardMaterial({ map: clonedTexture, color: 0xffffff, roughness: 0.2, metalness: 0.1 }));
+                 const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(size + 0.1, size + 0.1, 0.02), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 }));
+                 frameMesh.position.z = -0.02; canvasGroup.add(canvasMesh); canvasGroup.add(frameMesh);
+                 const count = settings.mediaGallery.length; const spacing = count > 1 ? 2.8 : 0; const offset = i - (count - 1) / 2;
+                 canvasGroup.position.x = offset * spacing; canvasGroup.position.z = Math.abs(offset) * 0.8; canvasGroup.rotation.y = -offset * 0.2;
+                 galleryGroup.add(canvasGroup);
+              } else { if (i === 0) { innerMesh.material.map = texture; innerMesh.material.transmission = 0.0; } }
+              innerMesh.material.needsUpdate = true;
+            });
+        });
+      } else { innerMesh.material.map = null; innerMesh.material.transmission = 1.0; innerMesh.material.needsUpdate = true; }
+
+      const handleResize = () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); };
+      window.addEventListener('resize', handleResize);
+
+      let animationFrameId; let time = 0;
+      const animate = () => {
+        animationFrameId = requestAnimationFrame(animate);
+        time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
+        if(settings.mediaGallery?.length > 0 && settings.mediaStyle === 'floating') { galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15; galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05; }
+        
+        shelterGroup.rotation.x = settings.artRotX ?? 0.0; shelterGroup.rotation.y = settings.artRotY ?? 0.0; shelterGroup.rotation.z = settings.artRotZ ?? 0.0;
+        shelterGroup.position.x += ((targetArtPosRef.current.x + settings.artPosX) - shelterGroup.position.x) * 0.05;
+        shelterGroup.position.y += ((targetArtPosRef.current.y + settings.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
+        innerMesh.position.y = Math.sin(time * 0.001) * 0.1; cube.position.y = 1.5 + Math.sin(time * 0.002) * 0.2;
+        camera.position.z += ((targetArtPosRef.current.z + settings.artZoom) - camera.position.z) * 0.05; camera.lookAt(0, 0, 0); renderer.render(scene, camera);
+      };
+      animate();
+      return () => { window.removeEventListener('resize', handleResize); cancelAnimationFrame(animationFrameId); renderer.dispose(); };
+    }, []);
+
+    return (
+      <div className="relative w-full h-screen overflow-hidden text-white" style={{ fontFamily: settings.uiFont }}>
+        <style>{\`
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); }
+        .ui-btn-solid { background: \${settings.uiAccentColor}; color: white; border-radius: 0; padding: 16px 32px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; border: 2px solid transparent; transition: all 0.2s; }
+        .ui-btn-solid:hover { background: white; color: \${settings.uiAccentColor}; border-color: \${settings.uiAccentColor}; }
+        .public-form-input { background: rgba(0,0,0,0.02); border: 2px solid rgba(0,0,0,0.1); border-radius: 0; padding: 14px; font-size: 14px; outline: none; transition: all 0.2s; color: black !important; font-family: 'JetBrains Mono', monospace; }
+        .public-form-input:focus { background: white; border-color: \${settings.uiAccentColor}; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 0px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+        \`}</style>
+
+        <div className="absolute inset-0 z-0 bg-grid opacity-50 pointer-events-none" />
+        <div ref={mountRef} className="absolute inset-0 z-0" />
+
+        {/* LAYER 0: HERO */}
+        <div className={"absolute inset-0 z-10 flex flex-col p-6 md:p-12 transition-all duration-1000 overflow-y-auto custom-scrollbar " + (layer === 0 ? "opacity-100" : "opacity-0 pointer-events-none")}>
+          <div className="flex-1 flex flex-col items-center justify-center text-center mix-blend-difference text-white z-10 w-full min-h-[50vh]">
+            <h1 className="text-6xl md:text-[10rem] font-black mb-2 uppercase tracking-tighter leading-none">{settings.contentHero}</h1>
+            <h2 className="text-sm md:text-3xl font-bold tracking-[0.3em] uppercase opacity-90 mt-4 font-mono">{settings.contentSub}</h2>
+            <button onClick={() => setLayer(1)} className="mt-8 md:mt-16 px-8 md:px-16 py-4 md:py-5 bg-white text-black font-black uppercase tracking-[0.2em] rounded-none hover:bg-neutral-200 transition-colors border-2 border-transparent hover:border-black">[{settings.btnEnter}]</button>
+          </div>
+
+          <div className="w-full md:w-[420px] self-center md:self-end mt-8 bg-[#0a0a0a]/90 backdrop-blur-md border border-white/20 group hover:border-[#ff2a00]/80 transition-colors z-20 text-left relative shrink-0 shadow-2xl flex flex-col">
+              <div className="absolute top-0 right-0 bg-[#ff2a00] text-white text-[8px] font-black tracking-widest px-3 py-1 uppercase z-10">Upcoming Event</div>
+              {settings.mediaGallery && settings.mediaGallery[0] && (
+                <div className="w-full h-48 overflow-hidden relative border-b border-white/10 flex items-center justify-center bg-black">
+                  <img src={settings.mediaGallery[0]} crossOrigin="anonymous" className="opacity-70 group-hover:opacity-100 transition-opacity" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: ((settings.imageOffsetX ?? 0.5) * 100) + "% " + ((settings.imageOffsetY ?? 0.5) * 100) + "%", transform: "scale(" + (settings.imageScale || 1.0) + ")" }} alt="Speaker" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+                </div>
+              )}
+              <div className="p-6 pt-4">
+                <p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono mb-2">{settings.talkTag}</p>
+                <h3 className="text-2xl font-black uppercase tracking-tighter mb-1">{settings.talkTitle}</h3>
+                <p className="text-xs font-bold opacity-80 mb-4 font-serif italic">{settings.talkSubtitle}</p>
+                <p className="text-[10px] font-mono uppercase whitespace-pre-wrap text-white/60 leading-loose border-l-2 border-[#ff2a00] pl-3">{settings.talkDetails}</p>
+              </div>
+          </div>
+        </div>
+
+        {/* LAYERS 1-3: PUBLIC UI */}
+        {layer > 0 && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center md:justify-end p-4 md:p-12 transition-all duration-1000">
+                <div className="max-w-xl w-full bg-white/95 backdrop-blur-md border border-black/10 shadow-[16px_16px_0px_rgba(0,0,0,0.1)] p-8 md:p-12 overflow-y-auto max-h-[90vh] custom-scrollbar text-neutral-900">
+                    {layer === 1 && (
+                        <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                          <div className="border-b-2 border-black/10 pb-4 mb-6"><p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono">{settings.contentTag}</p></div>
+                          <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tighter uppercase text-black">{settings.contentTitle}</h2>
+                          <div className="mb-8 space-y-4 text-sm font-bold opacity-90 border-l-4 border-[#ff2a00] pl-4 font-mono text-black"><p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro1}</p><p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro2}</p></div>
+                          <div className="space-y-6 opacity-80 leading-relaxed mb-8 text-base font-medium font-serif border-l-2 border-black/20 pl-6 text-black"><p className="whitespace-pre-wrap">{settings.contentDesc1}</p><p className="whitespace-pre-wrap">{settings.contentDesc2}</p></div>
+                          <div className="flex gap-4 pt-6 border-t-2 border-black/10"><button onClick={()=>setLayer(0)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Abort</button><button onClick={()=>setLayer(2)} className="flex-1 ui-btn-solid">Continue</button></div>
+                        </div>
+                    )}
+                    {layer === 2 && (
+                      <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                        <h2 className="text-3xl font-black mb-8 uppercase tracking-tighter border-b-2 border-black/10 pb-4 text-black">{settings.titleInclusions}</h2>
+                        <ul className="space-y-3 mb-10 text-sm md:text-base font-bold uppercase font-mono text-black">
+                          {[settings.inclusion1, settings.inclusion2, settings.inclusion3, settings.inclusion4].map((item, i) => (<li key={i} className="flex items-center gap-4 p-4 border border-black/10 hover:border-black/30 transition-colors bg-black/5"><div className="w-3 h-3 bg-[#ff2a00]" /><span>{item}</span></li>))}
+                        </ul>
+                        <div className="mb-10 p-6 border-2 border-[#ff2a00] bg-[#ff2a00]/10 font-black text-2xl tracking-tight flex flex-col text-black"><span className="text-[10px] text-[#ff2a00] tracking-widest uppercase mb-1 font-mono">DEADLINE</span>{settings.contentDeadline}</div>
+                        <div className="flex gap-4"><button onClick={()=>setLayer(1)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button><button onClick={()=>setLayer(3)} className="flex-1 ui-btn-solid">Proceed To Form</button></div>
+                      </div>
+                    )}
+                    {layer === 3 && (
+                      <div className="animate-in fade-in slide-in-from-right-4 duration-500 text-inherit">
+                         {formStatus === 'success' ? (
+                            <div className="text-center py-16 border border-black/10 bg-black/5"><h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-[#ff2a00]">{settings.formSuccessTitle}</h2><p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold text-black">{settings.formSuccessMsg}</p><button onClick={()=>{setLayer(0); setFormStatus('idle'); setFormAnswers({});}} className="ui-btn-solid w-3/4 mx-auto block">Reset System</button></div>
+                         ) : (
+                            <div className="flex flex-col gap-6">
+                              <div className="border-b-2 border-black/10 pb-6 mb-2"><h2 className="text-3xl font-black uppercase tracking-tighter text-black">{settings.formTitle}</h2></div>
+                              {settings.useInternalForm ? (
+                                 <form className="flex flex-col gap-6" onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
+                                    {settings.questions.map((q) => (
+                                      <div key={q.id} className="flex flex-col gap-2">
+                                         <div className="flex justify-between items-center px-1"><label className="text-[10px] font-bold opacity-60 uppercase tracking-[0.1em] font-mono text-black">[{q.label}] {q.required && <span className="text-[#ff2a00]">*</span>}</label></div>
+                                         {q.type === 'textarea' ? (<textarea className="public-form-input min-h-[140px]" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />) : q.type === 'radio' ? (<div className="flex flex-col gap-2 p-2">{q.options?.map(opt => (<label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black"><input type="radio" name={q.id} value={opt} checked={formAnswers[q.id] === opt} onChange={e => setFormAnswers({...formAnswers, [q.id]: e.target.value})} required={q.required} className="w-4 h-4 accent-[#ff2a00]" />{opt}</label>))}</div>) : q.type === 'checkbox' ? (<div className="flex flex-col gap-2 p-2">{q.options?.map(opt => { const isChecked = (formAnswers[q.id] || []).includes(opt); return (<label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black"><input type="checkbox" name={q.id} value={opt} checked={isChecked} onChange={e => { const current = formAnswers[q.id] || []; const updated = e.target.checked ? [...current, opt] : current.filter(x => x !== opt); setFormAnswers({...formAnswers, [q.id]: updated}); }} className="w-4 h-4 accent-[#ff2a00] rounded-none" />{opt}</label>)})}</div>) : q.type === 'select' ? (<select className="public-form-input" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})}><option value="">Select an option...</option>{q.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}</select>) : (<input className="public-form-input" type={q.type} required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />)}
+                                      </div>
+                                    ))}
+                                    <button type="submit" className="ui-btn-solid w-full mt-4">Transmit Data</button>
+                                    <button type="button" onClick={()=>setLayer(2)} className="mt-4 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Cancel</button>
+                                 </form>
+                              ) : (
+                                 <div className="flex flex-col items-center justify-center py-12 text-center border border-black/10 bg-black/5 text-black">
+                                    <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold px-8">Routing to external secure portal.</p>
+                                    <button onClick={()=>window.open(settings.applyLink, '_blank')} className="ui-btn-solid w-3/4 mx-auto block">Open Portal</button>
+                                    <button onClick={()=>setLayer(2)} className="mt-8 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button>
+                                 </div>
+                              )}
+                            </div>
+                         )}
+                      </div>
+                    )}
+                </div>
+            </div>
+        )}
+      </div>
+    );
+  }
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<App />);
+  </` + `script>
 </body>
 </html>`;
 
-      const blob = new Blob([fullHtml], { type: 'text/html' });
+      try {
+          if (window.showSaveFilePicker) {
+              const fileHandle = await window.showSaveFilePicker({
+                  suggestedName: 'index.html',
+                  types: [{
+                      description: 'HTML File',
+                      accept: { 'text/html': ['.html'] },
+                  }],
+              });
+              const writable = await fileHandle.createWritable();
+              await writable.write(lightweightHtml);
+              await writable.close();
+              alert("SUCCESS! You have successfully updated your index.html file. You can now commit and push to Git.");
+              return;
+          }
+      } catch (err) {
+          if (err.name === 'AbortError') return;
+          console.warn("Direct save failed or not supported by browser. Falling back to download.", err);
+      }
+
+      // Fallback for Safari/Firefox
+      const blob = new Blob([lightweightHtml], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'wcc_configured_app.html';
+      a.download = 'index.html';
       a.click();
   };
 
-  // ----- IMPROVED POSTER OVERLAY GENERATOR (GRAPHIC DESIGN OPTIMIZED) -----
   const drawPosterOverlay = (ctx, expW, expH, s) => {
     const pad = expW * 0.05;
-
-    // Draw Border
-    ctx.strokeStyle = s.archColor;
-    ctx.lineWidth = expW * 0.006;
-    ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
-
-    // Top Left Accent Box
-    ctx.fillStyle = s.uiAccentColor;
-    ctx.fillRect(pad, pad, expW * 0.04, expW * 0.04);
-
-    // Bottom Panel for Text
-    const panelH = expH * (s.posterPanelHeight ?? 0.38); // Dynamic panel height
-    const panelY = expH - pad - panelH;
-    ctx.fillStyle = s.bgColor;
-    ctx.fillRect(pad, panelY, expW - pad * 2, panelH);
-
-    // Divider Line
-    ctx.beginPath();
-    ctx.moveTo(pad, panelY);
-    ctx.lineTo(expW - pad, panelY);
-    ctx.stroke();
-
-    ctx.textAlign = 'left';
-    const leftMargin = pad + expW * 0.05;
-
-    // DYNAMIC SEQUENTIAL Y-POSITIONING (Prevents overlaps!)
+    ctx.strokeStyle = s.archColor; ctx.lineWidth = expW * 0.006; ctx.strokeRect(pad, pad, expW - pad * 2, expH - pad * 2);
+    ctx.fillStyle = s.uiAccentColor; ctx.fillRect(pad, pad, expW * 0.04, expW * 0.04);
+    const panelH = expH * (s.posterPanelHeight ?? 0.38); const panelY = expH - pad - panelH;
+    ctx.fillStyle = s.bgColor; ctx.fillRect(pad, panelY, expW - pad * 2, panelH);
+    ctx.beginPath(); ctx.moveTo(pad, panelY); ctx.lineTo(expW - pad, panelY); ctx.stroke();
+    ctx.textAlign = 'left'; const leftMargin = pad + expW * 0.05;
     let currentY = panelY + expH * 0.06 + (expH * (s.posterTextOffset ?? 0.0));
-
-    // Event Tag (e.g. "Talks / Բաց քննարկումներ")
-    ctx.fillStyle = s.uiAccentColor;
-    ctx.font = `800 ${expW * 0.018}px monospace`;
-    ctx.fillText(s.talkTag.toUpperCase(), leftMargin, currentY);
-
-    // WCC Hero (Slightly smaller, to establish hierarchy)
-    currentY += expH * 0.04;
-    ctx.fillStyle = s.archColor === '#111111' || s.archColor === '#000000' ? '#ffffff' : s.archColor;
-    ctx.font = `900 ${expW * 0.045}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
-    ctx.fillText(s.contentHero.toUpperCase(), leftMargin, currentY);
-
-    // Speaker Name (Hero text of the layout)
-    currentY += expH * 0.065;
-    ctx.font = `900 ${expW * 0.08}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
-    ctx.fillText(s.talkTitle.toUpperCase(), leftMargin, currentY);
-
-    // Speaker Title
-    currentY += expH * 0.035;
-    ctx.globalAlpha = 0.7;
-    ctx.font = `italic 600 ${expW * 0.028}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`;
-    ctx.fillText(s.talkSubtitle, leftMargin, currentY);
-    ctx.globalAlpha = 1.0;
-
-    // Date & Location Block (Anchored specifically to the bottom)
-    const bottomY = expH - pad - expH * 0.06 + (expH * (s.posterBottomOffset ?? 0.0));
-    ctx.fillStyle = s.uiAccentColor;
-    ctx.font = `800 ${expW * 0.022}px monospace`;
-
-    const details = s.talkDetails.split('\n');
-    ctx.fillText(details[0] ? details[0].toUpperCase() : '', leftMargin, bottomY);
-    if(details[1]) {
-        ctx.fillText(details[1].toUpperCase(), leftMargin + expW * 0.45, bottomY);
-    }
+    ctx.fillStyle = s.uiAccentColor; ctx.font = `800 ${expW * 0.018}px monospace`; ctx.fillText(s.talkTag.toUpperCase(), leftMargin, currentY);
+    currentY += expH * 0.04; ctx.fillStyle = s.archColor === '#111111' || s.archColor === '#000000' ? '#ffffff' : s.archColor; ctx.font = `900 ${expW * 0.045}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`; ctx.fillText(s.contentHero.toUpperCase(), leftMargin, currentY);
+    currentY += expH * 0.065; ctx.font = `900 ${expW * 0.08}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`; ctx.fillText(s.talkTitle.toUpperCase(), leftMargin, currentY);
+    currentY += expH * 0.035; ctx.globalAlpha = 0.7; ctx.font = `italic 600 ${expW * 0.028}px ${s.uiFont.split(',')[0].replace(/['"]/g, '')}`; ctx.fillText(s.talkSubtitle, leftMargin, currentY); ctx.globalAlpha = 1.0;
+    const bottomY = expH - pad - expH * 0.06 + (expH * (s.posterBottomOffset ?? 0.0)); ctx.fillStyle = s.uiAccentColor; ctx.font = `800 ${expW * 0.022}px monospace`;
+    const details = s.talkDetails.split('\n'); ctx.fillText(details[0] ? details[0].toUpperCase() : '', leftMargin, bottomY); if(details[1]) { ctx.fillText(details[1].toUpperCase(), leftMargin + expW * 0.45, bottomY); }
   };
 
   const handleExportImage = (isPosterMode = false) => {
@@ -667,9 +474,7 @@ function App() {
     camera.aspect = expW / expH; camera.updateProjectionMatrix(); renderer.render(scene, camera);
     const canvas2d = document.createElement('canvas'); canvas2d.width = expW; canvas2d.height = expH; const ctx = canvas2d.getContext('2d');
     ctx.fillStyle = s.bgColor; ctx.fillRect(0, 0, expW, expH); ctx.drawImage(renderer.domElement, 0, 0);
-
     if (isPosterMode) drawPosterOverlay(ctx, expW, expH, s);
-
     setExportedImage(canvas2d.toDataURL());
     renderer.setPixelRatio(origPr); renderer.setSize(window.innerWidth, window.innerHeight, false);
     camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.render(scene, camera);
@@ -677,288 +482,132 @@ function App() {
 
   const handleStartVideoRecording = () => {
     if (!sceneRefs.current.renderer) return;
-    const { renderer, camera } = sceneRefs.current;
-    const s = settingsRef.current;
-    setIsRecording(true);
-
+    const { renderer, camera } = sceneRefs.current; const s = settingsRef.current; setIsRecording(true);
     const expW = parseInt(s.exportWidth); const expH = parseInt(s.exportHeight);
-    recCanvasRef.current = document.createElement('canvas');
-    recCanvasRef.current.width = expW; recCanvasRef.current.height = expH;
-    recCtxRef.current = recCanvasRef.current.getContext('2d');
-
+    recCanvasRef.current = document.createElement('canvas'); recCanvasRef.current.width = expW; recCanvasRef.current.height = expH; recCtxRef.current = recCanvasRef.current.getContext('2d');
     originalRendererStateRef.current = { w: window.innerWidth, h: window.innerHeight, aspect: camera.aspect, pr: renderer.getPixelRatio() };
     renderer.setPixelRatio(1); renderer.setSize(expW, expH, false); camera.aspect = expW / expH; camera.updateProjectionMatrix();
-
-    const stream = recCanvasRef.current.captureStream(30);
-    mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
-    chunksRef.current = [];
-
+    const stream = recCanvasRef.current.captureStream(30); mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' }); chunksRef.current = [];
     mediaRecorderRef.current.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
     mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = `wcc_poster_reel.webm`; a.click();
-
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `wcc_poster_reel.webm`; a.click();
         setIsRecording(false); isRecordingRef.current = false; recCanvasRef.current = null; recCtxRef.current = null;
-        const orig = originalRendererStateRef.current;
-        renderer.setPixelRatio(orig.pr); renderer.setSize(orig.w, orig.h, false); camera.aspect = orig.aspect; camera.updateProjectionMatrix();
+        const orig = originalRendererStateRef.current; renderer.setPixelRatio(orig.pr); renderer.setSize(orig.w, orig.h, false); camera.aspect = orig.aspect; camera.updateProjectionMatrix();
     };
-
     isRecordingRef.current = true; mediaRecorderRef.current.start();
     setTimeout(() => { if(isRecordingRef.current && mediaRecorderRef.current.state !== 'inactive') mediaRecorderRef.current.stop(); }, s.videoDuration * 1000);
   };
 
-  // --- THREE.JS EFFECT ---
   useEffect(() => {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(settings.bgColor);
-    scene.fog = new THREE.FogExp2(settings.bgColor, 0.05);
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, targetArtPosRef.current.z);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const scene = new THREE.Scene(); scene.background = new THREE.Color(settings.bgColor); scene.fog = new THREE.FogExp2(settings.bgColor, 0.05);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000); camera.position.set(0, 0, targetArtPosRef.current.z);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true }); renderer.setSize(window.innerWidth, window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
-    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(5, 10, 5); scene.add(dirLight);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2)); const dirLight = new THREE.DirectionalLight(0xffffff, 2.0); dirLight.position.set(5, 10, 5); scene.add(dirLight);
 
     const shelterGroup = new THREE.Group();
-    const arch = new THREE.Mesh(createArchGeo(settings.archShape), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 }));
-    arch.rotation.z = -Math.PI / 4; shelterGroup.add(arch);
+    const arch = new THREE.Mesh(createArchGeo(settings.archShape), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 })); arch.rotation.z = -Math.PI / 4; shelterGroup.add(arch);
+    const ring = new THREE.Mesh(createRingGeo(settings.ringShape, 2.1), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.2, metalness: 0.8 })); shelterGroup.add(ring);
+    const innerRing = new THREE.Mesh(createRingGeo(settings.ringShape, 1.6), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.1, metalness: 1.0 })); innerRing.rotation.x = Math.PI / 2; shelterGroup.add(innerRing);
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.6,0.6), new THREE.MeshStandardMaterial({ color: settings.cubeColor, roughness: 0.2, metalness: 0.1 })); cube.position.set(1.5, 1.5, 1.5); shelterGroup.add(cube);
+    const innerMesh = new THREE.Mesh(createCoreGeo(settings.coreShape), new THREE.MeshPhysicalMaterial({ color: settings.glassColor, metalness: 0.1, roughness: 0.05, transmission: 1.0, ior: settings.glassIor, thickness: 2.0, transparent: true })); shelterGroup.add(innerMesh);
+    const galleryGroup = new THREE.Group(); shelterGroup.add(galleryGroup); scene.add(shelterGroup);
 
-    const ring = new THREE.Mesh(createRingGeo(settings.ringShape, 2.1), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.2, metalness: 0.8 }));
-    shelterGroup.add(ring);
+    sceneRefs.current = { scene, camera, renderer, arch, ring, innerRing, cube, innerMesh, shelterGroup, galleryGroup, currentShapes: { arch: settings.archShape, core: settings.coreShape, ring: settings.ringShape }, currentGallery: [], currentMediaStyle: "", currentTextures: [] };
 
-    const innerRing = new THREE.Mesh(createRingGeo(settings.ringShape, 1.6), new THREE.MeshStandardMaterial({ color: settings.ringColor, roughness: 0.1, metalness: 1.0 }));
-    innerRing.rotation.x = Math.PI / 2; shelterGroup.add(innerRing);
-
-    const cube = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.6,0.6), new THREE.MeshStandardMaterial({ color: settings.cubeColor, roughness: 0.2, metalness: 0.1 }));
-    cube.position.set(1.5, 1.5, 1.5); shelterGroup.add(cube);
-
-    const innerMesh = new THREE.Mesh(createCoreGeo(settings.coreShape), new THREE.MeshPhysicalMaterial({ color: settings.glassColor, metalness: 0.1, roughness: 0.05, transmission: 1.0, ior: settings.glassIor, thickness: 2.0, transparent: true }));
-    shelterGroup.add(innerMesh);
-
-    const galleryGroup = new THREE.Group();
-    shelterGroup.add(galleryGroup);
-
-    scene.add(shelterGroup);
-
-    sceneRefs.current = {
-        scene, camera, renderer, arch, ring, innerRing, cube, innerMesh, shelterGroup, galleryGroup,
-        currentShapes: { arch: settings.archShape, core: settings.coreShape, ring: settings.ringShape },
-        currentGallery: [], currentMediaStyle: "", currentTextures: []
-    };
-
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight);
-    };
+    const handleResize = () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); };
     window.addEventListener('resize', handleResize);
 
     let animationFrameId; let time = 0;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const s = settingsRef.current;
-
       time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
-      if(s.mediaGallery?.length > 0 && s.mediaStyle === 'floating') {
-          galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15;
-          galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05;
-      }
-
-      // Apply Manual 3D Model Rotations
-      shelterGroup.rotation.x = s.artRotX ?? 0.0;
-      shelterGroup.rotation.y = s.artRotY ?? 0.0;
-      shelterGroup.rotation.z = s.artRotZ ?? 0.0;
-
-      shelterGroup.position.x += ((targetArtPosRef.current.x + s.artPosX) - shelterGroup.position.x) * 0.05;
-      shelterGroup.position.y += ((targetArtPosRef.current.y + s.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
+      if(settingsRef.current.mediaGallery?.length > 0 && settingsRef.current.mediaStyle === 'floating') { galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15; galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05; }
+      shelterGroup.rotation.x = settingsRef.current.artRotX ?? 0.0; shelterGroup.rotation.y = settingsRef.current.artRotY ?? 0.0; shelterGroup.rotation.z = settingsRef.current.artRotZ ?? 0.0;
+      shelterGroup.position.x += ((targetArtPosRef.current.x + settingsRef.current.artPosX) - shelterGroup.position.x) * 0.05;
+      shelterGroup.position.y += ((targetArtPosRef.current.y + settingsRef.current.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
       innerMesh.position.y = Math.sin(time * 0.001) * 0.1; cube.position.y = 1.5 + Math.sin(time * 0.002) * 0.2;
-      camera.position.z += ((targetArtPosRef.current.z + s.artZoom) - camera.position.z) * 0.05;
-      camera.lookAt(0, 0, 0);
+      camera.position.z += ((targetArtPosRef.current.z + settingsRef.current.artZoom) - camera.position.z) * 0.05; camera.lookAt(0, 0, 0); renderer.render(scene, camera);
 
-      renderer.render(scene, camera);
-
-      // Live mini-preview engine (now rendered in the right-side panel)
       if (sceneRefs.current.activeMenu === 'deploy' && sceneRefs.current.previewCanvas) {
-          const pCtx = sceneRefs.current.previewCtx;
-          const pCvs = sceneRefs.current.previewCanvas;
-          const w = pCvs.width;
-          const h = pCvs.height;
-
-          pCtx.fillStyle = s.bgColor;
-          pCtx.fillRect(0, 0, w, h);
-
-          // Calculate "object-fit: cover" for drawing the current live viewport onto the poster aspect ratio canvas
-          const sourceW = renderer.domElement.width;
-          const sourceH = renderer.domElement.height;
-          const sourceAspect = sourceW / sourceH;
-          const destAspect = w / h;
-
+          const pCtx = sceneRefs.current.previewCtx; const pCvs = sceneRefs.current.previewCanvas; const w = pCvs.width; const h = pCvs.height;
+          pCtx.fillStyle = settingsRef.current.bgColor; pCtx.fillRect(0, 0, w, h);
+          const sourceW = renderer.domElement.width; const sourceH = renderer.domElement.height; const sourceAspect = sourceW / sourceH; const destAspect = w / h;
           let sx = 0, sy = 0, sw = sourceW, sh = sourceH;
-          if (sourceAspect > destAspect) {
-              sw = sh * destAspect;
-              sx = (sourceW - sw) / 2;
-          } else {
-              sh = sw / destAspect;
-              sy = (sourceH - sh) / 2;
-          }
-
-          pCtx.drawImage(renderer.domElement, sx, sy, sw, sh, 0, 0, w, h);
-          drawPosterOverlay(pCtx, w, h, s); // Overlay the text perfectly scaled
+          if (sourceAspect > destAspect) { sw = sh * destAspect; sx = (sourceW - sw) / 2; } else { sh = sw / destAspect; sy = (sourceH - sh) / 2; }
+          pCtx.drawImage(renderer.domElement, sx, sy, sw, sh, 0, 0, w, h); drawPosterOverlay(pCtx, w, h, settingsRef.current);
       }
-
-      // Existing high-res video recording engine
       if (isRecordingRef.current && recCtxRef.current && recCanvasRef.current) {
           const w = recCanvasRef.current.width; const h = recCanvasRef.current.height;
-          recCtxRef.current.fillStyle = s.bgColor; recCtxRef.current.fillRect(0, 0, w, h);
-          recCtxRef.current.drawImage(renderer.domElement, 0, 0, w, h);
-          drawPosterOverlay(recCtxRef.current, w, h, s);
+          recCtxRef.current.fillStyle = settingsRef.current.bgColor; recCtxRef.current.fillRect(0, 0, w, h);
+          recCtxRef.current.drawImage(renderer.domElement, 0, 0, w, h); drawPosterOverlay(recCtxRef.current, w, h, settingsRef.current);
       }
     };
     animate();
-
     return () => { window.removeEventListener('resize', handleResize); cancelAnimationFrame(animationFrameId); renderer.dispose(); };
   }, []);
 
-  // Sync effect with ADVANCED PERFECT SQUARE CROP
   useEffect(() => {
     if (!sceneRefs.current.scene) return;
     const { scene, arch, ring, innerRing, cube, innerMesh, galleryGroup, currentShapes } = sceneRefs.current;
-
     if (currentShapes.arch !== settings.archShape) { arch.geometry.dispose(); arch.geometry = createArchGeo(settings.archShape); currentShapes.arch = settings.archShape; }
     if (currentShapes.core !== settings.coreShape) { innerMesh.geometry.dispose(); innerMesh.geometry = createCoreGeo(settings.coreShape); currentShapes.core = settings.coreShape; }
-    if (currentShapes.ring !== settings.ringShape) {
-        ring.geometry.dispose(); innerRing.geometry.dispose();
-        ring.geometry = createRingGeo(settings.ringShape, 2.1); innerRing.geometry = createRingGeo(settings.ringShape, 1.6); currentShapes.ring = settings.ringShape;
-    }
+    if (currentShapes.ring !== settings.ringShape) { ring.geometry.dispose(); innerRing.geometry.dispose(); ring.geometry = createRingGeo(settings.ringShape, 2.1); innerRing.geometry = createRingGeo(settings.ringShape, 1.6); currentShapes.ring = settings.ringShape; }
 
     const imgSettingsChanged = sceneRefs.current.currentImgSettings !== `${settings.imageOffsetX}_${settings.imageOffsetY}_${settings.imageScale}`;
-
     if (JSON.stringify(sceneRefs.current.currentGallery) !== JSON.stringify(settings.mediaGallery) || sceneRefs.current.currentMediaStyle !== settings.mediaStyle || imgSettingsChanged) {
       sceneRefs.current.currentImgSettings = `${settings.imageOffsetX}_${settings.imageOffsetY}_${settings.imageScale}`;
       sceneRefs.current.currentTextures.forEach(t => t.dispose());
-      while(galleryGroup.children.length > 0) {
-          const child = galleryGroup.children[0];
-          child.traverse((c) => { if (c.geometry) c.geometry.dispose(); if (c.material) { if (c.material.map) c.material.map.dispose(); c.material.dispose(); } });
-          galleryGroup.remove(child);
-      }
+      while(galleryGroup.children.length > 0) { const child = galleryGroup.children[0]; child.traverse((c) => { if (c.geometry) c.geometry.dispose(); if (c.material) { if (c.material.map) c.material.map.dispose(); c.material.dispose(); } }); galleryGroup.remove(child); }
       sceneRefs.current.currentTextures = []; sceneRefs.current.currentGallery = [...(settings.mediaGallery || [])]; sceneRefs.current.currentMediaStyle = settings.mediaStyle;
 
       if (settings.mediaGallery && settings.mediaGallery.length > 0) {
         const loader = new THREE.TextureLoader(); loader.setCrossOrigin('anonymous');
         settings.mediaGallery.forEach((url, i) => {
             loader.load(url, (texture) => {
-              texture.colorSpace = THREE.SRGBColorSpace;
-              sceneRefs.current.currentTextures.push(texture);
-
+              texture.colorSpace = THREE.SRGBColorSpace; sceneRefs.current.currentTextures.push(texture);
               if (settings.mediaStyle === 'floating') {
-                 innerMesh.material.map = null;
-                 innerMesh.material.transmission = 1.0;
-
-                 // FORCE PERFECT SQUARE WITH OBJECT-COVER CROP (Crucial Logic Restored)
-                 const size = 3.2;
-                 const clonedTexture = texture.clone();
-                 clonedTexture.needsUpdate = true;
-                 clonedTexture.matrixAutoUpdate = false;
-
+                 innerMesh.material.map = null; innerMesh.material.transmission = 1.0;
+                 const size = 3.2; const clonedTexture = texture.clone(); clonedTexture.needsUpdate = true; clonedTexture.matrixAutoUpdate = false;
                  const imageAspect = texture.image.width / texture.image.height;
-
-                 // Advanced UV Matrix Transform to match CSS object-position and transform scale
-                 const baseSx = imageAspect > 1.0 ? 1.0 / imageAspect : 1.0;
-                 const baseSy = imageAspect > 1.0 ? 1.0 : imageAspect;
-
-                 const finalSx = baseSx / (settings.imageScale || 1.0);
-                 const finalSy = baseSy / (settings.imageScale || 1.0);
-
-                 const rangeX = 1.0 - finalSx;
-                 const rangeY = 1.0 - finalSy;
-
-                 const tx = rangeX * (settings.imageOffsetX ?? 0.5);
-                 const ty = rangeY * (1.0 - (settings.imageOffsetY ?? 0.5)); // WebGL Y is inverted vs CSS
-
+                 const baseSx = imageAspect > 1.0 ? 1.0 / imageAspect : 1.0; const baseSy = imageAspect > 1.0 ? 1.0 : imageAspect;
+                 const finalSx = baseSx / (settings.imageScale || 1.0); const finalSy = baseSy / (settings.imageScale || 1.0);
+                 const tx = (1.0 - finalSx) * (settings.imageOffsetX ?? 0.5); const ty = (1.0 - finalSy) * (1.0 - (settings.imageOffsetY ?? 0.5));
                  clonedTexture.matrix.setUvTransform(tx, ty, finalSx, finalSy, 0, 0, 0);
-
                  const canvasGroup = new THREE.Group();
-                 const canvasMesh = new THREE.Mesh(
-                     new THREE.BoxGeometry(size, size, 0.05),
-                     new THREE.MeshStandardMaterial({ map: clonedTexture, color: 0xffffff, roughness: 0.2, metalness: 0.1 })
-                 );
-                 const frameMesh = new THREE.Mesh(
-                     new THREE.BoxGeometry(size + 0.1, size + 0.1, 0.02),
-                     new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 })
-                 );
-                 frameMesh.position.z = -0.02;
-                 canvasGroup.add(canvasMesh);
-                 canvasGroup.add(frameMesh);
-
-                 const count = settings.mediaGallery.length;
-                 const spacing = count > 1 ? 2.8 : 0;
-                 const offset = i - (count - 1) / 2;
-                 canvasGroup.position.x = offset * spacing;
-                 canvasGroup.position.z = Math.abs(offset) * 0.8;
-                 canvasGroup.rotation.y = -offset * 0.2;
+                 const canvasMesh = new THREE.Mesh(new THREE.BoxGeometry(size, size, 0.05), new THREE.MeshStandardMaterial({ map: clonedTexture, color: 0xffffff, roughness: 0.2, metalness: 0.1 }));
+                 const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(size + 0.1, size + 0.1, 0.02), new THREE.MeshStandardMaterial({ color: settings.archColor, roughness: 0.9, metalness: 0.1 }));
+                 frameMesh.position.z = -0.02; canvasGroup.add(canvasMesh); canvasGroup.add(frameMesh);
+                 const count = settings.mediaGallery.length; const spacing = count > 1 ? 2.8 : 0; const offset = i - (count - 1) / 2;
+                 canvasGroup.position.x = offset * spacing; canvasGroup.position.z = Math.abs(offset) * 0.8; canvasGroup.rotation.y = -offset * 0.2;
                  galleryGroup.add(canvasGroup);
-              } else {
-                 if (i === 0) { innerMesh.material.map = texture; innerMesh.material.transmission = 0.0; }
-              }
+              } else { if (i === 0) { innerMesh.material.map = texture; innerMesh.material.transmission = 0.0; } }
               innerMesh.material.needsUpdate = true;
             });
         });
-      } else {
-        innerMesh.material.map = null; innerMesh.material.transmission = 1.0; innerMesh.material.needsUpdate = true;
-      }
+      } else { innerMesh.material.map = null; innerMesh.material.transmission = 1.0; innerMesh.material.needsUpdate = true; }
     }
 
     scene.background.set(settings.bgColor); scene.fog.color.set(settings.bgColor);
-    arch.material.color.set(settings.archColor); cube.material.color.set(settings.cubeColor);
-    ring.material.color.set(settings.ringColor); innerRing.material.color.set(settings.ringColor);
-    innerMesh.material.color.set(settings.glassColor);
-    arch.scale.setScalar(settings.archScale); ring.scale.setScalar(settings.ringScale); innerRing.scale.setScalar(settings.ringScale);
-    cube.scale.setScalar(settings.cubeScale); innerMesh.scale.setScalar(settings.glassScale);
+    arch.material.color.set(settings.archColor); cube.material.color.set(settings.cubeColor); ring.material.color.set(settings.ringColor); innerRing.material.color.set(settings.ringColor); innerMesh.material.color.set(settings.glassColor);
+    arch.scale.setScalar(settings.archScale); ring.scale.setScalar(settings.ringScale); innerRing.scale.setScalar(settings.ringScale); cube.scale.setScalar(settings.cubeScale); innerMesh.scale.setScalar(settings.glassScale);
   }, [settings]);
 
-  // Global Sync Logic & Listeners
   useEffect(() => {
-    // 1. SILENT INITIALIZATION: Map defaults if starting from scratch
-    const saved = localStorage.getItem('wcc_app_settings_unified');
-    if (!saved && settingsRef.current.questions[0]?.googleId === 'entry.1') {
-        handleAutoMapForm(true); // Trigger background patcher silently
-    }
-
-    const handleKeyDown = (e) => {
-        if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowSettingsBtn(p => !p); setIsEditorOpen(false); }
-        if (e.key.toLowerCase() === 'd' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowDebug(p => !p); }
-    };
-
-    // 2. Global Hotkeys & Taps
-    let tapCount = 0; let tapTimer;
-    const handleInteract = (e) => {
-        if (['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT', 'OPTION', 'A'].includes(e.target.tagName)) return;
-        tapCount++;
-        clearTimeout(tapTimer);
-        if (tapCount >= 3) {
-            setShowSettingsBtn(p => !p); setIsEditorOpen(false); tapCount = 0;
-        } else {
-            tapTimer = setTimeout(() => { tapCount = 0; }, 400);
-        }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('touchstart', handleInteract);
-    window.addEventListener('mousedown', handleInteract);
-    return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('touchstart', handleInteract);
-        window.removeEventListener('mousedown', handleInteract);
-    };
+    const handleKeyDown = (e) => { if (e.key.toLowerCase() === 'h' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowSettingsBtn(p => !p); setIsEditorOpen(false); }
+    if (e.key.toLowerCase() === 'd' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) { setShowDebug(p => !p); } };
+    window.addEventListener('keydown', handleKeyDown); return () => { window.removeEventListener('keydown', handleKeyDown); };
   }, []);
+
+  const handleSecretAdminClick = () => {
+      secretClickRef.current.count += 1; clearTimeout(secretClickRef.current.timer);
+      if (secretClickRef.current.count >= 3) { setShowSettingsBtn(p => !p); setIsEditorOpen(false); secretClickRef.current.count = 0; }
+      else { secretClickRef.current.timer = setTimeout(() => { secretClickRef.current.count = 0; }, 400); }
+  };
 
   return (
     <div className="relative w-full h-screen overflow-hidden text-white bg-[#0a0a0a]" style={{ fontFamily: settings.uiFont }}>
-
-      {/* INVISIBLE ADMIN TOGGLE CORNER */}
-      <div onClick={() => {setShowSettingsBtn(p => !p); setIsEditorOpen(false);}} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
-
+      <div onClick={handleSecretAdminClick} className="absolute bottom-0 left-0 w-16 h-16 z-[90] cursor-default" />
       <style>{`
         .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); }
         .ui-panel-bg { background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 0; box-shadow: 16px 16px 0px rgba(0,0,0,0.3); }
@@ -973,42 +622,22 @@ function App() {
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 0px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
       `}</style>
-
       <div className="absolute inset-0 z-0 bg-grid opacity-50 pointer-events-none" />
       <div ref={mountRef} className="absolute inset-0 z-0" />
-
-      {/* LAYER 0: HERO (MOBILE OPTIMIZED NO-OVERLAP) */}
       <div className={`absolute inset-0 z-10 flex flex-col p-6 md:p-12 transition-all duration-1000 overflow-y-auto custom-scrollbar ${layer === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-
         <div className="flex-1 flex flex-col items-center justify-center text-center mix-blend-difference text-white z-10 w-full min-h-[50vh]">
-          <h1 className="text-6xl md:text-[10rem] font-black mb-2 uppercase tracking-tighter leading-none" style={{ fontFamily: settings.uiFont }}>{settings.contentHero}</h1>
+          <h1 className="text-6xl md:text-[10rem] font-black mb-2 uppercase tracking-tighter leading-none">{settings.contentHero}</h1>
           <h2 className="text-sm md:text-3xl font-bold tracking-[0.3em] uppercase opacity-90 mt-4 font-mono">{settings.contentSub}</h2>
           <button onClick={() => setLayer(1)} className="mt-8 md:mt-16 px-8 md:px-16 py-4 md:py-5 bg-white text-black font-black uppercase tracking-[0.2em] rounded-none hover:bg-neutral-200 transition-colors border-2 border-transparent hover:border-black">[{settings.btnEnter}]</button>
         </div>
-
-        {/* HIGHLIGHTED UPCOMING TALK SECTION WITH DYNAMIC IMAGE */}
         <div className="w-full md:w-[420px] self-center md:self-end mt-8 bg-[#0a0a0a]/90 backdrop-blur-md border border-white/20 group hover:border-[#ff2a00]/80 transition-colors z-20 text-left relative shrink-0 shadow-2xl flex flex-col">
             <div className="absolute top-0 right-0 bg-[#ff2a00] text-white text-[8px] font-black tracking-widest px-3 py-1 uppercase z-10">Upcoming Event</div>
-
             {settings.mediaGallery && settings.mediaGallery[0] && (
               <div className="w-full h-48 overflow-hidden relative border-b border-white/10 flex items-center justify-center bg-black">
-                <img
-                  src={settings.mediaGallery[0]}
-                  crossOrigin="anonymous"
-                  className="opacity-70 group-hover:opacity-100 transition-opacity"
-                  style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: `${(settings.imageOffsetX ?? 0.5) * 100}% ${(settings.imageOffsetY ?? 0.5) * 100}%`,
-                      transform: `scale(${settings.imageScale || 1.0})`
-                  }}
-                  alt="Speaker"
-                />
+                <img src={settings.mediaGallery[0]} crossOrigin="anonymous" className="opacity-70 group-hover:opacity-100 transition-opacity" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `${(settings.imageOffsetX ?? 0.5) * 100}% ${(settings.imageOffsetY ?? 0.5) * 100}%`, transform: `scale(${settings.imageScale || 1.0})` }} alt="Speaker" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
               </div>
             )}
-
             <div className="p-6 pt-4">
               <p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono mb-2">{settings.talkTag}</p>
               <h3 className="text-2xl font-black uppercase tracking-tighter mb-1">{settings.talkTitle}</h3>
@@ -1017,162 +646,61 @@ function App() {
             </div>
         </div>
       </div>
-
-      {/* LAYERS 1-3: PUBLIC UI (RESTORED WHITE/CLEAN THEME) */}
       {layer > 0 && (
           <div className="absolute inset-0 z-10 flex items-center justify-center md:justify-end p-4 md:p-12 transition-all duration-1000">
               <div className="max-w-xl w-full bg-white/95 backdrop-blur-md border border-black/10 shadow-[16px_16px_0px_rgba(0,0,0,0.1)] p-8 md:p-12 overflow-y-auto max-h-[90vh] custom-scrollbar text-neutral-900">
-
-                  {/* LAYER 1: OPEN CALL INFO */}
                   {layer === 1 && (
                       <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                        <div className="border-b-2 border-black/10 pb-4 mb-6">
-                            <p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono">{settings.contentTag}</p>
-                        </div>
+                        <div className="border-b-2 border-black/10 pb-4 mb-6"><p className="text-[10px] font-black uppercase text-[#ff2a00] tracking-[0.2em] font-mono">{settings.contentTag}</p></div>
                         <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tighter uppercase text-black">{settings.contentTitle}</h2>
-
-                        <div className="mb-8 space-y-4 text-sm font-bold opacity-90 border-l-4 border-[#ff2a00] pl-4 font-mono text-black">
-                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro1}</p>
-                            <p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro2}</p>
-                        </div>
-                        <div className="space-y-6 opacity-80 leading-relaxed mb-8 text-base font-medium font-serif border-l-2 border-black/20 pl-6 text-black">
-                            <p className="whitespace-pre-wrap">{settings.contentDesc1}</p>
-                            <p className="whitespace-pre-wrap">{settings.contentDesc2}</p>
-                        </div>
-
-                        <div className="flex gap-4 pt-6 border-t-2 border-black/10">
-                            <button onClick={()=>setLayer(0)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Abort</button>
-                            <button onClick={()=>setLayer(2)} className="flex-1 ui-btn-solid">Continue</button>
-                        </div>
+                        <div className="mb-8 space-y-4 text-sm font-bold opacity-90 border-l-4 border-[#ff2a00] pl-4 font-mono text-black"><p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro1}</p><p className="whitespace-pre-wrap leading-relaxed">{settings.contentIntro2}</p></div>
+                        <div className="space-y-6 opacity-80 leading-relaxed mb-8 text-base font-medium font-serif border-l-2 border-black/20 pl-6 text-black"><p className="whitespace-pre-wrap">{settings.contentDesc1}</p><p className="whitespace-pre-wrap">{settings.contentDesc2}</p></div>
+                        <div className="flex gap-4 pt-6 border-t-2 border-black/10"><button onClick={()=>setLayer(0)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Abort</button><button onClick={()=>setLayer(2)} className="flex-1 ui-btn-solid">Continue</button></div>
                       </div>
                   )}
-
-                  {/* LAYER 2: PROGRAMME DETAILS */}
                   {layer === 2 && (
                     <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                       <h2 className="text-3xl font-black mb-8 uppercase tracking-tighter border-b-2 border-black/10 pb-4 text-black">{settings.titleInclusions}</h2>
                       <ul className="space-y-3 mb-10 text-sm md:text-base font-bold uppercase font-mono text-black">
-                        {[settings.inclusion1, settings.inclusion2, settings.inclusion3, settings.inclusion4].map((item, i) => (
-                            <li key={i} className="flex items-center gap-4 p-4 border border-black/10 hover:border-black/30 transition-colors bg-black/5">
-                                <div className="w-3 h-3 bg-[#ff2a00]" />
-                                <span>{item}</span>
-                            </li>
-                        ))}
+                        {[settings.inclusion1, settings.inclusion2, settings.inclusion3, settings.inclusion4].map((item, i) => (<li key={i} className="flex items-center gap-4 p-4 border border-black/10 hover:border-black/30 transition-colors bg-black/5"><div className="w-3 h-3 bg-[#ff2a00]" /><span>{item}</span></li>))}
                       </ul>
-                      <div className="mb-10 p-6 border-2 border-[#ff2a00] bg-[#ff2a00]/10 font-black text-2xl tracking-tight flex flex-col text-black">
-                          <span className="text-[10px] text-[#ff2a00] tracking-widest uppercase mb-1 font-mono">DEADLINE</span>
-                          {settings.contentDeadline}
-                      </div>
-                      <div className="flex gap-4">
-                          <button onClick={()=>setLayer(1)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button>
-                          <button onClick={()=>setLayer(3)} className="flex-1 ui-btn-solid">Proceed To Form</button>
-                      </div>
+                      <div className="mb-10 p-6 border-2 border-[#ff2a00] bg-[#ff2a00]/10 font-black text-2xl tracking-tight flex flex-col text-black"><span className="text-[10px] text-[#ff2a00] tracking-widest uppercase mb-1 font-mono">DEADLINE</span>{settings.contentDeadline}</div>
+                      <div className="flex gap-4"><button onClick={()=>setLayer(1)} className="px-6 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button><button onClick={()=>setLayer(3)} className="flex-1 ui-btn-solid">Proceed To Form</button></div>
                     </div>
                   )}
-
-                  {/* LAYER 3: APPLICATION FORM */}
                   {layer === 3 && (
                     <div className="animate-in fade-in slide-in-from-right-4 duration-500 text-inherit">
                        {formStatus === 'success' ? (
-                          <div className="text-center py-16 border border-black/10 bg-black/5">
-                              <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-[#ff2a00]">{settings.formSuccessTitle}</h2>
-                              <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold text-black">{settings.formSuccessMsg}</p>
-                              <button onClick={()=>{setLayer(0); setFormStatus('idle'); setFormAnswers({});}} className="ui-btn-solid w-3/4 mx-auto block">Reset System</button>
-                          </div>
+                          <div className="text-center py-16 border border-black/10 bg-black/5"><h2 className="text-4xl font-black mb-4 uppercase tracking-tighter text-[#ff2a00]">{settings.formSuccessTitle}</h2><p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold text-black">{settings.formSuccessMsg}</p><button onClick={()=>{setLayer(0); setFormStatus('idle'); setFormAnswers({});}} className="ui-btn-solid w-3/4 mx-auto block">Reset System</button></div>
                        ) : (
                           <div className="flex flex-col gap-6">
-                            <div className="border-b-2 border-black/10 pb-6 mb-2">
-                                <h2 className="text-3xl font-black uppercase tracking-tighter text-black">{settings.formTitle}</h2>
-                            </div>
+                            <div className="border-b-2 border-black/10 pb-6 mb-2"><h2 className="text-3xl font-black uppercase tracking-tighter text-black">{settings.formTitle}</h2></div>
                             {settings.useInternalForm ? (
                                <form className="flex flex-col gap-6" onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
                                   {settings.questions.map((q) => (
                                     <div key={q.id} className="flex flex-col gap-2">
-                                       <div className="flex justify-between items-center px-1">
-                                           <label className="text-[10px] font-bold opacity-60 uppercase tracking-[0.1em] font-mono text-black">[{q.label}] {q.required && <span className="text-[#ff2a00]">*</span>}</label>
-                                       </div>
-                                       {q.type === 'textarea' ? (
-                                           <textarea className="public-form-input min-h-[140px]" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />
-                                       ) : q.type === 'radio' ? (
-                                           <div className="flex flex-col gap-2 p-2">
-                                             {q.options?.map(opt => (
-                                                <label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black">
-                                                  <input type="radio" name={q.id} value={opt} checked={formAnswers[q.id] === opt} onChange={e => setFormAnswers({...formAnswers, [q.id]: e.target.value})} required={q.required} className="w-4 h-4 accent-[#ff2a00]" />
-                                                  {opt}
-                                                </label>
-                                             ))}
-                                           </div>
-                                       ) : q.type === 'checkbox' ? (
-                                           <div className="flex flex-col gap-2 p-2">
-                                             {q.options?.map(opt => {
-                                                const isChecked = (formAnswers[q.id] || []).includes(opt);
-                                                return (
-                                                <label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black">
-                                                  <input type="checkbox" name={q.id} value={opt} checked={isChecked} onChange={e => {
-                                                      const current = formAnswers[q.id] || [];
-                                                      const updated = e.target.checked ? [...current, opt] : current.filter(x => x !== opt);
-                                                      setFormAnswers({...formAnswers, [q.id]: updated});
-                                                  }} className="w-4 h-4 accent-[#ff2a00] rounded-none" />
-                                                  {opt}
-                                                </label>
-                                             )})}
-                                           </div>
-                                       ) : q.type === 'select' ? (
-                                           <select className="public-form-input" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})}>
-                                              <option value="">Select an option...</option>
-                                              {q.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                           </select>
-                                       ) : (
-                                           <input className="public-form-input" type={q.type} required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />
-                                       )}
-                                    </div>
-                                  ))}
-                                  <button type="submit" className="ui-btn-solid w-full mt-4">Transmit Data</button>
-                                  <button type="button" onClick={()=>setLayer(2)} className="mt-4 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Cancel</button>
-                               </form>
-                            ) : (
-                               <div className="flex flex-col items-center justify-center py-12 text-center border border-black/10 bg-black/5 text-black">
-                                  <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold px-8">Routing to external secure portal.</p>
-                                  <button onClick={()=>window.open(settings.applyLink, '_blank')} className="ui-btn-solid w-3/4 mx-auto block">Open Portal</button>
-                                  <button onClick={()=>setLayer(2)} className="mt-8 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button>
-                               </div>
-                            )}
-                          </div>
-                       )}
-                    </div>
-                  )}
-              </div>
-          </div>
-      )}
+                                       <div className="flex justify-between items-center px-1"><label className="text-[10px] font-bold opacity-60 uppercase tracking-[0.1em] font-mono text-black">[{q.label}] {q.required && <span className="text-[#ff2a00]">*</span>}</label></div>
+                                       {q.type === 'textarea' ? (<textarea className="public-form-input min-h-[140px]" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />) : q.type === 'radio' ? (<div className="flex flex-col gap-2 p-2">{q.options?.map(opt => (<label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black"><input type="radio" name={q.id} value={opt} checked={formAnswers[q.id] === opt} onChange={e => setFormAnswers({...formAnswers, [q.id]: e.target.value})} required={q.required} className="w-4 h-4 accent-[#ff2a00]" />{opt}</label>))}</div>) : q.type === 'checkbox' ? (<div className="flex flex-col gap-2 p-2">{q.options?.map(opt => { const isChecked = (formAnswers[q.id] || []).includes(opt); return (<label key={opt} className="flex items-center gap-3 text-sm font-mono cursor-pointer opacity-80 hover:opacity-100 text-black"><input type="checkbox" name={q.id} value={opt} checked={isChecked} onChange={e => { const current = formAnswers[q.id] || []; const updated = e.target.checked ? [...current, opt] : current.filter(x => x !== opt); setFormAnswers({...formAnswers, [q.id]: updated}); }} className="w-4 h-4 accent-[#ff2a00] rounded-none" />{opt}</label>)})}</div>) : q.type === 'select' ? (<select className="public-form-input" required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})}><option value="">Select an option...</option>{q.options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}</select>) : (<input className="public-form-input" type={q.type} required={q.required} value={formAnswers[q.id] || ''} onChange={e=>setFormAnswers({...formAnswers, [q.id]: e.target.value})} />)}
+                                      </div>
+                                    ))}
+                                    <button type="submit" className="ui-btn-solid w-full mt-4">Transmit Data</button>
+                                    <button type="button" onClick={()=>setLayer(2)} className="mt-4 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Cancel</button>
+                                 </form>
+                              ) : (
+                                 <div className="flex flex-col items-center justify-center py-12 text-center border border-black/10 bg-black/5 text-black">
+                                    <p className="opacity-60 mb-10 font-mono uppercase text-sm font-bold px-8">Routing to external secure portal.</p>
+                                    <button onClick={()=>window.open(settings.applyLink, '_blank')} className="ui-btn-solid w-3/4 mx-auto block">Open Portal</button>
+                                    <button onClick={()=>setLayer(2)} className="mt-8 font-bold uppercase text-xs opacity-40 hover:opacity-100 font-mono transition-opacity text-black">Back</button>
+                                 </div>
+                              )}
+                            </div>
+                         )}
+                      </div>
+                    )}
+                </div>
+            </div>
+        )}
 
-      {/* RIGHT SIDE: FLOATING LIVE PREVIEW */}
-      {showSettingsBtn && isEditorOpen && activeEditorMenu === 'deploy' && (
-          <div className="absolute top-1/2 -translate-y-1/2 right-12 z-[100] bg-[#111]/90 backdrop-blur-md border border-white/20 p-5 shadow-2xl flex flex-col gap-4 animate-in slide-in-from-right-8 pointer-events-none hidden md:flex">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <span className="text-[10px] font-black tracking-widest uppercase text-white font-mono flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#ff2a00] animate-pulse"></span>
-                      Live Output
-                  </span>
-                  <span className="text-[8px] opacity-50 font-mono">{settings.exportWidth}x{settings.exportHeight}</span>
-              </div>
-              <canvas
-                  ref={(el) => {
-                      if (el) {
-                          sceneRefs.current.previewCanvas = el;
-                          sceneRefs.current.previewCtx = el.getContext('2d');
-                      } else {
-                          sceneRefs.current.previewCanvas = null;
-                          sceneRefs.current.previewCtx = null;
-                      }
-                  }}
-                  width={settings.exportWidth / 3}
-                  height={settings.exportHeight / 3}
-                  className="w-[280px] md:w-[360px] h-auto object-contain border border-black shadow-[0_0_40px_rgba(0,0,0,0.5)]"
-              />
-          </div>
-      )}
-
-      {/* MID-SIZED DEVELOPER DEBUG CONSOLE */}
       {showDebug && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-3/4 lg:w-1/2 h-[70vh] bg-black/95 text-green-400 font-mono text-xs rounded-xl shadow-2xl border border-green-500/30 flex flex-col overflow-hidden z-[9999] backdrop-blur-md">
               <div className="flex justify-between items-center p-3 border-b border-green-500/30 bg-black">
@@ -1185,8 +713,6 @@ function App() {
                       <span className="font-bold opacity-70 tracking-widest uppercase">SYS_DEBUG_CONSOLE</span>
                   </div>
                   <div className="flex gap-4">
-                      <button onClick={handleCopySource} className="text-blue-500/50 hover:text-blue-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{sourceCopyText}</button>
-                      <button onClick={handleCopyDebug} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">{debugCopyText}</button>
                       <button onClick={() => setDebugLogs([])} className="text-green-500/50 hover:text-green-400 uppercase tracking-widest text-[10px] font-bold transition-colors">Clear</button>
                   </div>
               </div>
@@ -1194,16 +720,8 @@ function App() {
                   {debugLogs.length === 0 && <span className="opacity-50 italic">Waiting for events... (Press 'D' to close)</span>}
                   {debugLogs.map((log, i) => (
                       <div key={i} className={`pb-2 mb-2 border-b border-green-500/10 ${log.type === 'ERROR' ? 'text-red-400' : log.type === 'WARN' ? 'text-yellow-400' : log.type === 'SUCCESS' ? 'text-blue-400' : 'text-green-400'}`}>
-                          <div className="flex gap-3 font-bold opacity-70">
-                              <span>[{log.time}]</span>
-                              <span>[{log.type}]</span>
-                              <span>{log.message}</span>
-                          </div>
-                          {log.details && (
-                              <div className="mt-1 pl-4 opacity-80 overflow-x-hidden break-all border-l border-current">
-                                  {log.details}
-                              </div>
-                          )}
+                          <div className="flex gap-3 font-bold opacity-70"><span>[{log.time}]</span><span>[{log.type}]</span><span>{log.message}</span></div>
+                          {log.details && (<div className="mt-1 pl-4 opacity-80 overflow-x-hidden break-all border-l border-current">{log.details}</div>)}
                       </div>
                   ))}
               </div>
@@ -1287,7 +805,7 @@ function App() {
                         <div className="flex-1 h-[1px] bg-white"></div>
                       </div>
                       <div className="flex gap-2">
-                        <input className="flex-1 bg-[#222] border border-white/10 rounded-none p-3 text-[10px] outline-none focus:border-white font-mono text-white" value={tempMediaUrl} onChange={e => setTempMediaUrl(e.target.value)} placeholder="Image URL or Google Drive Link" />
+                        <input className="flex-1 bg-[#222] border border-white/10 rounded-none p-3 text-[10px] outline-none focus:border-white font-mono text-white" value={tempMediaUrl} onChange={e => setTempMediaUrl(e.target.value)} placeholder="https://..." />
                         <button onClick={handleAddExternalUrl} className="px-5 bg-white text-black rounded-none text-[10px] font-black uppercase tracking-widest hover:bg-neutral-200 transition-colors">Add</button>
                       </div>
                     </SectionGroup>
@@ -1389,7 +907,7 @@ function App() {
                     <SectionGroup title="Form Mapping Data">
                         <p className="text-[10px] font-mono opacity-60 leading-relaxed text-white">Paste your Google Form URL here to automatically extract and map your questions.</p>
                         <textarea value={prefillUrl} onChange={(e)=>setPrefillUrl(e.target.value)} placeholder="https://docs.google.com/forms/..." className="w-full h-20 p-4 text-xs border border-white/10 bg-[#222] text-white rounded-none outline-none focus:border-white custom-scrollbar font-mono break-all transition-colors" />
-                        <button onClick={() => handleAutoMapForm(false)} disabled={isMappingLoading} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border border-[#ff2a00] shadow-md">
+                        <button onClick={handleAutoMapForm} disabled={isMappingLoading} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white text-[10px] font-black rounded-none uppercase tracking-[0.2em] transition-colors border border-[#ff2a00] shadow-md">
                           {isMappingLoading ? 'Mapping Form...' : 'Auto-Map Form'}
                         </button>
                     </SectionGroup>
@@ -1436,11 +954,11 @@ function App() {
                 <div className="flex flex-col gap-4 animate-in slide-in-from-left-4">
                     <button onClick={()=>setActiveEditorMenu('main')} className="text-[10px] font-black opacity-40 uppercase tracking-widest hover:opacity-100 transition-opacity text-left mb-2">← BACK TO MENU</button>
 
-                    <SectionGroup title="Export Standalone HTML">
-                        <p className="text-[9px] font-mono text-white/40 mt-1 mb-2">Download a copy of this entire app where all your current settings, photos, and texts are permanently saved as the new defaults. Use this file on your local machine.</p>
-                        <button onClick={handleExportHtml} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white border border-[#ff2a00] rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors">Download Configured HTML</button>
+                    <SectionGroup title="Generate Public Website">
+                        <p className="text-[9px] font-mono text-white/40 mt-1 mb-2">Click to directly overwrite your project's index.html file with a lightweight, un-hackable version containing your new settings.</p>
+                        <button onClick={handleExportHtml} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white border border-[#ff2a00] rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors">Update index.html</button>
                     </SectionGroup>
-
+                    
                     <SectionGroup title="Export Poster & Video Settings">
                         <div className="grid grid-cols-2 gap-3">
                             <TextInput label="Width (px)" type="number" value={settings.exportWidth} onChange={v => handleSettingChange('exportWidth', parseInt(v) || 1080)} />
@@ -1454,9 +972,6 @@ function App() {
                         <SliderInput label="Vertical Position (Up/Down)" value={settings.artPosY} min={-5} max={5} step={0.1} onChange={v => handleSettingChange('artPosY', v)} />
                         <SliderInput label="Horizontal Position (Left/Right)" value={settings.artPosX} min={-5} max={5} step={0.1} onChange={v => handleSettingChange('artPosX', v)} />
                         <SliderInput label="Zoom / Scale" value={settings.artZoom} min={-10} max={10} step={0.1} onChange={v => handleSettingChange('artZoom', v)} />
-                        <SliderInput label="Rotation (X-Axis)" value={settings.artRotX ?? 0.0} min={-3.14} max={3.14} step={0.01} onChange={v => handleSettingChange('artRotX', v)} />
-                        <SliderInput label="Rotation (Y-Axis)" value={settings.artRotY ?? 0.0} min={-3.14} max={3.14} step={0.01} onChange={v => handleSettingChange('artRotY', v)} />
-                        <SliderInput label="Rotation (Z-Axis)" value={settings.artRotZ ?? 0.0} min={-3.14} max={3.14} step={0.01} onChange={v => handleSettingChange('artRotZ', v)} />
                     </SectionGroup>
 
                     <SectionGroup title="Poster Text Layout">
