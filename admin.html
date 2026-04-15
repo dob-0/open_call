@@ -97,7 +97,7 @@ function App() {
   const handleSaveSettings = () => { try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(settings)); setIsSaved(true); setTimeout(() => setIsSaved(false), 2000); } catch (e) { alert("Cannot save to localStorage. Images are too large."); } };
   const handleDownloadImage = () => { if (!exportedImage) return; const a = document.createElement('a'); a.download = 'art_capture.png'; a.href = exportedImage; a.click(); };
   const handleRemoveMedia = (index) => { const newGallery = [...settings.mediaGallery]; newGallery.splice(index, 1); handleSettingChange('mediaGallery', newGallery); };
-  
+
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files); if (files.length === 0) return;
     const readPromises = files.map(file => { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (ev) => resolve(ev.target.result); reader.readAsDataURL(file); }); });
@@ -191,7 +191,7 @@ function App() {
 
           const newConfig = { ...settingsRef.current, useInternalForm: true, applyLink: inputRaw.startsWith('http') ? inputRaw : base.replace('formResponse', 'viewform'), webhookUrl: base, questions: parsedQuestions };
           setSettings(newConfig); setFormAnswers({});
-          if (!isSilent) { setPrefillUrl(''); logDebug('SUCCESS', 'Native form mapping complete.'); alert("Form Map Complete! Click 'Save Configuration'."); } 
+          if (!isSilent) { setPrefillUrl(''); logDebug('SUCCESS', 'Native form mapping complete.'); alert("Form Map Complete! Click 'Save Configuration'."); }
           else { try { localStorage.setItem('wcc_app_settings_unified', JSON.stringify(newConfig)); } catch(e) {} console.log("Silently mapped Google Form defaults."); }
       } catch (e) { if (!isSilent) { logDebug('ERROR', 'Auto-map failed', e.message); alert("Failed to map form: " + e.message); } else { console.warn("Silent mapping failed.", e.message); } }
       setIsMappingLoading(false);
@@ -303,7 +303,7 @@ function App() {
         animationFrameId = requestAnimationFrame(animate);
         time += 16.66; arch.rotation.x += 0.002; cube.rotation.x -= 0.005;
         if(settings.mediaGallery?.length > 0 && settings.mediaStyle === 'floating') { galleryGroup.rotation.y = Math.sin(time * 0.0005) * 0.15; galleryGroup.rotation.x = Math.sin(time * 0.0003) * 0.05; }
-        
+
         shelterGroup.rotation.x = settings.artRotX ?? 0.0; shelterGroup.rotation.y = settings.artRotY ?? 0.0; shelterGroup.rotation.z = settings.artRotZ ?? 0.0;
         shelterGroup.position.x += ((targetArtPosRef.current.x + settings.artPosX) - shelterGroup.position.x) * 0.05;
         shelterGroup.position.y += ((targetArtPosRef.current.y + settings.artPosY + Math.sin(time * 0.0005) * 0.1) - shelterGroup.position.y) * 0.05;
@@ -958,7 +958,7 @@ function App() {
                         <p className="text-[9px] font-mono text-white/40 mt-1 mb-2">Click to directly overwrite your project's index.html file with a lightweight, un-hackable version containing your new settings.</p>
                         <button onClick={handleExportHtml} className="py-4 bg-[#ff2a00] hover:bg-red-700 text-white border border-[#ff2a00] rounded-none text-[11px] font-black uppercase tracking-[0.2em] shadow-lg transition-colors">Update index.html</button>
                     </SectionGroup>
-                    
+
                     <SectionGroup title="Export Poster & Video Settings">
                         <div className="grid grid-cols-2 gap-3">
                             <TextInput label="Width (px)" type="number" value={settings.exportWidth} onChange={v => handleSettingChange('exportWidth', parseInt(v) || 1080)} />
@@ -1011,3 +1011,4 @@ root.render(<App />);
   </script>
 </body>
 </html>
+
